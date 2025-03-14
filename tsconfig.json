@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "lib": ["dom", "es6"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "noResolve": false,
+    "outDir": "dist/ts",
+    "resolveJsonModule": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "target": "es2020",
+    "types": ["jest", "node"]
+  },
+  "include": ["src/**/*", "main/**/*", "@types/**/*"],
+  "exclude": ["node_modules/*", "src/**/*.js", "dist/*"]
+}

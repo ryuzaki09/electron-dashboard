@@ -1,0 +1,48 @@
+{
+  "extends": [
+    "standard",
+    "eslint:recommended",
+    "prettier",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "env": {
+    "commonjs": true,
+    "es6": true,
+    "mocha": true,
+    "browser": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": ["react", "prettier", "import", "@typescript-eslint"],
+  "rules": {
+    "comma-dangle": 2,
+    "object-curly-spacing": 0,
+    "react/jsx-no-bind": ["error", {
+      "allowArrowFunctions": true,
+      "allowBind": false,
+      "ignoreRefs": true
+    }],
+    "react/no-did-update-set-state": "error",
+    "react/no-unknown-property": "error",
+    "react/no-unused-prop-types": "error",
+    "react/no-string-refs": 0,
+    "react/prop-types": 0,
+    "react/react-in-jsx-scope": "error",
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "space-before-function-paren": 0,
+    "semi": 2,
+    "no-console": 0,
+    "no-undef": 0
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}
