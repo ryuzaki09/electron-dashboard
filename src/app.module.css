@@ -1,7 +1,15 @@
+:root {
+  --color-primary: #f4bbbb;
+}
+
 .appContainer {
   width: 100%;
 }
 
 video {
   width: 100%;
+}
+
+a {
+  text-decoration: none;
 }

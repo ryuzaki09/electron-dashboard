@@ -1,19 +1,19 @@
 import React from 'react'
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 
-import {HomeContent} from './components/home-content'
-import {Header} from './components/header'
-import {VideoPlayer} from '@ryusenpai/shared-components'
-// import {VideoPlayer} from './components/videoPlayer'
+import {Main} from './pages/main'
+import {Movie} from './pages/movie'
 
-import styles from './app.module.css'
+import './app.module.css'
 
 export default function App() {
   return (
-    <div className={styles.appContainer}>
-      <Header />
-      <HomeContent />
-      <VideoPlayer videoSrc={'/assets/ep06.mp4'} />
-      <div />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        {/* <Route path="/music" element={<Movie />} /> */}
+        <Route path="/movie" element={<Movie />} />
+      </Routes>
+    </Router>
   )
 }

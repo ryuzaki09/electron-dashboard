@@ -44,7 +44,7 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
     // mainWindow = createAppWindow('./dist/main-screen.html')
-    createAppWindow()
+    createWindow()
   }
   //if (secondWindow === null) {
   //secondWindow = createAppWindow('./dist/second-screen.html', {x: 20, y: 20})
