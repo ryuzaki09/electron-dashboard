@@ -1,6 +1,6 @@
 import React from 'react'
 
-const REFRESH_INTERVAL = 1000 * 10 // 10 seconds
+const REFRESH_INTERVAL = 1000 * 3 // 10 seconds
 
 export function useTime() {
   const [time, setTime] = React.useState('00:00')

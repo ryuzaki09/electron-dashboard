@@ -20,34 +20,34 @@ const middlewareInstance = webpackDevMiddleware(compiler, {
 
 const mediaPath = path.join(__dirname, 'media')
 
+// serve static files
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'dist')))
-app.use(express.static(mediaPath))
+// mount a virtual static path
+app.use('/media', express.static(mediaPath))
 app.use(middlewareInstance)
 
 app.use(webpackHotMiddleware(compiler))
 
-app.use('*', function(req, res, next) {
-  const filename = path.join(compiler.outputPath, req.path)
-  console.log('filename: ', filename)
-  compiler.outputFileSystem.stat(filename, (err, stats) => {
-    console.log('fileNAME: ', filename)
-    if (err || !stats.isFile()) {
-      return next()
-    }
+// app.use('*', function(req, res, next) {
+//   const filename = path.join(compiler.outputPath, req.path)
+//   console.log('filename: ', filename)
+//   compiler.outputFileSystem.stat(filename, (err, stats) => {
+//     console.log('fileNAME: ', filename)
+//     if (err || !stats.isFile()) {
+//       return next()
+//     }
+//
+//     compiler.outputFileSystem.readFile(filename, (err, result) => {
+//       if (err) {
+//         return next(err)
+//       }
+//       res.send(result)
+//     })
+//   })
+// })
 
-    compiler.outputFileSystem.readFile(filename, (err, result) => {
-      if (err) {
-        return next(err)
-      }
-      res.send(result)
-    })
-  })
-  // res.sendFile(path.join(__dirname, 'main/windows/index.html'))
-  // res.sendFile(path.join(compiler.outputPath, 'main-screen.html'))
-})
-
-app.get('/files', (req, res) => {
+app.get('/files', (_req, res) => {
   fs.readdir(mediaPath, (err, files) => {
     if (err) {
       return res.status(500).json({error: 'Unable to read fiels'})
@@ -61,7 +61,7 @@ app.get('/files', (req, res) => {
   })
 })
 
-app.get('*', (req, res) => {
+app.get('*', (_req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'main-screen.html'))
 })
 
