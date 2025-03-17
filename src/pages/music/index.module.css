@@ -1,0 +1,28 @@
+.musicListWrapper {
+  margin-block: 0;
+}
+
+.fileList {
+  list-style: none;
+  padding: 0;
+
+  & li {
+    padding: 0.5rem;
+    border-radius: 5px;
+  }
+
+  & li:hover {
+    background-color: var(--color-primary);
+    cursor: pointer;
+  }
+}
+
+.mediaControls {
+  background-color: #e5a00d;
+  padding: 1rem;
+  border-radius: 10px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

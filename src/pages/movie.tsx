@@ -1,38 +1,43 @@
 import React from 'react'
 import {VideoPlayer} from '@ryusenpai/shared-components'
 import {Container} from '../components/container'
+import {useCachedPromise} from '../hooks/useCachedPromise'
 
 import styles from './movie.module.css'
 
 export function Movie() {
+  const [doFetch, setDoFetch] = React.useState(true)
   const [mediaFiles, setMediaFiles] = React.useState<
     {name: string; url: string}[]
   >([])
-
-  React.useEffect(() => {
-    const getFiles = async () => {
-      fetch('http://localhost:3000/files')
-        .then((res) => res.json())
-        .then((data) => {
-          console.log('data: ', data)
-          setMediaFiles(data)
-        })
-        .catch((err) => console.log('errpr fetch: ', err))
-    }
-
-    getFiles()
-  }, [])
+  const fetchVideos = async () => {
+    return fetch('http://localhost:3000/videos').then((data) => data.json())
+  }
 
   return (
     <Container>
       <div className={styles.appContainer}>
-        {mediaFiles.map((file) => (
-          <div key={file.url}>
-            {file.name}
-            <VideoPlayer videoSrc={`http://localhost:3000${file.url}`} />
-          </div>
-        ))}
+        <React.Suspense fallback={<p>Loading...</p>}>
+          <VideoList fetchApi={fetchVideos} />
+        </React.Suspense>
       </div>
     </Container>
+  )
+}
+
+function VideoList({fetchApi}) {
+  const data: any[] = useCachedPromise(fetchApi())
+
+  return (
+    <>
+      {data
+        ? data.map((file) => (
+            <div key={file.url}>
+              {file.name}
+              <VideoPlayer videoSrc={`http://localhost:3000${file.url}`} />
+            </div>
+          ))
+        : null}
+    </>
   )
 }

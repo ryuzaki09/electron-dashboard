@@ -13,7 +13,7 @@ export function useTime() {
       const hours = dateTime.getHours()
       const amPm = hours > 12 ? 'PM' : 'AM'
 
-      setTime(`${hours}:${minutes}`)
+      setTime(`${hours}:${minutes < 10 ? `0${minutes}` : minutes}`)
       setAmPm(amPm)
     }, REFRESH_INTERVAL)
 

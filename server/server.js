@@ -2,12 +2,14 @@ import chalk from 'chalk'
 import {spawn} from 'child_process'
 import express from 'express'
 import path from 'path'
-import fs from 'fs'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 
-import config from './webpack.config.common.js'
+import mediaRouter from './routes/media.ts'
+import {mediaPath, musicPath} from './constants.ts'
+
+import config from '../webpack.config.common.js'
 
 const PORT = process.env.PORT || 3000
 const app = express()
@@ -18,13 +20,12 @@ const middlewareInstance = webpackDevMiddleware(compiler, {
   writeToDisk: true
 })
 
-const mediaPath = path.join(__dirname, 'media')
-
 // serve static files
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'dist')))
 // mount a virtual static path
 app.use('/media', express.static(mediaPath))
+app.use('/music', express.static(path.join(process.cwd(), 'music')))
 app.use(middlewareInstance)
 
 app.use(webpackHotMiddleware(compiler))
@@ -46,23 +47,10 @@ app.use(webpackHotMiddleware(compiler))
 //     })
 //   })
 // })
-
-app.get('/files', (_req, res) => {
-  fs.readdir(mediaPath, (err, files) => {
-    if (err) {
-      return res.status(500).json({error: 'Unable to read fiels'})
-    }
-    const mediaFiles = files.map((file) => ({
-      name: file,
-      url: `/media/${file}`
-    }))
-
-    res.json(mediaFiles)
-  })
-})
+app.use('/', mediaRouter)
 
 app.get('*', (_req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'main-screen.html'))
+  res.sendFile(path.join(process.cwd(), 'dist', 'main-screen.html'))
 })
 
 app.listen(PORT, (err) => {

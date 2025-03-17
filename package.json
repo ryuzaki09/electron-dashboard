@@ -12,10 +12,10 @@
     "lint": "eslint . --ext .js,.ts,.tsx",
     "start-electron": "electron -r ./babel-register.cjs ./index.js",
     "oldstart-electron": "electron -r ./babel-register.js ./index.ts",
-    "dev": "BROWSER=none rm -rf ./dist/ && node -r ./babel-register.cjs server.js",
+    "dev": "BROWSER=none rm -rf ./dist/ && node -r ./babel-register.cjs server/server.js",
     "clean:install": "rm -rf node_modules && npm install",
     "tsc": "tsc",
-    "devapp": "node -r ./babel-register.cjs server.js"
+    "devapp": "node -r ./babel-register.cjs server/server.js"
   },
   "keywords": [
     "electron",

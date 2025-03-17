@@ -1,6 +1,8 @@
 import React from 'react'
 import {Header} from '../header'
 
+import styles from './index.module.css'
+
 interface IContainerProps {
   children: React.ReactNode
 }
@@ -8,7 +10,7 @@ export function Container({children}: IContainerProps) {
   return (
     <>
       <Header />
-      <div style={{padding: '2rem 1rem'}}>{children}</div>
+      <div className={styles.container}>{children}</div>
     </>
   )
 }

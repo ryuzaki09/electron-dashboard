@@ -1,5 +1,7 @@
 :root {
   --color-primary: #f4bbbb;
+  --color-plex-black: #3f4245;
+  --color-plex-orange: #e5a00d;
 }
 
 .appContainer {
