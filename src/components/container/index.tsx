@@ -8,9 +8,9 @@ interface IContainerProps {
 }
 export function Container({children}: IContainerProps) {
   return (
-    <>
+    <div className={styles.appContainer}>
       <Header />
       <div className={styles.container}>{children}</div>
-    </>
+    </div>
   )
 }

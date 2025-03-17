@@ -21,13 +21,19 @@ export function MusicList({musicPromise}: IMusicListProps) {
   const [levelItemIndex, setLevelItemIndex] = React.useState<number | null>(
     null
   )
-  const [playState, setPlayState] = React.useState(PlayStates.stopped)
   const [playingTrack, setPlayingTrack] = React.useState<any>(null)
-  const {setStreamUrl, setOnEnd, play, resume, pause, stop} = useMediaPlayer()
+  const {
+    setStreamUrl,
+    setOnEnd,
+    playState,
+    play,
+    resume,
+    pause,
+    stop
+  } = useMediaPlayer()
 
   React.useEffect(() => {
     setOnEnd(() => {
-      setPlayState(PlayStates.stopped)
       setPlayingTrack(null)
     })
   }, [])
@@ -56,7 +62,6 @@ export function MusicList({musicPromise}: IMusicListProps) {
     play()
       .then(() => {
         console.log('Playing')
-        setPlayState(PlayStates.playing)
         setPlayingTrack(file)
       })
       .catch((e) => {
@@ -66,12 +71,10 @@ export function MusicList({musicPromise}: IMusicListProps) {
 
   const onClickPause = () => {
     pause()
-    setPlayState(PlayStates.paused)
   }
 
   const onClickResume = () => {
     resume()
-    setPlayState(PlayStates.playing)
   }
 
   const goUpLevel = () => {
@@ -96,30 +99,36 @@ export function MusicList({musicPromise}: IMusicListProps) {
           </>
         )}
       </div>
-      {levelIndex > 0 && <button onClick={goUpLevel}>Back</button>}
-      {levelIndex === 0 &&
-        !levelItemIndex &&
-        musicList.map((item, index) => {
-          const [name] = item
-          return (
-            <div
-              key={`${index}_${name}`}
-              onClick={() => onClickFirstLevel(index)}
-            >
-              <p>{name}</p>
-            </div>
-          )
-        })}
-      {levelIndex === 1 &&
-        levelItemIndex !== null && (
-          <ul className={styles.fileList}>
-            {musicList[levelItemIndex][1].files.map((f) => (
-              <li key={f.name} onClick={() => onClickPlay(f)}>
-                {f.name}
-              </li>
-            ))}
-          </ul>
-        )}
+      <div className={styles.listWrapper}>
+        {levelIndex > 0 && <button onClick={goUpLevel}>Back</button>}
+        <ul className={styles.fileList}>
+          <>
+            {levelIndex === 0 &&
+              !levelItemIndex && (
+                <>
+                  {musicList.map((item, index) => {
+                    const [name] = item
+                    return (
+                      <li
+                        key={`${index}_${name}`}
+                        onClick={() => onClickFirstLevel(index)}
+                      >
+                        {name}
+                      </li>
+                    )
+                  })}
+                </>
+              )}
+            {levelIndex === 1 &&
+              levelItemIndex !== null &&
+              musicList[levelItemIndex][1].files.map((f) => (
+                <li key={f.name} onClick={() => onClickPlay(f)}>
+                  {f.name}
+                </li>
+              ))}
+          </>
+        </ul>
+      </div>
     </div>
   )
 }
