@@ -1,10 +1,18 @@
 .musicListWrapper {
   margin-block: 0;
+
+  & button.backNotActive {
+    visibility: hidden;
+  }
+  & button.backActive {
+    visibility: visible;
+  }
 }
 
 .fileList {
   list-style: none;
   padding: 0;
+  margin: 0;
 
   & li {
     padding: 0.5rem;
@@ -19,8 +27,9 @@
 }
 
 .mediaControls {
-  background-color: #e5a00d;
-  padding: 1rem;
+  background-color: var(--color-plex-orange);
+  color: black;
+  padding: var(--space-xs);
   border-radius: 10px;
 
   display: flex;
@@ -28,6 +37,32 @@
   align-items: center;
 }
 
+.controls {
+  display: flex;
+  gap: var(--space-xs);
+
+  & span {
+    cursor: pointer;
+  }
+
+  & span.active svg {
+    opacity: 1;
+  }
+
+  & svg {
+    opacity: 0.2;
+    width: 24px;
+    height: 24px;
+  }
+}
+
 .listWrapper {
   padding: 0.5rem;
+
+  & > button {
+    background-color: var(--color-primary);
+    padding: 0.3rem 0.5rem;
+    border: none;
+    border-radius: 10px;
+  }
 }

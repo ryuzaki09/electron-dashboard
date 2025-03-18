@@ -12,7 +12,7 @@ interface IMediaComponentProps {
   onPauseCallback: () => void
 }
 
-enum PlayStates {
+export enum PlayStates {
   playing = 'playing',
   paused = 'paused',
   stopped = 'stopped'

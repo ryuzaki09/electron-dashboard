@@ -1,18 +1,14 @@
 import React from 'react'
+import {Icon} from '@ryusenpai/shared-components'
+
 import {useCachedPromise} from '../../hooks/useCachedPromise'
-import {useMediaPlayer} from '../../helpers/audioPlayer'
+import {useMediaPlayer, PlayStates} from '../../helpers/audioPlayer'
 import {transformMusicMedia} from '../../helpers/utils'
 
 import styles from './index.module.css'
 
 interface IMusicListProps {
   musicPromise: () => Promise<any>
-}
-
-enum PlayStates {
-  playing = 'playing',
-  paused = 'paused',
-  stopped = 'stopped'
 }
 
 export function MusicList({musicPromise}: IMusicListProps) {
@@ -87,20 +83,19 @@ export function MusicList({musicPromise}: IMusicListProps) {
   console.log('files: ', musicList[0])
   return (
     <div className={styles.musicListWrapper}>
-      <div className={styles.mediaControls}>
-        <div>{playingTrack && `Playing: ${playingTrack.name}`}</div>
-        {playingTrack && (
-          <>
-            {playState === PlayStates.playing ? (
-              <button onClick={onClickPause}>Pause</button>
-            ) : (
-              <button onClick={onClickResume}>Resume</button>
-            )}
-          </>
-        )}
-      </div>
+      <MediaControls
+        playingTrack={playingTrack}
+        playState={playState}
+        resumeFn={onClickResume}
+        pauseFn={onClickPause}
+      />
       <div className={styles.listWrapper}>
-        {levelIndex > 0 && <button onClick={goUpLevel}>Back</button>}
+        <button
+          className={levelIndex > 0 ? styles.backActive : styles.backNotActive}
+          onClick={goUpLevel}
+        >
+          Back
+        </button>
         <ul className={styles.fileList}>
           <>
             {levelIndex === 0 &&
@@ -128,6 +123,44 @@ export function MusicList({musicPromise}: IMusicListProps) {
               ))}
           </>
         </ul>
+      </div>
+    </div>
+  )
+}
+
+function MediaControls({playingTrack, playState, resumeFn, pauseFn}) {
+  return (
+    <div className={styles.mediaControls}>
+      <div>{playingTrack && `Playing: ${playingTrack.name}`}</div>
+      <div className={styles.controls}>
+        <span
+          className={
+            !playingTrack || playState === PlayStates.paused
+              ? ''
+              : styles.active
+          }
+          onClick={
+            !playingTrack || playState === PlayStates.paused
+              ? () => {}
+              : pauseFn
+          }
+        >
+          <Icon name="pause" />
+        </span>
+        <span
+          onClick={
+            !playingTrack || playState === PlayStates.playing
+              ? () => {}
+              : resumeFn
+          }
+          className={
+            !playingTrack || playState === PlayStates.playing
+              ? ''
+              : styles.active
+          }
+        >
+          <Icon name="play" />
+        </span>
       </div>
     </div>
   )
