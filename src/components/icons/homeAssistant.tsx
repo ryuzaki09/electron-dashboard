@@ -9,7 +9,7 @@ export default function HomeAssistantIcon() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_636_73)">
+      <g clipPath="url(#clip0_636_73)">
         <path
           d="M37.12 0H2.88C1.28942 0 0 1.28942 0 2.88V37.12C0 38.7106 1.28942 40 2.88 40H37.12C38.7106 40 40 38.7106 40 37.12V2.88C40 1.28942 38.7106 0 37.12 0Z"
           fill="url(#paint0_linear_636_73)"

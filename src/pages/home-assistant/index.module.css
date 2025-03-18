@@ -1,0 +1,17 @@
+.smartDevicesContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 33%));
+  gap: 1rem;
+
+  margin-top: var(--space-sm);
+}
+
+.deviceCard {
+  padding: var(--space-sm);
+  border: 1px solid var(--color-primary);
+  border-radius: 10px;
+
+  display: flex;
+  justify-content: space-between;
+  text-transform: capitalize;
+}

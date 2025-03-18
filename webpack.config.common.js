@@ -2,15 +2,11 @@ const path = require('path')
 const webpack = require('webpack')
 const htmlWebpackPlugin = require('html-webpack-plugin')
 const miniCssExtractPlugin = require('mini-css-extract-plugin')
-// import path from 'path'
-// import webpack from 'webpack'
-// import htmlWebpackPlugin from 'html-webpack-plugin'
-// import {fileURLToPath} from 'url'
+//const dotenv = require('dotenv').config({
+  //path: path.join(__dirname, '.env')
+//})
 
 const PORT = process.env.PORT || 3000
-
-//const filename = fileURLToPath(import.meta.url)
-//const dirname = path.dirname(filename)
 
 module.exports = {
   mode: 'development',
@@ -27,30 +23,11 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].bundle.js',
-    // publicPath: `http://localhost:${PORT}`,
     publicPath: '/'
-    // libraryTarget: 'commonjs2'
   },
   // target: 'electron-renderer',
   target: 'web',
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new htmlWebpackPlugin({
-      filename: 'main-screen.html',
-      template: 'main/windows/index.html',
-      chunks: ['mainScreen']
-    }),
-    new miniCssExtractPlugin({
-      filename: '[name].css' // this creates a separate css file
-    })
-    // SECOND SCREEN
-    //new htmlWebpackPlugin({
-    //filename: 'second-screen.html',
-    //template: 'main/windows/second-screen.html',
-    //chunks: ['secondScreen']
-    //})
-  ],
+
   module: {
     rules: [
       {
@@ -77,23 +54,19 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          miniCssExtractPlugin.loader,
-          'css-loader'
-        ],
+        use: [miniCssExtractPlugin.loader, 'css-loader'],
         include: [
-          path.resolve(__dirname, 'node_modules/@ryusenpai/shared-components'), // 👈 Ensure this is included!
-          path.resolve(__dirname, 'node_modules/ui-library') // 👈 Ensure this is included!
+          path.resolve(__dirname, 'node_modules'),
+          path.resolve(__dirname, '@ryusenpai/shared-components'), // 👈 Ensure this is included!
+          path.resolve(__dirname, 'node_modules/@ryusenpai/shared-components') // 👈 Ensure this is included!
         ]
       },
       {
         test: /\.scss$/,
         use: [miniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
         include: [
-          path.resolve(__dirname, 'src'),
           path.resolve(__dirname, 'node_modules'),
-          path.resolve(__dirname, 'node_modules/@ryusenpai/shared-components'), // 👈 Ensure this is included!
-          path.resolve(__dirname, 'node_modules/ui-library') // 👈 Ensure this is included!
+          path.resolve(__dirname, 'node_modules/@ryusenpai/shared-components') // 👈 Ensure this is included!
         ]
       },
       {
@@ -111,5 +84,29 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
-  }
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new htmlWebpackPlugin({
+      filename: 'main-screen.html',
+      template: 'main/windows/index.html',
+      chunks: ['mainScreen']
+    }),
+    new miniCssExtractPlugin({
+      filename: '[name].css' // this creates a separate css file
+    })
+    //new webpack.DefinePlugin({
+      //'process.env.HA_HOST': JSON.stringify(process.env.HA_HOST || ''),
+      //'process.env.HA_LONG_LIVE_TOKEN': JSON.stringify(
+        //process.env.HA_LONG_LIVE_TOKEN || ''
+      //)
+    //})
+    // SECOND SCREEN
+    //new htmlWebpackPlugin({
+    //filename: 'second-screen.html',
+    //template: 'main/windows/second-screen.html',
+    //chunks: ['secondScreen']
+    //})
+  ]
 }

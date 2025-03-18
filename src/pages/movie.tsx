@@ -34,7 +34,12 @@ function VideoList({fetchApi}) {
         ? data.map((file) => (
             <div key={file.url}>
               {file.name}
-              <VideoPlayer videoSrc={`http://localhost:3000${file.url}`} />
+              <div>
+                <VideoPlayer
+                  videoSrc={`http://localhost:3000${file.url}`}
+                  enableToggleFullScreen
+                />
+              </div>
             </div>
           ))
         : null}

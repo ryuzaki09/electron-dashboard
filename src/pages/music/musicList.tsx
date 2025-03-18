@@ -89,36 +89,33 @@ export function MusicList({musicPromise}: IMusicListProps) {
         resumeFn={onClickResume}
         pauseFn={onClickPause}
       />
+      <button
+        className={levelIndex > 0 ? styles.backActive : styles.backNotActive}
+        onClick={goUpLevel}
+      >
+        Back
+      </button>
       <div className={styles.listWrapper}>
-        <button
-          className={levelIndex > 0 ? styles.backActive : styles.backNotActive}
-          onClick={goUpLevel}
-        >
-          Back
-        </button>
         <ul className={styles.fileList}>
           <>
             {levelIndex === 0 &&
-              !levelItemIndex && (
-                <>
-                  {musicList.map((item, index) => {
-                    const [name] = item
-                    return (
-                      <li
-                        key={`${index}_${name}`}
-                        onClick={() => onClickFirstLevel(index)}
-                      >
-                        {name}
-                      </li>
-                    )
-                  })}
-                </>
-              )}
+              !levelItemIndex &&
+              musicList.map((item, index) => {
+                const [name] = item
+                return (
+                  <li
+                    key={`${index}_${name}`}
+                    onClick={() => onClickFirstLevel(index)}
+                  >
+                    {name}
+                  </li>
+                )
+              })}
             {levelIndex === 1 &&
               levelItemIndex !== null &&
               musicList[levelItemIndex][1].files.map((f) => (
                 <li key={f.name} onClick={() => onClickPlay(f)}>
-                  {f.name}
+                  <span>{f.name}</span>
                 </li>
               ))}
           </>
