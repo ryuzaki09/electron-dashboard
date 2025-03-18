@@ -6,4 +6,9 @@
   background-color: var(--color-primary);
   padding: 1rem 2rem;
   margin-bottom: var(--space-xs);
+
+  & svg {
+    width: 40px;
+    height: 40px;
+  }
 }
