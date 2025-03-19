@@ -21,7 +21,7 @@ export const homeAssistantApi = {
 
   getLights: async (): Promise<IDeviceState[]> => {
     const result = await homeAssistantApi.getStates()
-    const lights = result?.data.filter((d) => d.entity_id.startsWith('light')) || []
+    const lights = result?.data.filter((d) => d.entity_id.startsWith('light') || d.entity_id.startsWith('switch')) || []
     console.log('result: ', lights)
 
     return lights

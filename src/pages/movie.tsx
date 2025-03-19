@@ -26,7 +26,7 @@ export function Movie() {
 }
 
 function VideoList({fetchApi}) {
-  const data: any[] = useCachedPromise(fetchApi())
+  const data: any[] = useCachedPromise('fetchVideos', fetchApi())
 
   return (
     <>

@@ -1,11 +1,11 @@
 import React from 'react'
 
-let promiseCache: Promise<any> | null = null
+let promiseCache: {name: string; fn: Promise<any>} | null = null
 
-export const useCachedPromise = (fn: Promise<any>) => {
-  if (!promiseCache) {
-    promiseCache = fn
+export const useCachedPromise = (name: string, fn: Promise<any>) => {
+  if (!promiseCache || promiseCache.name !== name) {
+    promiseCache = {name, fn}
   }
 
-  return React.use(promiseCache)
+  return React.use(promiseCache.fn)
 }

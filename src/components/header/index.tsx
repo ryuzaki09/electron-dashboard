@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 import HomeIcon from '../icons/home'
 import MusicIcon from '../icons/music'
@@ -11,18 +12,18 @@ export function Header() {
   return (
     <header>
       <nav className={styles.navWrapper}>
-        <a href="/">
+        <Link to="/">
           <HomeIcon />
-        </a>
-        <a href="/music">
+        </Link>
+        <Link to="/music">
           <MusicIcon />
-        </a>
-        <a href="/movie">
+        </Link>
+        <Link to="/movie">
           <MovieIcon />
-        </a>
-        <a href="/home-assistant">
+        </Link>
+        <Link to="/home-assistant">
           <HomeAssistantIcon />
-        </a>
+        </Link>
       </nav>
     </header>
   )

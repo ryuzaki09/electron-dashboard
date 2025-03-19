@@ -2,8 +2,8 @@ import React from 'react'
 import {Icon} from '@ryusenpai/shared-components'
 
 import {useCachedPromise} from '../../hooks/useCachedPromise'
-import {useMediaPlayer, PlayStates} from '../../helpers/audioPlayer'
 import {transformMusicMedia} from '../../helpers/utils'
+import {useAudio, PlayStates} from '../../context/audio'
 
 import styles from './index.module.css'
 
@@ -17,25 +17,19 @@ export function MusicList({musicPromise}: IMusicListProps) {
   const [levelItemIndex, setLevelItemIndex] = React.useState<number | null>(
     null
   )
-  const [playingTrack, setPlayingTrack] = React.useState<any>(null)
   const {
     setStreamUrl,
-    setOnEnd,
+    setPlayingTrack,
+    playingTrack,
     playState,
     play,
     resume,
     pause,
     stop
-  } = useMediaPlayer()
-
-  React.useEffect(() => {
-    setOnEnd(() => {
-      setPlayingTrack(null)
-    })
-  }, [])
+  } = useAudio()
 
   if (!musicList.length) {
-    const data: any[] = useCachedPromise(musicPromise())
+    const data: any[] = useCachedPromise('fetchMusic', musicPromise())
     const result = transformMusicMedia(data)
     const fileEntries = Object.entries(result)
 
@@ -80,7 +74,6 @@ export function MusicList({musicPromise}: IMusicListProps) {
     }
   }
 
-  console.log('files: ', musicList[0])
   return (
     <div className={styles.musicListWrapper}>
       <MediaControls

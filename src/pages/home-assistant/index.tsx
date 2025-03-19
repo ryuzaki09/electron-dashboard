@@ -21,7 +21,7 @@ export function HomeAssistant() {
 }
 
 function HomeDevices() {
-  const data = useCachedPromise(homeAssistantApi.getLights())
+  const data = useCachedPromise('home-assistant', homeAssistantApi.getLights())
   const transformedData = transformHomeDevices(data)
 
   return transformedData ? (

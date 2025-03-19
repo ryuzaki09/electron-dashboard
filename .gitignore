@@ -6,4 +6,6 @@ build
 *.mkv
 *.mp3
 *.zip
-./music/
+music/
+src/config/conversation.json
+.env
