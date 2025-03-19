@@ -4,37 +4,59 @@ import {Switch} from '@ryusenpai/shared-components'
 import {Container} from '../../components/container'
 import {homeAssistantApi, IDeviceState} from '../../api/homeAssistantApi'
 import {conversation} from '../../config/constants'
-import {useCachedPromise} from '../../hooks/useCachedPromise'
 
 import styles from './index.module.css'
 
 export function HomeAssistant() {
+  const [devices, setDevices] = React.useState<any[]>([])
+
+  React.useEffect(() => {
+    const fetchDevices = async () => {
+      const result = await homeAssistantApi.getLights()
+      const transformedData = transformHomeDevices(result)
+      setDevices(transformedData)
+    }
+
+    fetchDevices()
+
+    let intervalId = setInterval(() => {
+      fetchDevices()
+    }, 10000)
+
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [])
+
   return (
     <Container>
-      <div>
-        <React.Suspense fallback={<p>Loading...</p>}>
-          <HomeDevices />
-        </React.Suspense>
+      <div className={styles.smartDevicesContainer}>
+        {devices.map((d) => (
+          <Device key={d.entity_id} device={d} />
+        ))}
       </div>
     </Container>
   )
-}
-
-function HomeDevices() {
-  const data = useCachedPromise('home-assistant', homeAssistantApi.getLights())
-  const transformedData = transformHomeDevices(data)
-
-  return transformedData ? (
-    <div className={styles.smartDevicesContainer}>
-      {transformedData.map((d) => (
-        <Device key={d.entity_id} device={d} />
-      ))}
-    </div>
-  ) : null
+  // return (
+  //   <Container>
+  //     <div>
+  //       <React.Suspense fallback={<p>Loading...</p>}>
+  //         <HomeDevices key={time} refreshKey={time} />
+  //       </React.Suspense>
+  //     </div>
+  //   </Container>
+  // )
 }
 
 function Device({device}) {
   const [isOn, setIsOn] = React.useState(device.state === 'on')
+
+  React.useEffect(
+    () => {
+      setIsOn(device.state === 'on')
+    },
+    [device]
+  )
 
   const toggleDevice = async (state: string) => {
     setIsOn((prevState) => !prevState)
@@ -50,7 +72,7 @@ function Device({device}) {
             toggleDevice(isOn ? device.deviceProps.off : device.deviceProps.on)
           }
           variant="lightswitch"
-          initialState={isOn}
+          value={isOn}
         />
       </div>
     </div>
@@ -58,6 +80,7 @@ function Device({device}) {
 }
 
 function transformHomeDevices(data: IDeviceState[]) {
+  // console.log('transforming original data: ', data)
   const filtered = Object.entries(conversation).reduce<any[]>((acc, device) => {
     const [deviceName, deviceProps] = device
     const foundDevice = data.find((d) => d.entity_id.includes(deviceName))

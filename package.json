@@ -41,7 +41,7 @@
     "@babel/preset-react": "^7.26.3",
     "@babel/preset-typescript": "7.9.0",
     "@babel/register": "7.25.9",
-    "@ryusenpai/shared-components": "1.13.7",
+    "@ryusenpai/shared-components": "1.13.8",
     "@testing-library/react": "16.2.0",
     "@types/express": "5.0.0",
     "@types/jest": "25.2.1",
