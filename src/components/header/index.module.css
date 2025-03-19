@@ -12,3 +12,34 @@
     height: 40px;
   }
 }
+
+.mediaControls {
+  background-color: var(--color-primary);
+  color: black;
+  padding: var(--space-xs);
+  border-radius: 10px;
+  margin-bottom: var(--space-xs);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.controls {
+  display: flex;
+  gap: var(--space-xs);
+
+  & span {
+    cursor: pointer;
+  }
+
+  & span.active svg {
+    opacity: 1;
+  }
+
+  & svg {
+    opacity: 0.2;
+    width: 24px;
+    height: 24px;
+  }
+}

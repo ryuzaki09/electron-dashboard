@@ -1,9 +1,8 @@
 import React from 'react'
-import {Icon} from '@ryusenpai/shared-components'
 
 import {useCachedPromise} from '../../hooks/useCachedPromise'
 import {transformMusicMedia} from '../../helpers/utils'
-import {useAudio, PlayStates} from '../../context/audio'
+import {useAudio} from '../../context/audio'
 
 import styles from './index.module.css'
 
@@ -17,16 +16,7 @@ export function MusicList({musicPromise}: IMusicListProps) {
   const [levelItemIndex, setLevelItemIndex] = React.useState<number | null>(
     null
   )
-  const {
-    setStreamUrl,
-    setPlayingTrack,
-    playingTrack,
-    playState,
-    play,
-    resume,
-    pause,
-    stop
-  } = useAudio()
+  const {setStreamUrl, setPlayingTrack, play, resume, pause, stop} = useAudio()
 
   if (!musicList.length) {
     const data: any[] = useCachedPromise('fetchMusic', musicPromise())
@@ -76,12 +66,6 @@ export function MusicList({musicPromise}: IMusicListProps) {
 
   return (
     <div className={styles.musicListWrapper}>
-      <MediaControls
-        playingTrack={playingTrack}
-        playState={playState}
-        resumeFn={onClickResume}
-        pauseFn={onClickPause}
-      />
       <button
         className={levelIndex > 0 ? styles.backActive : styles.backNotActive}
         onClick={goUpLevel}
@@ -113,44 +97,6 @@ export function MusicList({musicPromise}: IMusicListProps) {
               ))}
           </>
         </ul>
-      </div>
-    </div>
-  )
-}
-
-function MediaControls({playingTrack, playState, resumeFn, pauseFn}) {
-  return (
-    <div className={styles.mediaControls}>
-      <div>{playingTrack && `Playing: ${playingTrack.name}`}</div>
-      <div className={styles.controls}>
-        <span
-          className={
-            !playingTrack || playState === PlayStates.paused
-              ? ''
-              : styles.active
-          }
-          onClick={
-            !playingTrack || playState === PlayStates.paused
-              ? () => {}
-              : pauseFn
-          }
-        >
-          <Icon name="pause" />
-        </span>
-        <span
-          onClick={
-            !playingTrack || playState === PlayStates.playing
-              ? () => {}
-              : resumeFn
-          }
-          className={
-            !playingTrack || playState === PlayStates.playing
-              ? ''
-              : styles.active
-          }
-        >
-          <Icon name="play" />
-        </span>
       </div>
     </div>
   )
