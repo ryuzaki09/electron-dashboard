@@ -1,3 +1,30 @@
+.contentContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: var(--space-sm);
+}
 .time {
-  font-size: 4.5rem;
+  font-size: 5rem;
+}
+
+.weather {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+
+  & svg {
+    width: 100px;
+  }
+}
+
+.dailyWeather {
+  display: flex;
+  gap: var(--space-sm);
+
+  & svg {
+    width: 50px;
+  }
 }

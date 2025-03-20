@@ -1,6 +1,6 @@
 .smartDevicesContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 33%));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 32%));
   gap: 1rem;
 
   margin-top: var(--space-sm);
