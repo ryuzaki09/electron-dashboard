@@ -8,7 +8,6 @@ import styles from './main.module.css'
 
 export function Main() {
   const [weatherData, setWeatherData] = React.useState<any>(null)
-  const {amPm, time} = useTime()
 
   React.useEffect(() => {
     async function getWeather() {
@@ -25,29 +24,38 @@ export function Main() {
   return (
     <Container>
       <div className={styles.contentContainer}>
-        <div>
-          <span className={styles.time}>{time}</span> {amPm}
-        </div>
+        <TimeDisplay />
         <WeatherInformation data={weatherData}/>
       </div>
     </Container>
   )
 }
 
+function TimeDisplay() {
+  const {amPm, time} = useTime()
+  return (
+    <div>
+      <span className={styles.time}>{time}</span> {amPm}
+    </div>
+  )
+}
+
 function WeatherInformation({data}) {
-  console.log('weather: ', data)
   const WeatherIcon = data?.weather?.icon
+
   return (
     <div className={styles.weather}>
       <div>
-      {WeatherIcon && <WeatherIcon />}
-      {data?.weather?.main}
+        {WeatherIcon && <WeatherIcon />}
+        <div>
+          {data?.weather?.main} {data?.temp}&deg;C
+        </div>
       </div>
       <div className={styles.dailyWeather}>
         {data?.daily.length > 0 && data.daily.map((d, index) => {
           const Icon = d.weather.icon
           return index > 0 && index < 4 ? (
-            <div key={d.dt}><Icon /></div>
+            <div key={d.dt.day}><Icon /><p>{d.dt.day}<br />{d.temp.min}&deg;C / {d.temp.max}&deg;C</p></div>
           ) : null
         })}
       </div>

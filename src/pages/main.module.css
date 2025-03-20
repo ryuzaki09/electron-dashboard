@@ -4,7 +4,23 @@
   padding: var(--space-sm);
 }
 .time {
-  font-size: 5rem;
+  font-size: 12vw;
+}
+
+@media (max-width: 480px) {
+  .contentContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-med);
+
+    & > div:first-child {
+      text-align: center;
+    }
+
+    .time {
+      font-size: 15vw;
+    }
+  }
 }
 
 .weather {
@@ -16,15 +32,22 @@
   justify-content: center;
 
   & svg {
-    width: 100px;
+    width: 120px;
+  }
+
+  & > div:first-child {
+    display: flex;
+    align-items: center;
+    gap: var(--space-med);
+    font-size: 24px;
   }
 }
 
 .dailyWeather {
   display: flex;
-  gap: var(--space-sm);
+  gap: var(--space-med);
 
   & svg {
-    width: 50px;
+    width: 40px;
   }
 }

@@ -8,4 +8,5 @@ build
 *.zip
 music/
 src/config/conversation.json
+src/config/config.ts
 .env
