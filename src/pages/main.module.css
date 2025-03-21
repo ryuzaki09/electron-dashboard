@@ -4,7 +4,7 @@
   padding: var(--space-sm);
 }
 .time {
-  font-size: 12vw;
+  font-size: clamp(20%, 80px, 12vw);
 }
 
 @media (max-width: 480px) {

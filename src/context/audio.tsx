@@ -6,6 +6,12 @@ export enum PlayStates {
   stopped = 'stopped'
 }
 
+interface IAudioFile {
+  name: string
+  url: string
+  path: string
+}
+
 const MusicContext = React.createContext<any>(null)
 
 export const useAudio = () => React.useContext(MusicContext)
@@ -16,23 +22,57 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
     PlayStates.stopped
   )
   const [playingTrack, setPlayingTrack] = React.useState<any>(null)
+  const [onEndCallback, setOnEndCallback] = React.useState<(() => void) | null>(
+    null
+  )
+  const [shufflePlayList, setShufflePlayList] = React.useState<IAudioFile[]>([])
+  const [shufflePlayIndex, setShufflePlayIndex] = React.useState(0)
 
-  React.useEffect(() => {
-    if (!player.current) return
+  React.useEffect(
+    () => {
+      if (!player.current) return
 
-    const audioPlayer = player.current
-    function onEnd() {
-      setPlayState(PlayStates.stopped)
-    }
-    audioPlayer.addEventListener('ended', onEnd)
+      const audioPlayer = player.current
+      function onEnd() {
+        setPlayState(PlayStates.stopped)
 
-    return () => {
-      audioPlayer.removeEventListener('ended', onEnd)
-    }
-  }, [])
+        if (shufflePlayList.length > 0) {
+          setShufflePlayIndex((prevIndex) => prevIndex + 1)
+          setStreamUrl(shufflePlayList[shufflePlayIndex + 1].url)
+          play()
+        }
+        // if (onEndCallback) {
+        //   onEndCallback()
+        // }
+      }
+      audioPlayer.addEventListener('ended', onEnd)
+
+      return () => {
+        audioPlayer.removeEventListener('ended', onEnd)
+      }
+    },
+    [onEndCallback]
+  )
 
   function setStreamUrl(url: string) {
     player.current.src = url
+  }
+
+  function setAudioEndCallback(fn: () => void) {
+    setOnEndCallback(fn)
+  }
+
+  function setShuffleList(list: any[]) {
+    setShufflePlayList(list)
+    // console.log('STOP')
+    stop()
+    const file = list[0]
+    const filePath = file.path.replace(file.basePath, '')
+    // console.log('STREAM url: ', filePath)
+    setStreamUrl(`http://localhost:3000${filePath}`)
+    // console.log('play')
+    setPlayingTrack(file)
+    play()
   }
 
   async function play() {
@@ -70,6 +110,8 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
     <MusicContext.Provider
       value={{
         setStreamUrl,
+        setAudioEndCallback,
+        setShuffleList,
         play,
         stop,
         pause,

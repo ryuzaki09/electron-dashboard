@@ -14,6 +14,7 @@
 }
 
 .mediaControls {
+  visibility: hidden;
   background-color: var(--color-primary);
   color: black;
   padding: var(--space-xs);
@@ -23,6 +24,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: var(--space-sm);
+
+  & > div:first-child {
+    width: 100%;
+    overflow: hidden;
+    & > div {
+      white-space: nowrap;
+      animation: scrolling 15s linear infinite;
+    }
+  }
+}
+
+.mediaControlsActive {
+  visibility: visible;
 }
 
 .controls {
@@ -41,5 +56,14 @@
     opacity: 0.2;
     width: 24px;
     height: 24px;
+  }
+}
+
+@keyframes scrolling {
+  0% {
+    transform: translate(100%, 0);
+  }
+  100% {
+    transform: translate(-100%, 0);
   }
 }
