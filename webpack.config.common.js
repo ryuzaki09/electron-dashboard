@@ -2,9 +2,9 @@ const path = require('path')
 const webpack = require('webpack')
 const htmlWebpackPlugin = require('html-webpack-plugin')
 const miniCssExtractPlugin = require('mini-css-extract-plugin')
-//const dotenv = require('dotenv').config({
-  //path: path.join(__dirname, '.env')
-//})
+const dotenv = require('dotenv').config({
+  path: path.join(__dirname, 'src/config/.env')
+})
 
 const PORT = process.env.PORT || 3000
 
@@ -95,13 +95,12 @@ module.exports = {
     }),
     new miniCssExtractPlugin({
       filename: '[name].css' // this creates a separate css file
+    }),
+    new webpack.DefinePlugin({
+      'process.env.OPENWEATHER_KEY': JSON.stringify(
+        process.env.OPENWEATHER_KEY || ''
+      )
     })
-    //new webpack.DefinePlugin({
-      //'process.env.HA_HOST': JSON.stringify(process.env.HA_HOST || ''),
-      //'process.env.HA_LONG_LIVE_TOKEN': JSON.stringify(
-        //process.env.HA_LONG_LIVE_TOKEN || ''
-      //)
-    //})
     // SECOND SCREEN
     //new htmlWebpackPlugin({
     //filename: 'second-screen.html',

@@ -1,3 +1,11 @@
+import CloudIcon from '../components/icons/weather/cloudy'
+import ClearSkyIcon from '../components/icons/weather/clear-sky'
+import ThunderIcon from '../components/icons/weather/thunderstorm'
+import RainIcon from '../components/icons/weather/rain'
+import SnowIcon from '../components/icons/weather/snow'
+import FewCloudsIcon from '../components/icons/weather/few-clouds'
+import MistIcon from '../components/icons/weather/mist'
+
 const virtualPath = '/music'
 const FOLDER_LEVEL_SCAN = 2
 
@@ -46,4 +54,20 @@ export function transformMusicMedia(data: IMediaFile[]) {
   }, {})
 
   return mediaItems
+}
+
+const weatherMap = {
+  '01d': ClearSkyIcon,
+  '02d': FewCloudsIcon,
+  '03d': CloudIcon,
+  '04d': CloudIcon,
+  '09d': RainIcon,
+  '10d': RainIcon,
+  '11d': ThunderIcon,
+  '13d': SnowIcon
+}
+export function getWeatherIcon(iconName: string) {
+  const WeatherIcon = weatherMap[iconName]
+
+  return WeatherIcon ?? ClearSkyIcon
 }
