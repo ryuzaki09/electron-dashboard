@@ -8,6 +8,7 @@ export interface IFile {
   basePath: string
   folders?: string[]
   url?: string
+  domain?: string
 }
 
 const basePath = process.cwd()
@@ -46,7 +47,11 @@ export function getFilesRecursively(originalPath: string) {
             path: relativePath,
             type: 'file',
             basePath,
-            url: `/music/${item.name}`
+            url: `/music/${item.name}`,
+            domain:
+              process.env.NODE_ENV === 'production'
+                ? process.env.BACKEND_HOST
+                : `http://${process.env.BACKEND_HOST}`
           })
         }
       })

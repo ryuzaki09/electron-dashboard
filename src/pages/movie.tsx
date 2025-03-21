@@ -2,23 +2,16 @@ import React from 'react'
 import {VideoPlayer} from '@ryusenpai/shared-components'
 import {Container} from '../components/container'
 import {useCachedPromise} from '../hooks/useCachedPromise'
+import {api} from '../api'
 
 import styles from './movie.module.css'
 
 export function Movie() {
-  const [doFetch, setDoFetch] = React.useState(true)
-  const [mediaFiles, setMediaFiles] = React.useState<
-    {name: string; url: string}[]
-  >([])
-  const fetchVideos = async () => {
-    return fetch('http://localhost:3000/videos').then((data) => data.json())
-  }
-
   return (
     <Container>
       <div className={styles.appContainer}>
         <React.Suspense fallback={<p>Loading...</p>}>
-          <VideoList fetchApi={fetchVideos} />
+          <VideoList fetchApi={api.fetchVideos} />
         </React.Suspense>
       </div>
     </Container>
@@ -36,7 +29,7 @@ function VideoList({fetchApi}) {
               {file.name}
               <div>
                 <VideoPlayer
-                  videoSrc={`http://localhost:3000${file.url}`}
+                  videoSrc={`${file.domain}${file.url}`}
                   enableToggleFullScreen
                 />
               </div>

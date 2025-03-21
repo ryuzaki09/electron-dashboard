@@ -2,7 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const htmlWebpackPlugin = require('html-webpack-plugin')
 const miniCssExtractPlugin = require('mini-css-extract-plugin')
-const dotenv = require('dotenv').config({
+require('dotenv').config({
   path: path.join(__dirname, 'src/config/.env')
 })
 
@@ -99,7 +99,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.OPENWEATHER_KEY': JSON.stringify(
         process.env.OPENWEATHER_KEY || ''
-      )
+      ),
+      'process.env.BACKEND_HOST': JSON.stringify(process.env.BACKEND_HOST || '')
     })
     // SECOND SCREEN
     //new htmlWebpackPlugin({

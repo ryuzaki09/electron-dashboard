@@ -38,23 +38,6 @@ app.use(middlewareInstance)
 
 app.use(webpackHotMiddleware(compiler))
 
-// app.use('*', function(req, res, next) {
-//   const filename = path.join(compiler.outputPath, req.path)
-//   console.log('filename: ', filename)
-//   compiler.outputFileSystem.stat(filename, (err, stats) => {
-//     console.log('fileNAME: ', filename)
-//     if (err || !stats.isFile()) {
-//       return next()
-//     }
-//
-//     compiler.outputFileSystem.readFile(filename, (err, result) => {
-//       if (err) {
-//         return next(err)
-//       }
-//       res.send(result)
-//     })
-//   })
-// })
 app.use('/', mediaRouter)
 
 app.post('/home-assistant/conversation', async (req, res) => {
@@ -80,7 +63,7 @@ app.post('/home-assistant/conversation', async (req, res) => {
   res.send({message: 'ok'})
 })
 
-app.get('/home-assistant/states', async (req, res) => {
+app.get('/home-assistant/states', async (_req, res) => {
   const result = await axios.get(
     `http://${process.env.HA_HOST}:8123/api/states`,
     {
