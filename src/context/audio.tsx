@@ -10,6 +10,8 @@ interface IAudioFile {
   name: string
   url: string
   path: string
+  basePath: string
+  domain: string
 }
 
 const MusicContext = React.createContext<any>(null)
@@ -38,7 +40,10 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
 
         if (shufflePlayList.length > 0) {
           setShufflePlayIndex((prevIndex) => prevIndex + 1)
-          setStreamUrl(shufflePlayList[shufflePlayIndex + 1].url)
+          const file = shufflePlayList[shufflePlayIndex + 1]
+          const filePath = file.path.replace(file.basePath, '')
+          setStreamUrl(`${file.domain}${filePath}`)
+          setPlayingTrack(file)
           play()
         }
         // if (onEndCallback) {
@@ -51,7 +56,7 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
         audioPlayer.removeEventListener('ended', onEnd)
       }
     },
-    [onEndCallback]
+    [onEndCallback, shufflePlayList]
   )
 
   function setStreamUrl(url: string) {
@@ -69,7 +74,7 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
     const file = list[0]
     const filePath = file.path.replace(file.basePath, '')
     // console.log('STREAM url: ', filePath)
-    setStreamUrl(`http://localhost:3000${filePath}`)
+    setStreamUrl(`${file.domain}${filePath}`)
     // console.log('play')
     setPlayingTrack(file)
     play()
@@ -100,24 +105,18 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
     setPlayState(PlayStates.stopped)
   }
 
-  // function setOnEnd(fn: () => void) {
-  //   player.current.addEventListener('ended', () => {
-  //     fn()
-  //     setPlayState(PlayStates.stopped)
-  //   })
-  // }
   return (
     <MusicContext.Provider
       value={{
         setStreamUrl,
         setAudioEndCallback,
         setShuffleList,
+        setPlayingTrack,
         play,
         stop,
         pause,
         resume,
         playState,
-        setPlayingTrack,
         playingTrack
       }}
     >
