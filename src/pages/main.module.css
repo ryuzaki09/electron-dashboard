@@ -5,6 +5,7 @@
 }
 .time {
   font-size: clamp(20%, 80px, 12vw);
+  font-weight: 700;
 }
 
 @media (max-width: 480px) {

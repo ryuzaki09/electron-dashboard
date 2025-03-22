@@ -79,6 +79,13 @@ module.exports = {
             esModule: false
           }
         }
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg|otf)$/,
+        type: 'asset/resource', // Replaces file-loader
+        generator: {
+          filename: 'assets/fonts/[name][ext]' // Saves files to dist/assets/fonts/
+        }
       }
     ]
   },
