@@ -1,4 +1,4 @@
-### Electron App Template
+### Dashboard App
 
 This app template includes:
 
@@ -8,7 +8,15 @@ This app template includes:
 - Express
 - Jest
 - React Testing Library
-- Mocha
+
+### Purpose
+
+I wanted a custom dashboard that I had full control over, a simple yet provides the essential controls for what I need it to do. It has a menu nav to navigate to these different screens:
+
+- Home: shows the time and weather
+- Music: plays mp3 audio directly to the connected speaker.
+- Video: plays videos with full screen ability.
+- Home Assistant: controls lights and switches.
 
 #### Prerequisites
 
