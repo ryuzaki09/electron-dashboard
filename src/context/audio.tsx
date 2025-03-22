@@ -56,7 +56,7 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
         audioPlayer.removeEventListener('ended', onEnd)
       }
     },
-    [onEndCallback, shufflePlayList]
+    [onEndCallback, shufflePlayIndex, shufflePlayList]
   )
 
   function setStreamUrl(url: string) {

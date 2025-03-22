@@ -57,24 +57,27 @@ export function MusicList({musicPromise}: IMusicListProps) {
   }
 
   const shufflePlay = () => {
-    console.log('levelIndex: ', levelIndex)
-    console.log('music: ', musicList)
-    const files = musicList[levelIndex - 1] && musicList[levelIndex - 1][1]?.files || []
-    console.log('FILES: ', files)
-    const shuffled = files.sort(() => Math.random() - .5)
-    console.log('Shuffled: ', shuffle(files))
+    // console.log('levelIndex: ', levelIndex)
+    // console.log('music: ', musicList)
+    const musicItem = musicList[levelIndex - 1]
+    const files = (musicItem && musicItem[1] && musicItem[1].files) || []
+    // console.log('FILES: ', files)
+    const shuffled = files.sort(() => Math.random() - 0.5)
+    // console.log('Shuffled: ', shuffle(files))
     setShuffleList(files)
   }
 
   return (
     <div className={styles.musicListWrapper}>
-      <button
-        className={levelIndex > 0 ? styles.backActive : styles.backNotActive}
-        onClick={goUpLevel}
-      >
-        Back
-      </button>
-      <button onClick={shufflePlay}>Shuffle Play</button>
+      <div>
+        <button
+          className={levelIndex > 0 ? styles.backActive : styles.backNotActive}
+          onClick={goUpLevel}
+        >
+          Back
+        </button>
+        <button onClick={shufflePlay}>Shuffle Play</button>
+      </div>
       <div className={styles.listWrapper}>
         <ul className={styles.fileList}>
           <>
