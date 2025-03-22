@@ -14,6 +14,7 @@ dotenv.config({
 })
 
 import mediaRouter from './routes/media.ts'
+import homeAssistantRouter from './routes/homeAssistant.ts'
 import {mediaPath, musicPath} from './constants.ts'
 
 import config from '../webpack.config.common.js'
@@ -39,42 +40,7 @@ app.use(middlewareInstance)
 app.use(webpackHotMiddleware(compiler))
 
 app.use('/', mediaRouter)
-
-app.post('/home-assistant/conversation', async (req, res) => {
-  const {body} = req
-  if (!body.text) {
-    return res.status(400).send({message: 'Missing text'})
-  }
-
-  const result = await axios.post(
-    `http://${process.env.HA_HOST}:8123/api/conversation/process`,
-    {
-      text: body.text,
-      language: 'en'
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.HA_LONG_LIVE_TOKEN}`
-      }
-    }
-  )
-  console.log('home result: ', result.data.response)
-
-  res.send({message: 'ok'})
-})
-
-app.get('/home-assistant/states', async (_req, res) => {
-  const result = await axios.get(
-    `http://${process.env.HA_HOST}:8123/api/states`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.HA_LONG_LIVE_TOKEN}`
-      }
-    }
-  )
-
-  res.send(result.data)
-})
+app.use('/home-assistant', homeAssistantRouter)
 
 app.get('*', (_req, res) => {
   res.sendFile(path.join(process.cwd(), 'dist', 'main-screen.html'))

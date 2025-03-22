@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 import {Icon} from '@ryusenpai/shared-components'
 
@@ -31,22 +32,26 @@ export function Header() {
           </Link>
         </nav>
       </header>
-      {playingTrack && (
-        <MediaControls
-          playingTrack={playingTrack}
-          playState={playState}
-          resumeFn={resume}
-          pauseFn={pause}
-        />
-      )}
+      <MediaControls
+        playingTrack={playingTrack}
+        playState={playState}
+        resumeFn={resume}
+        pauseFn={pause}
+      />
     </>
   )
 }
 
 function MediaControls({playingTrack, playState, resumeFn, pauseFn}) {
   return (
-    <div className={styles.mediaControls}>
-      <div>{playingTrack && `Playing: ${playingTrack.name}`}</div>
+    <div
+      className={classnames(styles.mediaControls, {
+        [styles.mediaControlsActive]: playingTrack
+      })}
+    >
+      <div>
+        <div>{playingTrack && `Playing: ${playingTrack.name}`}</div>
+      </div>
       <div className={styles.controls}>
         <span
           className={

@@ -7,7 +7,7 @@ const router = express.Router()
 
 let musicMediaCache: IFile[] | null = null
 let lastCacheTime = 0
-const CACHE_DURATION = 1000 * 60 * 60 // 60minutes
+const CACHE_DURATION = 1000 * 60 * 120 // 120minutes
 
 router.get('/videos', (_req: express.Request, res) => {
   fs.readdir(mediaPath, (err, files) => {

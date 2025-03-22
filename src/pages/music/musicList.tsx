@@ -16,7 +16,7 @@ export function MusicList({musicPromise}: IMusicListProps) {
   const [levelItemIndex, setLevelItemIndex] = React.useState<number | null>(
     null
   )
-  const {setStreamUrl, setPlayingTrack, play, resume, pause, stop} = useAudio()
+  const {setStreamUrl, setShuffleList, setPlayingTrack, play, stop} = useAudio()
 
   if (!musicList.length) {
     const data: any[] = useCachedPromise('fetchMusic', musicPromise())
@@ -28,7 +28,7 @@ export function MusicList({musicPromise}: IMusicListProps) {
     }
     // console.log('fileEntries: ', fileEntries)
   }
-  // console.log('musicList: ', musicList)
+  console.log('musicList: ', musicList)
 
   const onClickFirstLevel = (levelItemIndex: number) => {
     setLevelIndex(1)
@@ -49,14 +49,6 @@ export function MusicList({musicPromise}: IMusicListProps) {
       })
   }
 
-  const onClickPause = () => {
-    pause()
-  }
-
-  const onClickResume = () => {
-    resume()
-  }
-
   const goUpLevel = () => {
     setLevelIndex((prevIndex) => prevIndex - 1)
     if (levelIndex - 1 === 0) {
@@ -64,14 +56,28 @@ export function MusicList({musicPromise}: IMusicListProps) {
     }
   }
 
+  const shufflePlay = () => {
+    // console.log('levelIndex: ', levelIndex)
+    // console.log('music: ', musicList)
+    const musicItem = musicList[levelIndex - 1]
+    const files = (musicItem && musicItem[1] && musicItem[1].files) || []
+    // console.log('FILES: ', files)
+    const shuffled = files.sort(() => Math.random() - 0.5)
+    // console.log('Shuffled: ', shuffle(files))
+    setShuffleList(files)
+  }
+
   return (
     <div className={styles.musicListWrapper}>
-      <button
-        className={levelIndex > 0 ? styles.backActive : styles.backNotActive}
-        onClick={goUpLevel}
-      >
-        Back
-      </button>
+      <div>
+        <button
+          className={levelIndex > 0 ? styles.backActive : styles.backNotActive}
+          onClick={goUpLevel}
+        >
+          Back
+        </button>
+        <button onClick={shufflePlay}>Shuffle Play</button>
+      </div>
       <div className={styles.listWrapper}>
         <ul className={styles.fileList}>
           <>
@@ -100,4 +106,22 @@ export function MusicList({musicPromise}: IMusicListProps) {
       </div>
     </div>
   )
+}
+
+function shuffle(array: any[]){
+//   set the index to the arrays length
+  let i = array.length, j, temp;
+//   create a loop that subtracts everytime it iterates through
+  while (--i > 0) {
+//  create a random number and store it in a variable
+  j = Math.floor(Math.random () * (i+1));
+// create a temporary position from the item of the random number    
+  temp = array[j];
+// swap the temp with the position of the last item in the array    
+  array[j] = array[i];
+// swap the last item with the position of the random number 
+  array[i] = temp;
+  }
+
+  return array
 }
