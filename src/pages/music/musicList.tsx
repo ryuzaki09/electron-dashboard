@@ -57,8 +57,6 @@ export function MusicList({musicPromise}: IMusicListProps) {
   }
 
   const shufflePlay = () => {
-    // console.log('levelIndex: ', levelIndex)
-    // console.log('music: ', musicList)
     const musicItem = musicList[levelIndex - 1]
     const files = (musicItem && musicItem[1] && musicItem[1].files) || []
     // console.log('FILES: ', files)
@@ -106,22 +104,4 @@ export function MusicList({musicPromise}: IMusicListProps) {
       </div>
     </div>
   )
-}
-
-function shuffle(array: any[]){
-//   set the index to the arrays length
-  let i = array.length, j, temp;
-//   create a loop that subtracts everytime it iterates through
-  while (--i > 0) {
-//  create a random number and store it in a variable
-  j = Math.floor(Math.random () * (i+1));
-// create a temporary position from the item of the random number    
-  temp = array[j];
-// swap the temp with the position of the last item in the array    
-  array[j] = array[i];
-// swap the last item with the position of the random number 
-  array[i] = temp;
-  }
-
-  return array
 }

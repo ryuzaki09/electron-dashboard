@@ -46,9 +46,6 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
           setPlayingTrack(file)
           play()
         }
-        // if (onEndCallback) {
-        //   onEndCallback()
-        // }
       }
       audioPlayer.addEventListener('ended', onEnd)
 
@@ -60,7 +57,7 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
   )
 
   function setStreamUrl(url: string) {
-    player.current.src = url
+    player.current.src = encodeUrl(url)
   }
 
   function setAudioEndCallback(fn: () => void) {
@@ -69,11 +66,9 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
 
   function setShuffleList(list: any[]) {
     setShufflePlayList(list)
-    // console.log('STOP')
     stop()
     const file = list[0]
     const filePath = file.path.replace(file.basePath, '')
-    // console.log('STREAM url: ', filePath)
     setStreamUrl(`${file.domain}${filePath}`)
     // console.log('play')
     setPlayingTrack(file)
@@ -123,4 +118,8 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
       {children}
     </MusicContext.Provider>
   )
+}
+
+function encodeUrl(url: string) {
+  return encodeURI(url).replace(/#/g, '%23')
 }
