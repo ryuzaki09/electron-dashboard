@@ -84,6 +84,35 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
     setPlayState(PlayStates.playing)
   }
 
+  function previous() {
+    if (shufflePlayList.length > 0 && shufflePlayIndex > 0) {
+      stop()
+      setShufflePlayIndex((prevIndex) => prevIndex - 1)
+
+      const file = shufflePlayList[shufflePlayIndex - 1]
+      const filePath = file.path.replace(file.basePath, '')
+      setStreamUrl(`${file.domain}${filePath}`)
+      setPlayingTrack(file)
+      play()
+    }
+  }
+
+  function next() {
+    if (
+      shufflePlayList.length > 0 &&
+      shufflePlayIndex < shufflePlayList.length - 1
+    ) {
+      stop()
+      setShufflePlayIndex((prevIndex) => prevIndex + 1)
+
+      const file = shufflePlayList[shufflePlayIndex + 1]
+      const filePath = file.path.replace(file.basePath, '')
+      setStreamUrl(`${file.domain}${filePath}`)
+      setPlayingTrack(file)
+      play()
+    }
+  }
+
   function pause() {
     player.current.pause()
     setPlayState(PlayStates.paused)
@@ -111,6 +140,8 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
         stop,
         pause,
         resume,
+        previous,
+        next,
         playState,
         playingTrack
       }}

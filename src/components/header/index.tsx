@@ -12,8 +12,6 @@ import {useAudio, PlayStates} from '../../context/audio'
 import styles from './index.module.css'
 
 export function Header() {
-  const {playingTrack, playState, resume, pause} = useAudio()
-
   return (
     <>
       <header>
@@ -32,17 +30,14 @@ export function Header() {
           </Link>
         </nav>
       </header>
-      <MediaControls
-        playingTrack={playingTrack}
-        playState={playState}
-        resumeFn={resume}
-        pauseFn={pause}
-      />
+      <MediaControls />
     </>
   )
 }
 
-function MediaControls({playingTrack, playState, resumeFn, pauseFn}) {
+function MediaControls() {
+  const {playingTrack, playState, resume, pause, previous, next} = useAudio()
+
   return (
     <div
       className={classnames(styles.mediaControls, {
@@ -53,6 +48,9 @@ function MediaControls({playingTrack, playState, resumeFn, pauseFn}) {
         <div>{playingTrack && `Playing: ${playingTrack.name}`}</div>
       </div>
       <div className={styles.controls}>
+        <span onClick={previous}>
+          <Icon name="previous" />
+        </span>
         <span
           className={
             !playingTrack || playState === PlayStates.paused
@@ -60,9 +58,7 @@ function MediaControls({playingTrack, playState, resumeFn, pauseFn}) {
               : styles.active
           }
           onClick={
-            !playingTrack || playState === PlayStates.paused
-              ? () => {}
-              : pauseFn
+            !playingTrack || playState === PlayStates.paused ? () => {} : pause
           }
         >
           <Icon name="pause" />
@@ -71,7 +67,7 @@ function MediaControls({playingTrack, playState, resumeFn, pauseFn}) {
           onClick={
             !playingTrack || playState === PlayStates.playing
               ? () => {}
-              : resumeFn
+              : resume
           }
           className={
             !playingTrack || playState === PlayStates.playing
@@ -80,6 +76,9 @@ function MediaControls({playingTrack, playState, resumeFn, pauseFn}) {
           }
         >
           <Icon name="play" />
+        </span>
+        <span onClick={next}>
+          <Icon name="next" />
         </span>
       </div>
     </div>

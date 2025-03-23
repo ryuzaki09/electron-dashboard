@@ -3,8 +3,14 @@
   grid-template-columns: 1fr 1fr;
   padding: var(--space-sm);
 }
+
+.dateTimeWrapper {
+  & > div {
+    font-size: clamp(10%, 20px, 8vw);
+  }
+}
 .time {
-  font-size: clamp(20%, 80px, 12vw);
+  font-size: clamp(4rem, 80px, 12vw);
   font-weight: 700;
 }
 
@@ -16,10 +22,6 @@
 
     & > div:first-child {
       text-align: center;
-    }
-
-    .time {
-      font-size: 15vw;
     }
   }
 }

@@ -46,16 +46,15 @@
 
   & span {
     cursor: pointer;
+    & svg {
+      opacity: 0.2;
+      width: 24px;
+      height: 24px;
+    }
   }
 
   & span.active svg {
     opacity: 1;
-  }
-
-  & svg {
-    opacity: 0.2;
-    width: 24px;
-    height: 24px;
   }
 }
 

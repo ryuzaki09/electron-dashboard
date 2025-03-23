@@ -1,6 +1,7 @@
 import React from 'react'
-import {Container} from '../components/container'
+import {format} from 'date-fns'
 
+import {Container} from '../components/container'
 import {useTime} from '../hooks/useTime'
 import {weatherApi} from '../api/weatherApi'
 
@@ -18,10 +19,12 @@ export function Main() {
 }
 
 function TimeDisplay() {
+  const date = new Date()
   const {amPm, time} = useTime()
   return (
-    <div>
+    <div className={styles.dateTimeWrapper}>
       <time className={styles.time}>{time}</time> {amPm}
+      <div>{format(date, "eeee', 'do LLL")}</div>
     </div>
   )
 }
