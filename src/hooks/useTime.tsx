@@ -3,22 +3,31 @@ import React from 'react'
 const REFRESH_INTERVAL = 1000 * 3 // 10 seconds
 
 export function useTime() {
-  const [time, setTime] = React.useState('00:00')
-  const [amPm, setAmPm] = React.useState('AM')
+  const [time, setTime] = React.useState(getTimeString().time)
+  const [amPm, setAmPm] = React.useState(getTimeString().amPm)
 
   React.useEffect(() => {
     let interval = setInterval(() => {
-      const dateTime = new Date()
-      const minutes = dateTime.getMinutes()
-      const hours = dateTime.getHours()
-      const amPm = hours > 12 ? 'PM' : 'AM'
+      const {time: newTime, amPm: newAmPm} = getTimeString()
 
-      setTime(`${hours}:${minutes < 10 ? `0${minutes}` : minutes}`)
-      setAmPm(amPm)
+      setTime(newTime)
+      setAmPm(newAmPm)
     }, REFRESH_INTERVAL)
 
     return () => clearInterval(interval)
   }, [])
 
   return {amPm, time}
+}
+
+function getTimeString() {
+  const dateTime = new Date()
+  const minutes = dateTime.getMinutes()
+  const hours = dateTime.getHours()
+  const amPm = hours > 12 ? 'PM' : 'AM'
+
+  return {
+    time: `${hours}:${minutes < 10 ? `0${minutes}` : minutes}`,
+    amPm
+  }
 }

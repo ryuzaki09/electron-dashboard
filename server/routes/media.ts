@@ -31,7 +31,11 @@ router.get('/musicMedia', (_req: express.Request, res) => {
   try {
     console.log('FETCHING FILES')
     const now = Date.now()
-    if (!musicMediaCache || now - lastCacheTime > CACHE_DURATION) {
+    if (
+      !musicMediaCache ||
+      now - lastCacheTime > CACHE_DURATION ||
+      !musicMediaCache.length
+    ) {
       musicMediaCache = getFilesRecursively(musicPath)
       lastCacheTime = now
     }
