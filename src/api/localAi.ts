@@ -32,11 +32,21 @@ export const localAi = {
     return result.data?.data || ''
   },
 
+  textToSpeech: async (text) => {
+    const result = await axios.post(`http://${config.whisperHost}/ai/tts`,
+      {text}
+    )
+
+    console.log('TTS result: ', result)
+    return result
+
+  },
+
   converse: async (audio: Blob) => {
     const transcription = await localAi.speechToText(audio)
     console.log('config: ', config)
 
-    const result: IChatResponse = await aiClient.post('/chat/completions', {
+    const result = await aiClient.post('/chat/completions', {
       model: 'llama3.2:latest',
       messages: [
         {
@@ -46,6 +56,6 @@ export const localAi = {
       ]
     })
     console.log('result: ', result)
-    return result.choices[0].message.content
+    return result.data.choices[0].message.content
   }
 }

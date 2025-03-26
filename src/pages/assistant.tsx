@@ -1,7 +1,6 @@
 import React from 'react'
 import {BuiltInKeyword} from '@picovoice/porcupine-web'
 import {usePorcupine} from '@picovoice/porcupine-react'
-import * as tts from '@mintplex-labs/piper-tts-web'
 
 import {MediaRecorderAPI} from '../lib/mediaRecorder'
 import {Container} from '../components/container'
@@ -29,30 +28,6 @@ export function Assistant() {
   const checkIsListening = () =>
     (isListening && !config.useWakeWord) ||
     (porcupineIsListening && config.useWakeWord)
-
-  React.useEffect(() => {
-    const playAudio = async () => {
-      console.log(await tts.stored())
-      // await tts.download('en_US-hfc_female-medium', (progress) => {
-      //   console.log(
-      //     `Downloading ${progress.url} - ${Math.round(
-      //       (progress.loaded * 100) / progress.total
-      //     )}%`
-      //   )
-      // })
-      const wav = await tts.predict({
-        text: 'Text to speech in the browser is amazing!',
-        voiceId: 'en_US-hfc_female-medium'
-      })
-
-      const audio = new Audio()
-      audio.src = URL.createObjectURL(wav)
-      audio.play()
-    }
-
-    playAudio()
-    // as seen in /example with Web Worker
-  }, [])
 
   React.useEffect(
     () => {
@@ -142,11 +117,13 @@ export function Assistant() {
   async function handleSpeechReponse(audioBlob: Blob) {
     setIsListening(false)
     const aiAudioResponse = await ai.converse(audioBlob)
+    console.log('AI response: ', aiAudioResponse)
+    const speechAudio = await ai.textToSpeech(aiAudioResponse)
     // const aiAudioResponse = await openAiAPI.converse(audioBlob)
     // console.log('tts result: ', aiAudioResponse)
-    // const audio = new Audio(aiAudioResponse.data.audioUrl)
-    // audio.muted = false
-    // await audio.play()
+    const audio = new Audio(speechAudio.data.audioUrl)
+    audio.muted = false
+    await audio.play()
   }
 
   return (
