@@ -24,9 +24,6 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
     PlayStates.stopped
   )
   const [playingTrack, setPlayingTrack] = React.useState<any>(null)
-  const [onEndCallback, setOnEndCallback] = React.useState<(() => void) | null>(
-    null
-  )
   const [shufflePlayList, setShufflePlayList] = React.useState<IAudioFile[]>([])
   const [shufflePlayIndex, setShufflePlayIndex] = React.useState(0)
 
@@ -53,15 +50,11 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
         audioPlayer.removeEventListener('ended', onEnd)
       }
     },
-    [onEndCallback, shufflePlayIndex, shufflePlayList]
+    [shufflePlayIndex, shufflePlayList]
   )
 
   function setStreamUrl(url: string) {
     player.current.src = encodeUrl(url)
-  }
-
-  function setAudioEndCallback(fn: () => void) {
-    setOnEndCallback(fn)
   }
 
   function setShuffleList(list: any[]) {
@@ -138,7 +131,6 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
     <MusicContext.Provider
       value={{
         setStreamUrl,
-        setAudioEndCallback,
         setShuffleList,
         setPlayingTrack,
         play,
