@@ -36,7 +36,16 @@ export function Header() {
 }
 
 function MediaControls() {
-  const {playingTrack, playState, resume, pause, previous, next} = useAudio()
+  const {
+    playingTrack,
+    playState,
+    resume,
+    pause,
+    previous,
+    next,
+    isLastTrack,
+    isFirstTrack
+  } = useAudio()
 
   return (
     <div
@@ -48,12 +57,14 @@ function MediaControls() {
         <div>{playingTrack && `Playing: ${playingTrack.name}`}</div>
       </div>
       <div className={styles.controls}>
-        <span onClick={previous}>
+        <span onClick={previous} className={!isFirstTrack ? styles.active : ''}>
           <Icon name="previous" />
         </span>
         <span
           className={
-            !playingTrack || playState === PlayStates.paused
+            !playingTrack ||
+            playState === PlayStates.paused ||
+            playState === PlayStates.stopped
               ? ''
               : styles.active
           }
@@ -77,7 +88,7 @@ function MediaControls() {
         >
           <Icon name="play" />
         </span>
-        <span onClick={next}>
+        <span onClick={next} className={isLastTrack ? '' : styles.active}>
           <Icon name="next" />
         </span>
       </div>

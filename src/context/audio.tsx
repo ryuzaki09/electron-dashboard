@@ -129,6 +129,11 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
     setPlayState(PlayStates.stopped)
   }
 
+  const isFirstTrack = shufflePlayList.length > 0 && !shufflePlayIndex
+  const isLastTrack =
+    shufflePlayList.length > 0 &&
+    shufflePlayIndex === shufflePlayList.length - 1
+
   return (
     <MusicContext.Provider
       value={{
@@ -137,13 +142,15 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
         setShuffleList,
         setPlayingTrack,
         play,
-        stop,
         pause,
+        stop,
         resume,
         previous,
         next,
         playState,
-        playingTrack
+        playingTrack,
+        isFirstTrack,
+        isLastTrack
       }}
     >
       {children}
