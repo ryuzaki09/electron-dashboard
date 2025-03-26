@@ -10,18 +10,21 @@ let lastCacheTime = 0
 const CACHE_DURATION = 1000 * 60 * 120 // 120minutes
 
 router.get('/videos', (_req: express.Request, res) => {
+  console.log('FETCHING VIDEOS')
   fs.readdir(mediaPath, (err, files) => {
     if (err) {
       return res.status(500).json({error: 'Unable to read files'})
     }
-    const mediaFiles = files.map((file) => ({
-      name: file,
-      url: `/media/${file}`,
-      domain:
-        process.env.NODE_ENV === 'production'
-          ? process.env.BACKEND_HOST
-          : `http://${process.env.BACKEND_HOST}`
-    }))
+    const mediaFiles = files
+      .map((file) => ({
+        name: file,
+        url: `/media/${file}`,
+        domain:
+          process.env.NODE_ENV === 'production'
+            ? process.env.BACKEND_HOST
+            : `http://${process.env.BACKEND_HOST}`
+      }))
+      .filter((f) => !f.name.startsWith('.'))
 
     res.json(mediaFiles)
   })

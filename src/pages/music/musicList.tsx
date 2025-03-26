@@ -59,9 +59,8 @@ export function MusicList({musicPromise}: IMusicListProps) {
   const shufflePlay = () => {
     const musicItem = musicList[levelIndex - 1]
     const files = (musicItem && musicItem[1] && musicItem[1].files) || []
-    // console.log('FILES: ', files)
-    const shuffled = files.sort(() => Math.random() - 0.5)
-    // console.log('Shuffled: ', shuffle(files))
+    // shuffle the list
+    files.sort(() => Math.random() - 0.5)
     setShuffleList(files)
   }
 
