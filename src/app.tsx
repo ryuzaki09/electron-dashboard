@@ -7,21 +7,27 @@ import {Music} from './pages/music'
 import {HomeAssistant} from './pages/home-assistant'
 import {Assistant} from './pages/assistant'
 import {MusicProvider} from './context/audio'
+// import {useVoiceAssistant} from './hooks/useVoiceAssistant'
+import {WithWeatherForecast} from './components/withWeatherForecast'
 
 import './app.module.css'
 
 export default function App() {
+  // const {isListening} = useVoiceAssistant()
+
   return (
     <MusicProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/music" element={<Music />} />
-          <Route path="/movie" element={<Movie />} />
-          <Route path="/home-assistant" element={<HomeAssistant />} />
-          <Route path="/assistant" element={<Assistant />} />
-        </Routes>
-      </Router>
+      <WithWeatherForecast>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/music" element={<Music />} />
+            <Route path="/movie" element={<Movie />} />
+            <Route path="/home-assistant" element={<HomeAssistant />} />
+            <Route path="/assistant" element={<Assistant />} />
+          </Routes>
+        </Router>
+      </WithWeatherForecast>
     </MusicProvider>
   )
 }

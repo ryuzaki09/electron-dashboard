@@ -8,10 +8,14 @@ import MusicIcon from '../icons/music'
 import MovieIcon from '../icons/movie'
 import HomeAssistantIcon from '../icons/homeAssistant'
 import {useAudio, PlayStates} from '../../context/audio'
+import {useVoiceAssistant} from '../../hooks/useVoiceAssistant'
 
 import styles from './index.module.css'
 
 export function Header() {
+  const {isListening, setIsListening} = useVoiceAssistant()
+  console.log('isListening: ', isListening)
+
   return (
     <>
       <header>
@@ -28,6 +32,9 @@ export function Header() {
           <Link to="/home-assistant">
             <HomeAssistantIcon />
           </Link>
+          <button onClick={isListening ? () => {} : () => setIsListening(true)}>
+            {isListening ? 'Listening..' : 'Press to talk'}
+          </button>
           {/*<Link to="/assistant">
             <HomeIcon />
           </Link>*/}

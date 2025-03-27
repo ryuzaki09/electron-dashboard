@@ -1,20 +1,21 @@
 import axios from 'axios'
 import {format} from 'date-fns'
 import {getWeatherIcon} from '../helpers/utils'
-import {IWeatherForecastDto} from './types'
 import {coords} from '../config/config'
+import {config} from '../config'
 
-const apiKey = process.env.OPENWEATHER_KEY
+import type {IWeatherForecastDto} from './types'
 
 export const weatherApi = {
   getForecast: async () => {
-    // const result = await axios.get(
-    //   `https://api.openweathermap.org/data/3.0/onecall?lat=${coords.lat}&lon=${
-    //     coords.lon
-    //   }&exclude=hourly,minutely&units=metric&appid=${apiKey}`
-    // )
-    // console.log('weather result: ', result)
-    // return result.data
+    const weather = await axios.get<IWeatherForecastDto>(
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${coords.lat}&lon=${
+        coords.lon
+      }&exclude=hourly,minutely&units=metric&appid=${config.openweatherKey}`
+    )
+    const transformed = weather.data ? transformWeatherData(weather.data) : null
+    console.log('transformed: ', transformed)
+    return transformed
     const result = await Promise.resolve({
       lat: 51.5692,
       lon: 0.3436,
@@ -249,88 +250,6 @@ export const weatherApi = {
           pop: 0.31,
           rain: 0.57,
           uvi: 3.74
-        },
-        {
-          dt: 1742904000,
-          sunrise: 1742881779,
-          sunset: 1742926761,
-          moonrise: 1742877360,
-          moonset: 1742907180,
-          moon_phase: 0.85,
-          summary: 'Expect a day of partly cloudy with rain',
-          temp: {
-            day: 11.5,
-            min: 3.37,
-            max: 11.91,
-            night: 8.28,
-            eve: 9.67,
-            morn: 3.37
-          },
-          feels_like: {
-            day: 10.17,
-            night: 7.55,
-            eve: 8.67,
-            morn: 1.8
-          },
-          pressure: 1017,
-          humidity: 56,
-          dew_point: 2.93,
-          wind_speed: 3.22,
-          wind_deg: 5,
-          wind_gust: 5.96,
-          weather: [
-            {
-              id: 500,
-              main: 'Rain',
-              description: 'light rain',
-              icon: '10d'
-            }
-          ],
-          clouds: 17,
-          pop: 1,
-          rain: 1.2,
-          uvi: 4
-        },
-        {
-          dt: 1742990400,
-          sunrise: 1742968041,
-          sunset: 1743013261,
-          moonrise: 1742964960,
-          moonset: 1742998860,
-          moon_phase: 0.89,
-          summary: 'Expect a day of partly cloudy with rain',
-          temp: {
-            day: 10.19,
-            min: 7.75,
-            max: 11.41,
-            night: 9.41,
-            eve: 10.12,
-            morn: 7.75
-          },
-          feels_like: {
-            day: 9.46,
-            night: 8,
-            eve: 9.12,
-            morn: 6.03
-          },
-          pressure: 1013,
-          humidity: 84,
-          dew_point: 7.53,
-          wind_speed: 3.1,
-          wind_deg: 285,
-          wind_gust: 5.91,
-          weather: [
-            {
-              id: 500,
-              main: 'Rain',
-              description: 'light rain',
-              icon: '10d'
-            }
-          ],
-          clouds: 100,
-          pop: 1,
-          rain: 2.55,
-          uvi: 4
         }
       ]
     })
