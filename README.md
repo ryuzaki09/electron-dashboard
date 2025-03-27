@@ -1,4 +1,4 @@
-### Dashboard App
+## Dashboard App
 
 This app template includes:
 
@@ -37,7 +37,7 @@ you can get the coordinates on this [page](https://openweathermap.org/api/geocod
 
 3. Home Assistant - A long live token is required. Enter the `HA_HOST=<HOST_IP>` and `HA_LONG_LIVE_TOKEN=<TOKEN>` in the `src/config/.env` file.
 
-#### Still in development
+### Still in development
 
 Local voice assistant is currently still in development. It uses a locally running AI host with Open Web UI, and a Whisper (speech-to-text) host to run.
 Soon it will be able to:
@@ -46,7 +46,7 @@ Soon it will be able to:
 - tell the weather
 - answer general questions
 
-#### Setup
+### Setup
 
 The app plays music in the `music` folder and videos in the `media` folder. If there is a central place for these media, a good option is to mount these folders so they don't need to be moved or copied.
 
@@ -54,18 +54,4 @@ To run the app, enter:
 
 ```
 npm run dev
-```
-
-#### Run Tests
-
-To run the unit test
-
-```
-npm test
-```
-
-To run the acceptance test
-
-```
-npm run test:acceptance
 ```
