@@ -35,7 +35,7 @@ export const localAi = {
     // return result.data.transcription || ''
   },
 
-  textToSpeech: async (text) => {
+  textToSpeech: async (text: string) => {
     const result = await axios.post(`http://${config.whisperHost}/ai/tts`, {
       text
     })

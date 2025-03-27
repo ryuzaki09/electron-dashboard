@@ -28,9 +28,9 @@ export function Header() {
           <Link to="/home-assistant">
             <HomeAssistantIcon />
           </Link>
-          <Link to="/assistant">
+          {/*<Link to="/assistant">
             <HomeIcon />
-          </Link>
+          </Link>*/}
         </nav>
       </header>
       <MediaControls />
