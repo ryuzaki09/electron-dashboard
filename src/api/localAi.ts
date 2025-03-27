@@ -9,18 +9,19 @@ const aiClient = axios.create({
 })
 
 interface IChatResponse {
-  choices: Array<{index: number, message: {content: string, role: string}}>
-  model: string;
-  created: number;
+  choices: Array<{index: number; message: {content: string; role: string}}>
+  model: string
+  created: number
 }
 
 export const localAi = {
   speechToText: async (audio: Blob) => {
     const formData = new FormData()
-    formData.append('audio', audio, 'recording.wav')
+    formData.append('file', audio, 'recording.wav')
 
     const result = await axios.post(
       `http://${config.whisperHost}/ai/stt`,
+      // `http://localhost:3003/transcribe`,
       formData,
       {
         headers: {
@@ -28,23 +29,23 @@ export const localAi = {
         }
       }
     )
+    console.log('transcribed result: ', result)
 
     return result.data?.data || ''
+    // return result.data.transcription || ''
   },
 
   textToSpeech: async (text) => {
-    const result = await axios.post(`http://${config.whisperHost}/ai/tts`,
-      {text}
-    )
+    const result = await axios.post(`http://${config.whisperHost}/ai/tts`, {
+      text
+    })
 
     console.log('TTS result: ', result)
     return result
-
   },
 
   converse: async (audio: Blob) => {
     const transcription = await localAi.speechToText(audio)
-    console.log('config: ', config)
 
     const result = await aiClient.post('/chat/completions', {
       model: 'llama3.2:latest',
