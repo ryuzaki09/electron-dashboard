@@ -7,7 +7,10 @@ import {config} from '../config'
 import {ai} from '../lib/ai'
 
 const porcupineModel = {
-  publicPath: '/porcupine_params.pv'
+  publicPath: '/porcupine_params_02.pv',
+  customWritePath: 'porcupine_params_02.pv',
+  forceWrite: true
+  // base64: '/base64_output'
 }
 
 export function useVoiceAssistant() {
@@ -24,17 +27,27 @@ export function useVoiceAssistant() {
     release
   } = usePorcupine()
 
-  const checkIsListening = () =>
-    (isListening && !config.useWakeWord) ||
-    (porcupineIsListening && config.useWakeWord)
+  React.useEffect(
+    () => {
+      if (keywordDetection !== null) {
+        setIsListening(true)
+      }
+    },
+    [keywordDetection]
+  )
 
   React.useEffect(
     () => {
       if (isLoaded) return
       const initialize = async () => {
         console.log('initialize')
-        await init(config.picovoiceKey, [BuiltInKeyword.Alexa], porcupineModel)
-        start()
+        await init(
+          config.picovoiceKey as string,
+          [BuiltInKeyword.OkayGoogle],
+          porcupineModel
+        )
+        console.log('START')
+        // start()
       }
       if (config.useWakeWord) {
         initialize()
@@ -96,7 +109,7 @@ export function useVoiceAssistant() {
         checkForSilence()
       }
 
-      if (checkIsListening()) {
+      if (isListening) {
         startRecord()
       }
     },
@@ -109,6 +122,9 @@ export function useVoiceAssistant() {
       const audioBlob = await recorder.stop()
       // console.log('AUDIO: ', audioBlob)
       await handleSpeechReponse(audioBlob as Blob)
+      if (config.useWakeWord) {
+        stop()
+      }
     }
     stopAll()
   }
@@ -126,7 +142,7 @@ export function useVoiceAssistant() {
   }
 
   return {
-    checkIsListening,
+    isListening,
     stopRecording,
     setIsListening
   }
