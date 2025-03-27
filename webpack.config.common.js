@@ -104,10 +104,26 @@ module.exports = {
       filename: '[name].css' // this creates a separate css file
     }),
     new webpack.DefinePlugin({
+      'process.env.HA_HOST': JSON.stringify(process.env.HA_HOST || ''),
+      'process.env.HA_LONG_LIVE_TOKEN': JSON.stringify(
+        process.env.HA_LONG_LIVE_TOKEN || ''
+      ),
       'process.env.OPENWEATHER_KEY': JSON.stringify(
         process.env.OPENWEATHER_KEY || ''
       ),
-      'process.env.BACKEND_HOST': JSON.stringify(process.env.BACKEND_HOST || '')
+      'process.env.BACKEND_HOST': JSON.stringify(
+        process.env.BACKEND_HOST || ''
+      ),
+      'process.env.PICOVOICE_KEY': JSON.stringify(
+        process.env.PICOVOICE_KEY || ''
+      ),
+      'process.env.OPENWEBUI_KEY': JSON.stringify(
+        process.env.OPENWEBUI_KEY || ''
+      ),
+      'process.env.OPENWEBUI_HOST': JSON.stringify(
+        process.env.OPENWEBUI_HOST || ''
+      ),
+      'process.env.WHISPER_HOST': JSON.stringify(process.env.WHISPER_HOST || '')
     })
     // SECOND SCREEN
     //new htmlWebpackPlugin({

@@ -5,6 +5,7 @@ import {Main} from './pages/main'
 import {Movie} from './pages/movie'
 import {Music} from './pages/music'
 import {HomeAssistant} from './pages/home-assistant'
+import {Assistant} from './pages/assistant'
 import {MusicProvider} from './context/audio'
 
 import './app.module.css'
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/music" element={<Music />} />
           <Route path="/movie" element={<Movie />} />
           <Route path="/home-assistant" element={<HomeAssistant />} />
+          <Route path="/assistant" element={<Assistant />} />
         </Routes>
       </Router>
     </MusicProvider>
