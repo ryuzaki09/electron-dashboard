@@ -26,7 +26,6 @@
   "author": "Sinister",
   "license": "ISC",
   "dependencies": {
-    "@mintplex-labs/piper-tts-web": "1.0.4",
     "@picovoice/porcupine-react": "3.0.3",
     "@picovoice/web-voice-processor": "^4.0.9",
     "axios": "1.8.3",
