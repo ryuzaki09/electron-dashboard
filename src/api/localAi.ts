@@ -1,5 +1,7 @@
 import axios from 'axios'
+
 import {config} from '../config'
+import {today, getCurrentTime} from '../helpers/time'
 
 const aiClient = axios.create({
   baseURL: `http://${config.localAiHost}/api`,
@@ -7,6 +9,14 @@ const aiClient = axios.create({
     Authorization: `Bearer ${config.localAiKey}`
   }
 })
+
+const systemPrompt = {
+  role: 'developer',
+  content: [
+    `You are a helpful assistant that have all the knowledge in the world. You will answer questions concisely and simplified. Today's date is ${today}. 
+The current time is ${getCurrentTime()}`
+  ]
+}
 
 interface IChatResponse {
   choices: Array<{index: number; message: {content: string; role: string}}>
@@ -17,9 +27,9 @@ interface IChatResponse {
 export const localAi = {
   speechToText: async (audio: Blob) => {
     const formData = new FormData()
-    formData.append('file', audio, 'recording.wav')
+    formData.append('audio', audio, 'recording.wav')
 
-    const result = await axios.post(
+    const {data} = await axios.post(
       `http://${config.whisperHost}/ai/stt`,
       // `http://localhost:3003/transcribe`,
       formData,
@@ -29,9 +39,9 @@ export const localAi = {
         }
       }
     )
-    console.log('transcribed result: ', result)
+    console.log('transcribed result: ', data)
 
-    return result.data?.data || ''
+    return data ? data.data : ''
     // return result.data.transcription || ''
   },
 
@@ -42,6 +52,20 @@ export const localAi = {
 
     console.log('TTS result: ', result)
     return result
+  },
+
+  getAiResponse: async (transcription: string) => {
+    const result = await aiClient.post('/chat/completions', {
+      model: 'llama3.2:latest',
+      messages: [
+        {
+          role: 'user',
+          content: transcription
+        }
+      ]
+    })
+    console.log('result: ', result)
+    return result.data.choices[0].message.content
   },
 
   converse: async (audio: Blob) => {

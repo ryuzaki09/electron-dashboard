@@ -37,7 +37,7 @@ function WeatherInformation() {
   }
 
   const {weather, temp, daily} = weatherData
-  const WeatherIcon = weather?.icon
+  const WeatherIcon = weather ? weather.icon : null
 
   return (
     <div className={styles.weather}>

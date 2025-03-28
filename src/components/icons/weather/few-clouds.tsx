@@ -3,7 +3,7 @@ import React from 'react'
 export default function FewCloudsIcon() {
   return (
     <svg
-      fill="#000000"
+      fill="var(--color-primary)"
       viewBox="0 0 16 16"
       id="cloudy-16px"
       xmlns="http://www.w3.org/2000/svg"

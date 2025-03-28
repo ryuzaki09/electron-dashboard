@@ -7,13 +7,13 @@ import {Music} from './pages/music'
 import {HomeAssistant} from './pages/home-assistant'
 import {Assistant} from './pages/assistant'
 import {MusicProvider} from './context/audio'
-// import {useVoiceAssistant} from './hooks/useVoiceAssistant'
 import {WithWeatherForecast} from './components/withWeatherForecast'
+import {today} from './helpers/time'
 
 import './app.module.css'
 
 export default function App() {
-  // const {isListening} = useVoiceAssistant()
+  console.log('today: ', today)
 
   return (
     <MusicProvider>
