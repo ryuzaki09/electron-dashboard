@@ -123,7 +123,10 @@ module.exports = {
       'process.env.OPENWEBUI_HOST': JSON.stringify(
         process.env.OPENWEBUI_HOST || ''
       ),
-      'process.env.WHISPER_HOST': JSON.stringify(process.env.WHISPER_HOST || '')
+      'process.env.WHISPER_HOST': JSON.stringify(
+        process.env.WHISPER_HOST || ''
+      ),
+      'process.env.OPENAI_KEY': JSON.stringify(process.env.OPENAI_KEY || '')
     })
     // SECOND SCREEN
     //new htmlWebpackPlugin({

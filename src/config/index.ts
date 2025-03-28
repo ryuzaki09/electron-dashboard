@@ -4,7 +4,7 @@ export const config = {
   openweatherKey: process.env.OPENWEATHER_KEY,
   useWakeWord: false,
   picovoiceKey: process.env.PICOVOICE_KEY,
-  useLocalAi: true,
+  useLocalAi: false,
   localAiHost: process.env.OPENWEBUI_HOST,
   localAiKey: process.env.OPENWEBUI_KEY,
   whisperHost: process.env.WHISPER_HOST
