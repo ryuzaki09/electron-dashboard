@@ -1,8 +1,7 @@
 import axios from 'axios'
-import {format} from 'date-fns'
-import {getWeatherIcon} from '../helpers/utils'
 import {coords} from '../config/config'
 import {config} from '../config'
+import { transformWeatherData } from '../helpers/utils'
 
 import type {IWeatherForecastDto} from './types'
 
@@ -255,35 +254,5 @@ export const weatherApi = {
     })
 
     return transformWeatherData(result)
-  }
-}
-
-function transformWeatherData(data: IWeatherForecastDto) {
-  const {current, daily} = data
-
-  return {
-    ...current,
-    dt: format(new Date(current.dt * 1000), 'iii do LLL'),
-    weather: {
-      ...current.weather[0],
-      icon: getWeatherIcon(current.weather[0].icon)
-    },
-    temp: Math.round(current.temp),
-    daily: daily.map((d) => ({
-      ...d,
-      dt: {
-        day: format(new Date(d.dt * 1000), 'iii do'),
-        month: format(new Date(d.dt * 1000), 'LLL')
-      },
-      weather: {
-        ...d.weather[0],
-        icon: getWeatherIcon(d.weather[0].icon)
-      },
-      temp: {
-        ...d.temp,
-        min: Math.round(d.temp.min),
-        max: Math.round(d.temp.max)
-      }
-    }))
   }
 }

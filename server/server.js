@@ -6,11 +6,7 @@ import path from 'path'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
-import dotenv from 'dotenv'
-
-dotenv.config({
-  path: './src/config/.env'
-})
+import 'dotenv/config'
 
 import mediaRouter from './routes/media.ts'
 import homeAssistantRouter from './routes/homeAssistant.ts'

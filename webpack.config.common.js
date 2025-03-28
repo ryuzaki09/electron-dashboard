@@ -2,9 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const htmlWebpackPlugin = require('html-webpack-plugin')
 const miniCssExtractPlugin = require('mini-css-extract-plugin')
-require('dotenv').config({
-  path: path.join(__dirname, 'src/config/.env')
-})
+require('dotenv').config()
 
 const PORT = process.env.PORT || 3000
 
