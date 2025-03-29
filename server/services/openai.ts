@@ -66,13 +66,13 @@ export const openAiAPI = {
           content: JSON.stringify(result)
         })
         const response2 = await openai.chat.completions.create({
-          model: 'gpt-3.5-turbo',
+          model: 'gpt-3.5-turbo-1106',
           messages: [systemPrompt, ...chatHistory],
           tools: functions
         })
 
         console.log('RESPONSE 2: ', response2.choices)
-        return
+        return response2.choices[0].message.content
       }
     }
     console.log('got response from chat: ', message)

@@ -19,7 +19,7 @@ async function getWeatherForecast({date}: {date: string}) {
     )
 
   const {data} = weather
-  console.log('current weather data: ', data)
+  // console.log('current weather data: ', data)
   if (!data) {
     return null
   }
@@ -51,7 +51,7 @@ async function getWeatherForecastForLocation({longitude, latitude}: IGetWeatherP
     )
 
   const {data} = weather
-  console.log('weather data: ', data)
+  // console.log('weather data: ', data)
   return data ? {
     temperature: Math.round(data.current.temp),
     humidity: `${data.current.humidity}%`
