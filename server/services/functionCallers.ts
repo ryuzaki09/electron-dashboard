@@ -2,7 +2,9 @@ import axios from 'axios'
 import 'dotenv/config'
 import {config} from '../../src/config'
 import {coords} from '../../src/config/config'
-import {timestampToUKdate} from '../../src/helpers/time'
+import {timestampToDayOfWeek, timestampToUKdate} from '../../src/helpers/time'
+
+import type {IWeatherForecastDto} from '../../src/api/types'
 
 interface IGetWeatherProps {
   longitude: number;
@@ -23,7 +25,10 @@ async function getWeatherForecast({date}: {date: string}) {
   }
 
   const dailyData = data.daily
-  const foundDailyData = dailyData.find((d) => timestampToUKdate(d.dt) === date)
+  const foundDailyData = dailyData.find(
+    (d: IWeatherForecastDto['daily'][number]) =>
+      timestampToUKdate(d.dt) === date || timestampToDayOfWeek(d.dt).toLowerCase() === date.toLowerCase()
+  )
 
   console.log('found daily data: ', foundDailyData)
 
@@ -31,6 +36,7 @@ async function getWeatherForecast({date}: {date: string}) {
     return {
       high_temperature: Math.round(foundDailyData.temp.max),
       low_temperature: Math.round(foundDailyData.temp.min),
+      summary: foundDailyData.summary
     } 
   }
 

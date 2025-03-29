@@ -13,3 +13,7 @@ export const getCurrentTime = () => {
 export const timestampToUKdate = (timestamp: number) => {
   return format(new Date(timestamp * 1000), 'dd/MM/yyyy')
 }
+
+export const timestampToDayOfWeek = (timestamp: number) => {
+  return format(new Date(timestamp * 1000), 'iiii')
+}
