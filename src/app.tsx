@@ -7,21 +7,27 @@ import {Music} from './pages/music'
 import {HomeAssistant} from './pages/home-assistant'
 import {Assistant} from './pages/assistant'
 import {MusicProvider} from './context/audio'
+import {WithWeatherForecast} from './components/withWeatherForecast'
+import {dateAndDay} from './helpers/time'
 
 import './app.module.css'
 
 export default function App() {
+  console.log('today: ', dateAndDay)
+
   return (
     <MusicProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/music" element={<Music />} />
-          <Route path="/movie" element={<Movie />} />
-          <Route path="/home-assistant" element={<HomeAssistant />} />
-          <Route path="/assistant" element={<Assistant />} />
-        </Routes>
-      </Router>
+      <WithWeatherForecast>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/music" element={<Music />} />
+            <Route path="/movie" element={<Movie />} />
+            <Route path="/home-assistant" element={<HomeAssistant />} />
+            <Route path="/assistant" element={<Assistant />} />
+          </Routes>
+        </Router>
+      </WithWeatherForecast>
     </MusicProvider>
   )
 }

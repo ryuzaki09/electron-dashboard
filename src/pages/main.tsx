@@ -3,7 +3,7 @@ import {format} from 'date-fns'
 
 import {Container} from '../components/container'
 import {useTime} from '../hooks/useTime'
-import {weatherApi} from '../api/weatherApi'
+import {mainStore} from '../store/mainStore'
 
 import styles from './main.module.css'
 
@@ -30,25 +30,14 @@ function TimeDisplay() {
 }
 
 function WeatherInformation() {
-  const [weatherData, setWeatherData] = React.useState<any>(null)
-
-  React.useEffect(() => {
-    async function getWeather() {
-      const data = await weatherApi.getForecast()
-      if (data) {
-        setWeatherData(data)
-      }
-    }
-
-    getWeather()
-  }, [])
+  const weatherData = mainStore((state) => state.weather)
 
   if (!weatherData) {
     return <div>Loading...</div>
   }
 
   const {weather, temp, daily} = weatherData
-  const WeatherIcon = weather?.icon
+  const WeatherIcon = weather ? weather.icon : null
 
   return (
     <div className={styles.weather}>
@@ -59,7 +48,7 @@ function WeatherInformation() {
         </div>
       </div>
       <div className={styles.dailyWeather}>
-        {daily.length > 0 && daily.map((d, index) => {
+        {daily.length > 0 && daily.map((d, index: number) => {
           const Icon = d.weather.icon
           return index > 0 && index < 4 ? (
             <div key={d.dt.day}><Icon /><p>{d.dt.day}<br />{d.temp.min}&deg;C / {d.temp.max}&deg;C</p></div>

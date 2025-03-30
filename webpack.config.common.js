@@ -2,9 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const htmlWebpackPlugin = require('html-webpack-plugin')
 const miniCssExtractPlugin = require('mini-css-extract-plugin')
-require('dotenv').config({
-  path: path.join(__dirname, 'src/config/.env')
-})
+require('dotenv').config()
 
 const PORT = process.env.PORT || 3000
 
@@ -123,7 +121,11 @@ module.exports = {
       'process.env.OPENWEBUI_HOST': JSON.stringify(
         process.env.OPENWEBUI_HOST || ''
       ),
-      'process.env.WHISPER_HOST': JSON.stringify(process.env.WHISPER_HOST || '')
+      'process.env.WHISPER_HOST': JSON.stringify(
+        process.env.WHISPER_HOST || ''
+      ),
+      'process.env.OPENAI_KEY': JSON.stringify(process.env.OPENAI_KEY || ''),
+      'process.env.OPENROUTE': JSON.stringify(process.env.OPENROUTE_KEY || '')
     })
     // SECOND SCREEN
     //new htmlWebpackPlugin({

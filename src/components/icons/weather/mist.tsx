@@ -2,8 +2,13 @@ import React from 'react'
 
 export default function MistIcon() {
   return (
-    <svg fill="#000000" version="1.1" id="Capa_1" viewBox="0 0 66.002 66.002">
-      <g id="SVGRepo_bgCarrier" stroke-width="0" />
+    <svg
+      fill="var(--color-primary)"
+      version="1.1"
+      id="Capa_1"
+      viewBox="0 0 66.002 66.002"
+    >
+      <g id="SVGRepo_bgCarrier" strokeWidth="0" />
       <g
         id="SVGRepo_tracerCarrier"
         strokeLinecap="round"

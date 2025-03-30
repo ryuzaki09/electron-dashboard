@@ -2,19 +2,15 @@ import chalk from 'chalk'
 import {spawn} from 'child_process'
 import express from 'express'
 import bodyParser from 'body-parser'
-import axios from 'axios'
 import path from 'path'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
-import dotenv from 'dotenv'
-
-dotenv.config({
-  path: './src/config/.env'
-})
+import 'dotenv/config'
 
 import mediaRouter from './routes/media.ts'
 import homeAssistantRouter from './routes/homeAssistant.ts'
+import openaiRouter from './routes/openai'
 import {mediaPath, musicPath} from './constants.ts'
 
 import config from '../webpack.config.common.js'
@@ -35,12 +31,15 @@ app.use(express.static(path.join(__dirname, 'dist')))
 // mount a virtual static path
 app.use('/media', express.static(mediaPath))
 app.use('/music', express.static(path.join(process.cwd(), 'music')))
+app.use('/tts_responses', express.static('tts_responses/'))
+
 app.use(middlewareInstance)
 
 app.use(webpackHotMiddleware(compiler))
 
 app.use('/', mediaRouter)
 app.use('/home-assistant', homeAssistantRouter)
+app.use('/openai', openaiRouter)
 
 app.get('*', (_req, res) => {
   res.sendFile(path.join(process.cwd(), 'dist', 'main-screen.html'))

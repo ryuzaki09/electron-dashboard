@@ -92,8 +92,9 @@ export function useVoiceAssistant() {
               silenceTimer = setTimeout(async () => {
                 console.log("It's silent")
                 runCheckSilence = false
-                const audioBlob = await recorder.stop()
-                await handleSpeechReponse(audioBlob as Blob)
+                // const audioBlob = await recorder.stop()
+                // await handleSpeechReponse(audioBlob as Blob)
+                stopRecording()
               }, 1500) // stop after 1.5 seconds of silence
             }
           } else {

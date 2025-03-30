@@ -1,3 +1,4 @@
+import {format} from 'date-fns'
 import CloudIcon from '../components/icons/weather/cloudy'
 import ClearSkyIcon from '../components/icons/weather/clear-sky'
 import ThunderIcon from '../components/icons/weather/thunderstorm'
@@ -5,6 +6,8 @@ import RainIcon from '../components/icons/weather/rain'
 import SnowIcon from '../components/icons/weather/snow'
 import FewCloudsIcon from '../components/icons/weather/few-clouds'
 import MistIcon from '../components/icons/weather/mist'
+
+import type {IWeatherForecastDto} from '../api/types'
 
 const virtualPath = '/music'
 const FOLDER_LEVEL_SCAN = 2
@@ -70,4 +73,34 @@ export function getWeatherIcon(iconName: string) {
   const WeatherIcon = weatherMap[iconName]
 
   return WeatherIcon ?? ClearSkyIcon
+}
+
+export function transformWeatherData(data: IWeatherForecastDto) {
+  const {current, daily} = data
+
+  return {
+    ...current,
+    dt: format(new Date(current.dt * 1000), 'iii do LLL'),
+    weather: {
+      ...current.weather[0],
+      icon: getWeatherIcon(current.weather[0].icon)
+    },
+    temp: Math.round(current.temp),
+    daily: daily.map((d) => ({
+      ...d,
+      dt: {
+        day: format(new Date(d.dt * 1000), 'iii do'),
+        month: format(new Date(d.dt * 1000), 'LLL')
+      },
+      weather: {
+        ...d.weather[0],
+        icon: getWeatherIcon(d.weather[0].icon)
+      },
+      temp: {
+        ...d.temp,
+        min: Math.round(d.temp.min),
+        max: Math.round(d.temp.max)
+      }
+    }))
+  }
 }
