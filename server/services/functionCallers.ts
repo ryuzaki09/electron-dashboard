@@ -1,17 +1,18 @@
 import axios from 'axios'
-import 'dotenv/config'
+// import 'dotenv/config'
 import {config} from '../../src/config'
 import {coords} from '../../src/config/config'
-import {timestampToDayOfWeek, timestampToUKdate} from '../../src/helpers/time'
+import {timestampToDayOfWeek, timestampToUKdate, formatCorrectDate} from '../../src/helpers/time'
 
 import type {IWeatherForecastDto} from '../../src/api/types'
 
 interface IGetWeatherProps {
   longitude: number;
   latitude: number;
+  location?: string
 }
 
-async function getWeatherForecast({date}: {date: string}) {
+export async function getWeatherForecast({date}: {date: string}) {
   const weather = await axios.get(
       `https://api.openweathermap.org/data/3.0/onecall?lat=${coords.lat}&lon=${
         coords.lon
@@ -24,10 +25,12 @@ async function getWeatherForecast({date}: {date: string}) {
     return null
   }
 
+  const formattedDate = formatCorrectDate(date)
+
   const dailyData = data.daily
   const foundDailyData = dailyData.find(
     (d: IWeatherForecastDto['daily'][number]) =>
-      timestampToUKdate(d.dt) === date || timestampToDayOfWeek(d.dt).toLowerCase() === date.toLowerCase()
+      timestampToUKdate(d.dt) === formattedDate || timestampToDayOfWeek(d.dt).toLowerCase() === formattedDate.toLowerCase()
   )
 
   console.log('found daily data: ', foundDailyData)
@@ -43,10 +46,23 @@ async function getWeatherForecast({date}: {date: string}) {
   return {}
 }
 
-async function getWeatherForecastForLocation({longitude, latitude}: IGetWeatherProps) {
+export async function getWeatherForecastForLocation({longitude, latitude, location}: IGetWeatherProps) {
+  let coordinates = {
+    lon: longitude,
+    lat: latitude
+  }
+  if (location) {
+    const {data} = await axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=1&appid=${config.openweatherKey}`)
+    console.log('location result: ', data)
+    // const locationCoords = await weatherApi.getCoordinatesOfLocation(location)
+    coordinates = {
+      lon: data[0].lon,
+      lat: data[0].lat
+    }
+  }
   const weather = await axios.get(
-      `https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${
-        longitude
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${coordinates.lat}&lon=${
+        coordinates.lon
       }&exclude=hourly,minutely&units=metric&appid=${config.openweatherKey}`
     )
 
