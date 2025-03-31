@@ -13,8 +13,6 @@ import {dateAndDay} from './helpers/time'
 import './app.module.css'
 
 export default function App() {
-  console.log('today: ', dateAndDay)
-
   return (
     <MusicProvider>
       <WithWeatherForecast>

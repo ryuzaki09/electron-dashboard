@@ -125,7 +125,9 @@ module.exports = {
         process.env.WHISPER_HOST || ''
       ),
       'process.env.OPENAI_KEY': JSON.stringify(process.env.OPENAI_KEY || ''),
-      'process.env.OPENROUTE': JSON.stringify(process.env.OPENROUTE_KEY || '')
+      'process.env.OPENROUTE_KEY': JSON.stringify(
+        process.env.OPENROUTE_KEY || ''
+      )
     })
     // SECOND SCREEN
     //new htmlWebpackPlugin({

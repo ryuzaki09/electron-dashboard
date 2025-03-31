@@ -13,7 +13,7 @@ import homeAssistantRouter from './routes/homeAssistant.ts'
 import openaiRouter from './routes/openai'
 import {mediaPath, musicPath} from './constants.ts'
 
-import config from '../webpack.config.common.js'
+import config from '../webpack.config.js'
 
 const PORT = process.env.PORT || 3000
 const app = express()

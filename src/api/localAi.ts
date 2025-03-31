@@ -2,6 +2,7 @@ import axios from 'axios'
 
 import {config} from '../config'
 import {today, getCurrentTime} from '../helpers/time'
+import {functions} from '../../server/helpers/openai'
 
 const aiClient = axios.create({
   baseURL: `http://${config.localAiHost}/api`,
@@ -30,8 +31,8 @@ export const localAi = {
     formData.append('audio', audio, 'recording.wav')
 
     const {data} = await axios.post(
-      `http://${config.whisperHost}/ai/stt`,
-      // `http://localhost:3003/transcribe`,
+      // `http://${config.whisperHost}/ai/stt`,
+      `http://localhost:3003/transcribe`,
       formData,
       {
         headers: {
@@ -74,11 +75,13 @@ export const localAi = {
     const result = await aiClient.post('/chat/completions', {
       model: 'llama3.2:latest',
       messages: [
+        systemPrompt,
         {
           role: 'user',
           content: transcription
         }
-      ]
+      ],
+      tools: functions
     })
     console.log('result: ', result)
     return result.data.choices[0].message.content
