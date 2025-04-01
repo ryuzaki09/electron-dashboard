@@ -15,14 +15,28 @@ export const homeAssistantApi = {
   },
   closeSignal: () => signal = null,
   conversation: async (text: string) => {
-    const result = await axios.post('/home-assistant/conversation', {
-      text
-    })
+    const result = await axios.post(
+    `http://${process.env.HA_HOST}:8123/api/conversation/process`,
+      { text, language: 'en' },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.HA_LONG_LIVE_TOKEN}`
+        }
+      }
+    )
     console.log('result: ', result)
   },
 
   getStates: async () => {
-    return axios.get('/home-assistant/states', {...(signal && {signal})})
+    return axios.get(
+      `http://${process.env.HA_HOST}:8123/api/states`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.HA_LONG_LIVE_TOKEN}`
+        },
+        ...(signal && {signal})
+      }
+    )
   },
 
   getLights: async (): Promise<IDeviceState[]> => {
