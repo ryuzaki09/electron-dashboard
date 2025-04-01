@@ -27,15 +27,19 @@ router.post('/conversation', async (req, res) => {
 })
 
 router.get('/states', async (_req: express.Request, res) => {
-  const result = await axios.get(
-    `http://${process.env.HA_HOST}:8123/api/states`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.HA_LONG_LIVE_TOKEN}`
+  try {
+    const result = await axios.get(
+      `http://${process.env.HA_HOST}:8123/api/states`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.HA_LONG_LIVE_TOKEN}`
+        }
       }
-    }
-  )
-
-  res.send(result.data)
+    )
+    res.send(result.data)
+  } catch (e) {
+    console.log('Unable to fetch states')
+    res.send([])
+  }
 })
 export default router

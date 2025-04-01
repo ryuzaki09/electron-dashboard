@@ -1,5 +1,5 @@
 export const config = {
-  useLocalAi: true,
+  useLocalAi: false,
   useWakeWord: false,
   homeAssistantIP: process.env.HA_HOST,
   homeAssistantToken: process.env.HA_LONG_LIVE_TOKEN,

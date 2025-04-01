@@ -11,20 +11,30 @@ export function HomeAssistant() {
   const [devices, setDevices] = React.useState<any[]>([])
 
   React.useEffect(() => {
+    const controller = new AbortController()
+    const {signal} = controller
+    let intervalId: NodeJS.Timeout
     const fetchDevices = async () => {
-      const result = await homeAssistantApi.getLights()
-      const transformedData = transformHomeDevices(result)
-      setDevices(transformedData)
+      try {
+        homeAssistantApi.setSignal(signal)
+        const result = await homeAssistantApi.getLights()
+        const transformedData = transformHomeDevices(result)
+        setDevices(transformedData)
+      } catch (e) {
+        console.log('unable to set devices')
+      }
     }
 
     fetchDevices()
 
-    let intervalId = setInterval(() => {
+    intervalId = setInterval(() => {
       fetchDevices()
     }, 10000)
 
     return () => {
       clearInterval(intervalId)
+      controller.abort()
+      homeAssistantApi.closeSignal()
     }
   }, [])
 
