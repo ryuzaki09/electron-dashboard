@@ -49,31 +49,11 @@ export const openAiAPI = {
     })
 
     const {message} = response.choices[0]
+
     if (message.tool_calls) {
-      const toolCall = message.tool_calls[0]
-      const customFunction = getFunctionCall(toolCall.function.name)
-
-      if (customFunction) {
-        console.log('Calling custom function: ', toolCall.function.name)
-        const args = JSON.parse(toolCall.function.arguments)
-        console.log('args: ', args)
-        const result = await customFunction(args)
-        // console.log('Function result: ', JSON.stringify(result))
-        chatHistory.push(message)
-        chatHistory.push({
-          role: 'tool',
-          tool_call_id: toolCall.id,
-          content: JSON.stringify(result)
-        })
-        const response2 = await openai.chat.completions.create({
-          model: 'gpt-3.5-turbo-1106',
-          messages: [systemPrompt, ...chatHistory],
-          tools: functions
-        })
-
-        console.log('RESPONSE 2: ', response2.choices)
-        return response2.choices[0].message.content
-      }
+      return handleCustomFunction({
+        message
+      })
     }
     console.log('got response from chat: ', message)
 
@@ -95,5 +75,34 @@ export const openAiAPI = {
       response: text,
       audioUrl: `http://${process.env.BACKEND_HOST}/${tts_path}`
     }
+  }
+}
+
+async function handleCustomFunction({message}) {
+  const toolCall = message.tool_calls[0]
+  const customFunction = getFunctionCall(toolCall.function.name)
+
+  if (customFunction) {
+    console.log('Calling custom function: ', toolCall.function.name)
+    const args = JSON.parse(toolCall.function.arguments)
+    console.log('args: ', args)
+    const result = await customFunction.functionCaller(args)
+    // console.log('Function result: ', JSON.stringify(result))
+    if (customFunction.retainMessages) {
+      chatHistory.push(message)
+    }
+
+    chatHistory.push({
+      role: 'tool',
+      tool_call_id: toolCall.id,
+      content: JSON.stringify(result)
+    })
+    const response = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo-1106',
+      messages: [systemPrompt, ...chatHistory],
+      tools: functions
+    })
+
+    return response
   }
 }

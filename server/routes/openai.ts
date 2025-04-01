@@ -59,15 +59,6 @@ router.post('/converse', upload.single('audio'), async (req, res) => {
   const result = await openAiAPI.createChat(transcription)
 
   res.send(result)
-  // if (result) {
-  //   const audio = await openAiAPI.textToSpeech(result)
-  //   console.log('RETURNING AUDIO: ', audio)
-  //   if (audio) {
-  //     res.json(audio)
-  //   }
-  // } else {
-  //   res.send({data: ''})
-  // }
 })
 
 export default router

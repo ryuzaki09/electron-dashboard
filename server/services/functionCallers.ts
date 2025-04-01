@@ -74,9 +74,22 @@ export async function getWeatherForecastForLocation({longitude, latitude, locati
   } : {}
 }
 
-const functionMap = {
-  'getWeatherForecast': getWeatherForecast,
-  'getWeatherForecastForLocation': getWeatherForecastForLocation
+interface IFunctionMapper {
+  [key: string]: {
+    functionCaller: (args: any) => Promise<any>
+    retainMessages: boolean
+  }
+}
+
+const functionMap: IFunctionMapper = {
+  getWeatherForecast: {
+    functionCaller: getWeatherForecast,
+    retainMessages: false
+  },
+  getWeatherForecastForLocation: {
+    functionCaller: getWeatherForecastForLocation,
+    retainMessages: false
+  }
 }
 
 export function getFunctionCall(functionName: string) {
