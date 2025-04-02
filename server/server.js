@@ -9,6 +9,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware'
 import 'dotenv/config'
 
 import mediaRouter from './routes/media.ts'
+import homeAssistantRouter from './routes/homeAssistant'
 import openaiRouter from './routes/openai'
 import {mediaPath, musicPath} from './constants.ts'
 
@@ -37,6 +38,7 @@ app.use(middlewareInstance)
 app.use(webpackHotMiddleware(compiler))
 
 app.use('/', mediaRouter)
+app.use('/home-assistant', homeAssistantRouter)
 app.use('/openai', openaiRouter)
 
 app.get('*', (_req, res) => {
