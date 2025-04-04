@@ -7,7 +7,14 @@ export interface IDeviceState {
   last_updated: string;
 }
 
+// Can't call HA directly because of CORS, therefore it calls the backend server which handles the request
+let signal: AbortSignal | null
+
 export const homeAssistantApi = {
+  setSignal: (newSignal: AbortSignal) => {
+    signal = newSignal
+  },
+  closeSignal: () => signal = null,
   conversation: async (text: string) => {
     const result = await axios.post('/home-assistant/conversation', {
       text
@@ -20,10 +27,15 @@ export const homeAssistantApi = {
   },
 
   getLights: async (): Promise<IDeviceState[]> => {
-    const result = await homeAssistantApi.getStates()
-    const lights = result?.data.filter((d) => d.entity_id.startsWith('light')) || []
-    console.log('result: ', lights)
+    try {
+      const result = await homeAssistantApi.getStates()
+      const lights = result?.data.filter((d) => d.entity_id.startsWith('light')) || []
+      console.log('result: ', lights)
 
-    return lights
+      return lights
+    } catch (e) {
+      console.log('Unable to getLights: ', e)
+      return []
+    }
   }
 }

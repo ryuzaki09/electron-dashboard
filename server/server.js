@@ -9,7 +9,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware'
 import 'dotenv/config'
 
 import mediaRouter from './routes/media.ts'
-import homeAssistantRouter from './routes/homeAssistant.ts'
+import homeAssistantRouter from './routes/homeAssistant'
 import openaiRouter from './routes/openai'
 import {mediaPath, musicPath} from './constants.ts'
 

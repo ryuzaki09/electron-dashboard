@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import {config} from '../config'
 import {today, getCurrentTime} from '../helpers/time'
-import {functions} from '../../server/helpers/openai'
+import {getFunctionCall} from '../helpers/localAiHandler'
 
 const aiClient = axios.create({
   baseURL: `http://${config.localAiHost}/api`,
@@ -12,11 +12,32 @@ const aiClient = axios.create({
 })
 
 const systemPrompt = {
-  role: 'developer',
-  content: [
-    `You are a helpful assistant that have all the knowledge in the world. You will answer questions concisely and simplified. Today's date is ${today}. 
-The current time is ${getCurrentTime()}`
-  ]
+  role: 'assistant',
+  content: `
+You MUST respond in structured JSON format when an action is required.
+- If an action needs to be taken or when weather information is asked, respond with JSON:
+  {
+    "action": "<action_name>",
+    "parameters": { "key": "value" }
+  }
+- If user asks about the weather for a location then return then you MUST respond with this:
+  {
+    "action": "get_weather",
+    "paramaters": {
+      "location": <coordinates>
+    }
+  }
+- If user asks about the weather for a particular date, i.e. "today", "tomorrow", "Monday", "Tuesday", etc. then respond with this:
+  {
+    "action": "get_weather_forecast",
+    "parameters": {
+      "date": <date>
+    }
+  }
+- If no action is required, respond normally.
+Today's date is ${today}.
+The current time is ${getCurrentTime()}. 
+`
 }
 
 interface IChatResponse {
@@ -57,14 +78,39 @@ export const localAi = {
 
   getAiResponse: async (transcription: string) => {
     const result = await aiClient.post('/chat/completions', {
-      model: 'llama3.2:latest',
+      model: 'qwen2.5:latest',
       messages: [
+        systemPrompt,
         {
           role: 'user',
           content: transcription
         }
       ]
     })
+    const {data} = result
+    const {content} = data.choices[0].message
+
+    if (!content) {
+      return 'Sorry, something went wrong'
+    }
+
+    const parsed = JSON.parse(content)
+
+    if (parsed.action && parsed.parameters) {
+      const customFunction = getFunctionCall(parsed.action)
+
+      if (customFunction) {
+        console.log('parsed: ', parsed)
+        const result = await customFunction.functionCall(parsed.parameters)
+        console.log('Custom Function result: ', result)
+        const transcriptionResponse = customFunction.responseHandler({
+          ...parsed,
+          ...result
+        })
+
+        console.log('transcription response: ', transcriptionResponse)
+      }
+    }
     console.log('result: ', result)
     return result.data.choices[0].message.content
   },
@@ -80,9 +126,9 @@ export const localAi = {
           role: 'user',
           content: transcription
         }
-      ],
-      tools: functions
+      ]
     })
+
     console.log('result: ', result)
     return result.data.choices[0].message.content
   }
