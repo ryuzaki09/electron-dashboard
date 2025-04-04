@@ -1,6 +1,7 @@
 import {app} from 'electron'
 import installer, {REACT_DEVELOPER_TOOLS} from 'electron-devtools-installer'
 import menu from 'electron-context-menu'
+import 'dotenv/config'
 
 import {createAppWindow} from './main/electron-application.ts'
 

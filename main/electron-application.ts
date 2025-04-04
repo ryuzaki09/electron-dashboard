@@ -1,4 +1,5 @@
 import {BrowserWindow} from 'electron'
+import {config} from '../src/config'
 
 export function createAppWindow(path, windowOpts = {}) {
   const defaultOpts = {
@@ -7,10 +8,21 @@ export function createAppWindow(path, windowOpts = {}) {
     webPreferences: {nodeIntegration: true}
   }
 
+  const prodOptions = config.isDevelopment
+    ? {}
+    : {
+        kiosk: true,
+        autoHideMenuBar: true
+      }
+
   let win: BrowserWindow | null = new BrowserWindow({
     ...defaultOpts,
     ...windowOpts
   })
+
+  if (!config.isDevelopment) {
+    win.setFullScreen(true)
+  }
 
   // win.loadFile(path)
   //win.webContents.openDevTools()
