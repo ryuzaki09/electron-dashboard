@@ -8,7 +8,6 @@ import {HomeAssistant} from './pages/home-assistant'
 import {Assistant} from './pages/assistant'
 import {MusicProvider} from './context/audio'
 import {WithWeatherForecast} from './components/withWeatherForecast'
-import {dateAndDay} from './helpers/time'
 
 import './app.module.css'
 

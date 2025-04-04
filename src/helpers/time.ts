@@ -18,6 +18,10 @@ export const timestampToDayOfWeek = (timestamp: number) => {
   return format(new Date(timestamp * 1000), 'iiii')
 }
 
+export const timestampToFriendlyDateString = (timestamp: number) => {
+  return format(new Date(timestamp * 1000), 'iiii do MMMM')
+}
+
 export const formatCorrectDate = (date: string) => {
   if (date === 'today') {
     return today
