@@ -18,7 +18,7 @@ const systemPrompt: ChatCompletionMessageParam = {
 }
 
 const MAX_HISTORY = 10
-const chatHistory: ChatCompletionMessageParam[] = []
+let chatHistory: ChatCompletionMessageParam[] = []
 
 export const openAiAPI = {
   speechToText: async (audio: Uploadable) => {
@@ -61,19 +61,27 @@ export const openAiAPI = {
   },
 
   textToSpeech: async (text: string) => {
-    console.log('text to speech')
-    const response = await openai.audio.speech.create({
-      model: 'tts-1',
-      voice: 'alloy',
-      input: text
-    })
-    const tts_path = `tts_responses/${Date.now()}.mp3`
-    const buffer = Buffer.from(await response.arrayBuffer())
-    await fs.promises.writeFile(tts_path, buffer)
+    console.log('requesting openai text to speech: ', text)
+    try {
+      const response = await openai.audio.speech.create({
+        model: 'tts-1',
+        voice: 'alloy',
+        input: filterTextInput(text)
+      })
+      const tts_path = `tts_responses/${Date.now()}.mp3`
+      const buffer = Buffer.from(await response.arrayBuffer())
+      await fs.promises.writeFile(tts_path, buffer)
 
-    return {
-      response: text,
-      audioUrl: `http://${process.env.BACKEND_HOST}/${tts_path}`
+      return {
+        response: text,
+        audioUrl: `http://${process.env.BACKEND_HOST}/${tts_path}`
+      }
+    } catch (e) {
+      console.log('Unable to request tts: ', e)
+      return {
+        response: text,
+        audioUrl: ''
+      }
     }
   }
 }
@@ -88,9 +96,7 @@ async function handleCustomFunction({message}) {
     console.log('args: ', args)
     const result = await customFunction.functionCaller(args)
     // console.log('Function result: ', JSON.stringify(result))
-    if (customFunction.retainMessages) {
-      chatHistory.push(message)
-    }
+    chatHistory.push(message)
 
     chatHistory.push({
       role: 'tool',
@@ -103,6 +109,12 @@ async function handleCustomFunction({message}) {
       tools: functions
     })
 
+    chatHistory = []
+
     return response
   }
+}
+
+function filterTextInput(text: string) {
+  return text.replaceAll('°C', ' degree celsius')
 }

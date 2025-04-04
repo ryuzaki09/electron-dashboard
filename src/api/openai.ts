@@ -16,7 +16,7 @@ export const openAiAPI = {
     )
 
     console.log('got response: ', response.data)
-    return response.data
+    return response.data.choices[0].message.content
   },
 
   textToSpeech: async (text: string) => {
