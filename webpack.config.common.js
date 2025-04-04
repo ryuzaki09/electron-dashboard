@@ -127,7 +127,8 @@ module.exports = {
       'process.env.OPENAI_KEY': JSON.stringify(process.env.OPENAI_KEY || ''),
       'process.env.OPENROUTE_KEY': JSON.stringify(
         process.env.OPENROUTE_KEY || ''
-      )
+      ),
+      'process.env.USE_WAKEWORD': JSON.stringify(process.env.USE_WAKEWORD || '')
     })
     // SECOND SCREEN
     //new htmlWebpackPlugin({
