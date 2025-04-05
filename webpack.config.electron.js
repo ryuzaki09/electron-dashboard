@@ -1,16 +1,33 @@
-import {merge} from 'webpack-merge'
-import path from 'path'
-import common from './webpack.config.common'
+const path = require('path')
 
-export default merge(common, {
-  entry: ['./index.js'],
+module.exports = {
+  mode: 'development',
+  target: 'electron-main',
+  entry: './index.js',
   output: {
     globalObject: 'this',
     path: path.resolve(__dirname, 'build'),
-    filename: './index.js'
+    filename: 'index.js'
+  },
+  resolve: {
+    extensions: ['.ts', '.js']
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|js)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-typescript']
+          }
+        }
+      }
+    ]
   },
   node: {
     __dirname: false,
     __filename: false
   }
-})
+}
