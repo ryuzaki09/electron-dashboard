@@ -1,7 +1,9 @@
+import path from 'path'
 import {app} from 'electron'
 import installer, {REACT_DEVELOPER_TOOLS} from 'electron-devtools-installer'
 import menu from 'electron-context-menu'
 import 'dotenv/config'
+import {config} from './src/config'
 
 import {createAppWindow} from './main/electron-application.ts'
 
@@ -19,7 +21,11 @@ let mainWindow
 
 function createWindow() {
   mainWindow = createAppWindow()
-  mainWindow.loadURL('http://localhost:3000')
+  if (config.isDevelopment) {
+    mainWindow.loadURL('http://localhost:3000')
+  } else {
+    mainWindow.loadFile(path.join(__dirname, '../dist/main-screen.html'))
+  }
   // mainWindow = createAppWindow('./dist/main-screen.html')
   //secondWindow = createAppWindow('./dist/second-screen.html', {x: 20, y: 20})
 

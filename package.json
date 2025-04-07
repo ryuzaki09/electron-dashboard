@@ -4,8 +4,8 @@
   "description": "Home Dashboard built via Electron to play media, control home devices, get weather data.",
   "main": "build/index.js",
   "scripts": {
-    "build": "npm run build:renderer && npm run build:main",
-    "build:renderer": "rm -rf ./dist && webpack --config webpack.config.js",
+    "build": "NODE_ENV=production npm run build:renderer && npm run build:main",
+    "build:renderer": "rm -rf ./dist && webpack --config webpack.config.prod.js",
     "build:main": "rm -rf ./build && webpack --config webpack.config.electron.js",
     "build:pi": "DIR_TARGET=release electron-builder --linux --armv7l",
     "start": "electron .",
@@ -14,7 +14,7 @@
     "lint": "eslint . --ext .js,.ts,.tsx",
     "start-electron": "electron -r ./babel-register.cjs ./index.js",
     "oldstart-electron": "electron -r ./babel-register.js ./index.ts",
-    "dev": "NODE_ENV=development BROWSER=none rm -rf ./dist/ && node -r ./babel-register.cjs server/server.js",
+    "dev": "NODE_ENV=development BROWSER=none node -r ./babel-register.cjs server/server.js",
     "clean:install": "rm -rf node_modules && npm install",
     "tsc": "tsc",
     "devapp": "node -r ./babel-register.cjs server/server.js"
