@@ -19,10 +19,7 @@ router.get('/videos', (_req: express.Request, res) => {
       .map((file) => ({
         name: file,
         url: `/media/${file}`,
-        domain:
-          process.env.NODE_ENV === 'production'
-            ? process.env.BACKEND_HOST
-            : `http://${process.env.BACKEND_HOST}`
+        domain: process.env.BACKEND_HOST
       }))
       .filter((f) => !f.name.startsWith('.'))
 

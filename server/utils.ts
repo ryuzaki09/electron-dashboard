@@ -48,10 +48,7 @@ export function getFilesRecursively(originalPath: string) {
             type: 'file',
             basePath,
             url: `/music/${item.name}`,
-            domain:
-              process.env.NODE_ENV === 'production'
-                ? process.env.BACKEND_HOST
-                : `http://${process.env.BACKEND_HOST}`
+            domain: process.env.BACKEND_HOST
           })
         }
       })

@@ -74,7 +74,7 @@ export const openAiAPI = {
 
       return {
         response: text,
-        audioUrl: `http://${process.env.BACKEND_HOST}/${tts_path}`
+        audioUrl: `${process.env.BACKEND_HOST}/${tts_path}`
       }
     } catch (e) {
       console.log('Unable to request tts: ', e)

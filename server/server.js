@@ -33,9 +33,10 @@ app.use('/media', express.static(mediaPath))
 app.use('/music', express.static(path.join(process.cwd(), 'music')))
 app.use('/tts_responses', express.static('tts_responses/'))
 
-app.use(middlewareInstance)
-
-app.use(webpackHotMiddleware(compiler))
+if (process.env.NODE_ENV !== 'production') {
+  app.use(middlewareInstance)
+  app.use(webpackHotMiddleware(compiler))
+}
 
 app.use('/', mediaRouter)
 app.use('/home-assistant', homeAssistantRouter)
@@ -45,15 +46,23 @@ app.get('*', (_req, res) => {
   res.sendFile(path.join(process.cwd(), 'dist', 'main-screen.html'))
 })
 
-app.listen(PORT, (err) => {
-  if (err) {
-    return console.error(err)
-  }
-
-  middlewareInstance.waitUntilValid(() => {
+export function startServer() {
+  return app.listen(PORT, (err) => {
+    if (err) {
+      return console.error(err)
+    }
     console.log(chalk.cyanBright.bold(`Listening at http://localhost:${PORT}/`))
-    setTimeout(() => {
-      spawn('npm', ['run', 'start-electron'], {shell: true, stdio: 'inherit'})
-    }, 2000)
   })
-})
+}
+//app.listen(PORT, (err) => {
+//if (err) {
+//return console.error(err)
+//}
+
+//middlewareInstance.waitUntilValid(() => {
+//console.log(chalk.cyanBright.bold(`Listening at http://localhost:${PORT}/`))
+//setTimeout(() => {
+//spawn('npm', ['run', 'start-electron'], {shell: true, stdio: 'inherit'})
+//}, 2000)
+//})
+//})
