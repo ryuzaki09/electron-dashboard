@@ -30,5 +30,7 @@ app.listen(PORT, (err) => {
   if (err) {
     return console.error(err)
   }
-  console.log(chalk.redBright.bold(`Listening at http://localhost:${PORT}/`))
+  console.log(
+    chalk.redBright.bold(`Backend Listening at http://localhost:${PORT}/`)
+  )
 })

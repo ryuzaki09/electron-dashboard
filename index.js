@@ -21,20 +21,18 @@ let mainWindow
 
 function createWindow() {
   spawn('npm', ['run', 'backend'], {shell: true, stdio: 'inherit'})
-  mainWindow = createAppWindow()
-  //if (config.isDevelopment) {
-  mainWindow.loadURL('http://localhost:3000')
-  //} else {
-  //mainWindow.loadFile(path.join(__dirname, '../dist/main-screen.html'))
-  //}
-  // mainWindow = createAppWindow('./dist/main-screen.html')
-  //secondWindow = createAppWindow('./dist/second-screen.html', {x: 20, y: 20})
 
-  //if (config.isDevelopment) {
-  installer(REACT_DEVELOPER_TOOLS)
-    .then((name) => console.log(`Added Extension: ${name}`))
-    .catch((err) => console.log('An error occurred: ', err))
-  //}
+  mainWindow = createAppWindow()
+
+  if (config.isDevelopment) {
+    mainWindow.loadURL('http://localhost:3000')
+
+    installer(REACT_DEVELOPER_TOOLS)
+      .then((name) => console.log(`Added Extension: ${name}`))
+      .catch((err) => console.log('An error occurred: ', err))
+  } else {
+    mainWindow.loadFile(path.join(__dirname, '../dist/main-screen.html'))
+  }
 }
 
 app.on('ready', createWindow)
@@ -46,11 +44,11 @@ app.on('window-all-closed', () => {
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit()
+    mainWindow = null
   }
 })
 
 app.on('activate', () => {
-  console.log('HEREE ACTIVATE')
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {

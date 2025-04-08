@@ -36,7 +36,9 @@ app.listen(PORT, (err) => {
     return console.error(err)
   }
   middlewareInstance.waitUntilValid(() => {
-    console.log(chalk.cyanBright.bold(`Listening at http://localhost:${PORT}/`))
+    console.log(
+      chalk.cyanBright.bold(`Frontend Listening at http://localhost:${PORT}/`)
+    )
     setTimeout(() => {
       spawn('npm', ['run', 'start-electron'], {shell: true, stdio: 'inherit'})
     }, 2000)
