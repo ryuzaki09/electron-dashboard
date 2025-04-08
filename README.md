@@ -46,6 +46,8 @@ Soon it will be able to:
 - tell the weather
 - answer general questions
 
+It currently has the ability to connect to openai and use it get weather information and answer general questions.
+
 ### Setup
 
 The app plays music in the `music` folder and videos in the `media` folder. If there is a central place for these media, a good option is to mount these folders so they don't need to be moved or copied.
