@@ -7,7 +7,6 @@ require('dotenv').config()
 const PORT = process.env.PORT || 3000
 
 module.exports = {
-  mode: 'development',
   entry: {
     mainScreen: [
       `webpack-hot-middleware/client?path=http://localhost:${PORT}/__webpack_hmr`,

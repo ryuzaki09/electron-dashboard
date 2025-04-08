@@ -9,6 +9,16 @@ let musicMediaCache: IFile[] | null = null
 let lastCacheTime = 0
 const CACHE_DURATION = 1000 * 60 * 120 // 120minutes
 
+router.use((_req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET, PATCH, PUT, DELETE')
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  )
+  next()
+})
+
 router.get('/videos', (_req: express.Request, res) => {
   console.log('FETCHING VIDEOS')
   fs.readdir(mediaPath, (err, files) => {
@@ -19,10 +29,7 @@ router.get('/videos', (_req: express.Request, res) => {
       .map((file) => ({
         name: file,
         url: `/media/${file}`,
-        domain:
-          process.env.NODE_ENV === 'production'
-            ? process.env.BACKEND_HOST
-            : `http://${process.env.BACKEND_HOST}`
+        domain: process.env.BACKEND_HOST
       }))
       .filter((f) => !f.name.startsWith('.'))
 

@@ -1,7 +1,10 @@
+import path from 'path'
 import {app} from 'electron'
 import installer, {REACT_DEVELOPER_TOOLS} from 'electron-devtools-installer'
 import menu from 'electron-context-menu'
 import 'dotenv/config'
+import {config} from './src/config'
+import {spawn} from 'child_process'
 
 import {createAppWindow} from './main/electron-application.ts'
 
@@ -15,17 +18,21 @@ menu({
 })
 
 let mainWindow
-//let secondWindow
 
 function createWindow() {
-  mainWindow = createAppWindow()
-  mainWindow.loadURL('http://localhost:3000')
-  // mainWindow = createAppWindow('./dist/main-screen.html')
-  //secondWindow = createAppWindow('./dist/second-screen.html', {x: 20, y: 20})
+  spawn('npm', ['run', 'backend'], {shell: true, stdio: 'inherit'})
 
-  installer(REACT_DEVELOPER_TOOLS)
-    .then((name) => console.log(`Added Extension: ${name}`))
-    .catch((err) => console.log('An error occurred: ', err))
+  mainWindow = createAppWindow()
+
+  if (config.isDevelopment) {
+    mainWindow.loadURL('http://localhost:3000')
+
+    installer(REACT_DEVELOPER_TOOLS)
+      .then((name) => console.log(`Added Extension: ${name}`))
+      .catch((err) => console.log('An error occurred: ', err))
+  } else {
+    mainWindow.loadFile(path.join(__dirname, '../dist/main-screen.html'))
+  }
 }
 
 app.on('ready', createWindow)
@@ -37,6 +44,7 @@ app.on('window-all-closed', () => {
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit()
+    mainWindow = null
   }
 })
 
@@ -45,9 +53,7 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
     // mainWindow = createAppWindow('./dist/main-screen.html')
+    // spawn('npm', ['run', 'backend'], {shell: true, stdio: 'inherit'})
     createWindow()
   }
-  //if (secondWindow === null) {
-  //secondWindow = createAppWindow('./dist/second-screen.html', {x: 20, y: 20})
-  //}
 })

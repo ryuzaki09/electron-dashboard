@@ -7,14 +7,14 @@ import type {IWeatherForecastDto} from './types'
 
 export const weatherApi = {
   getForecast: async () => {
-    // const weather = await axios.get<IWeatherForecastDto>(
-    //   `https://api.openweathermap.org/data/3.0/onecall?lat=${coords.lat}&lon=${
-    //     coords.lon
-    //   }&exclude=hourly,minutely&units=metric&appid=${config.openweatherKey}`
-    // )
-    // const transformed = weather.data ? transformWeatherData(weather.data) : null
-    // console.log('transformed: ', transformed)
-    // return transformed
+    const weather = await axios.get<IWeatherForecastDto>(
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${coords.lat}&lon=${
+        coords.lon
+      }&exclude=hourly,minutely&units=metric&appid=${config.openweatherKey}`
+    )
+    const transformed = weather.data ? transformWeatherData(weather.data) : null
+    console.log('transformed: ', transformed)
+    return transformed
     const result = await Promise.resolve({
     "lat": 51.5692,
     "lon": 0.3436,
