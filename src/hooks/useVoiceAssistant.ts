@@ -132,9 +132,10 @@ export function useVoiceAssistant() {
 
   async function handleSpeechReponse(audioBlob: Blob) {
     setIsListening(false)
-    const aiAudioResponse = await ai.converse(audioBlob)
-    console.log('AI response: ', aiAudioResponse)
-    const speechAudio = await ai.textToSpeech(aiAudioResponse)
+    // send audio to AI to transcribe and get answer back from AI
+    const aiResponse = await ai.converse(audioBlob)
+    console.log('AI response: ', aiResponse)
+    const speechAudio = await ai.textToSpeech(aiResponse)
     // const aiAudioResponse = await openAiAPI.converse(audioBlob)
     // console.log('tts result: ', aiAudioResponse)
     const audio = new Audio(speechAudio.data.audioUrl)

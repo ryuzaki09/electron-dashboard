@@ -27,7 +27,7 @@ router.post('/stt', upload.single('audio'), async (req, res) => {
   const result = await openAiAPI.speechToText(audioPath)
   fs.unlinkSync(file.path)
 
-  res.send({data: result})
+  res.send(result)
 })
 
 router.post('/tts', async (req, res) => {
@@ -57,6 +57,20 @@ router.post('/converse', upload.single('audio'), async (req, res) => {
   fs.unlinkSync(file.path)
 
   const result = await openAiAPI.createChat(transcription)
+
+  res.send(result)
+})
+
+router.post('/chat', async (req, res) => {
+  const {text} = req.body
+
+  if (!text) {
+    return res.status(400).send({
+      message: 'text is required'
+    })
+  }
+
+  const result = await openAiAPI.createChat(text)
 
   res.send(result)
 })

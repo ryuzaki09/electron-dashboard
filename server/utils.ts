@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import yaml from 'js-yaml'
 
 export interface IFile {
   name: string
@@ -61,4 +62,47 @@ export function getFilesRecursively(originalPath: string) {
   }
 
   return startScan(originalPath)
+}
+
+const doc = yaml.load(fs.readFileSync('../src/config/intents.yml', 'utf8'))
+
+export function checkIntent(speechText: string) {
+  let sentenceWords = []
+  console.log('Finding intent for: ', speechText)
+  const intent = doc.intents.find((intent) => {
+    const sentence = intent.sentences.find((sentence) => {
+      sentenceWords = sentence.replace('{slot}', '').split(' ')
+      console.log('Sentence words: ', sentenceWords)
+
+      const match = sentenceWords.every((word) => speechText.includes(word))
+      return match
+    })
+    console.log('Sentence: ', sentence)
+
+    if (sentence) {
+      return intent
+    }
+
+    return false
+  })
+
+  if (!intent) {
+    console.log('No intent found')
+    return false
+  }
+
+  console.log('Found intent: ', intent)
+
+  const slotWords = speechText
+    .split(' ')
+    .filter((word) => !sentenceWords.includes(word))
+    .join(' ')
+
+  // console.log('LIGHTS: ', this.lights)
+  console.log('Remaining words: ', slotWords)
+
+  return {
+    intent,
+    slotWords
+  }
 }
