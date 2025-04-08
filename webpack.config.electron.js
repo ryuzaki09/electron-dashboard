@@ -10,24 +10,28 @@ module.exports = {
     filename: 'index.js'
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js', '.tsx']
   },
   module: {
     rules: [
       {
-        test: /\.(ts|js)$/,
-        exclude: /node_modules/,
+        test: /\.(js|jsx|ts|tsx)$/, // include .js files
+        exclude: /node_modules/, // exclude any and all files in the node_modules folder
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-typescript']
+            presets: [
+              '@babel/preset-env',
+              '@babel/preset-typescript',
+              '@babel/preset-react'
+            ]
           }
         }
       }
     ]
-  },
-  node: {
-    __dirname: false,
-    __filename: false
   }
+  // node: {
+  //   __dirname: false,
+  //   __filename: false
+  // }
 }
