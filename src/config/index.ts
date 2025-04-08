@@ -1,7 +1,7 @@
 export const config = {
   useLocalAi: false,
   useWakeWord: false,
-  isDevelopment: process.env.ENV === 'development',
+  isDevelopment: process.env.NODE_ENV === 'development',
   homeAssistantIP: process.env.HA_HOST,
   homeAssistantToken: process.env.HA_LONG_LIVE_TOKEN,
   localAiHost: process.env.OPENWEBUI_HOST,
