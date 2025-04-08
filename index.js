@@ -20,7 +20,8 @@ menu({
 let mainWindow
 
 function createWindow() {
-  spawn('npm', ['run', 'backend'], {shell: true, stdio: 'inherit'})
+  const backendPath = path.join(__dirname, 'server', 'backend-server.js')
+  spawn(process.execPath, [backendPath], {stdio: 'inherit'})
 
   mainWindow = createAppWindow()
 
@@ -33,6 +34,8 @@ function createWindow() {
   } else {
     mainWindow.loadFile(path.join(__dirname, '../dist/main-screen.html'))
   }
+
+  mainWindow.webContents.openDevTools({mode: 'detach'})
 }
 
 app.on('ready', createWindow)

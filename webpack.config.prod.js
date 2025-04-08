@@ -60,11 +60,5 @@ module.exports = merge(common, {
       ),
       'process.env.ENV': JSON.stringify(process.env.ENV || '')
     })
-    // SECOND SCREEN
-    //new htmlWebpackPlugin({
-    //filename: 'second-screen.html',
-    //template: 'main/windows/second-screen.html',
-    //chunks: ['secondScreen']
-    //})
   ]
 })
