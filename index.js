@@ -5,6 +5,7 @@ import menu from 'electron-context-menu'
 import 'dotenv/config'
 import {config} from './src/config'
 import {spawn} from 'child_process'
+import shell from 'shelljs'
 
 import {createAppWindow} from './main/electron-application.ts'
 
@@ -20,8 +21,32 @@ menu({
 let mainWindow
 
 function createWindow() {
-  const backendPath = path.join(__dirname, 'server', 'backend-server.js')
-  spawn(process.execPath, [backendPath], {stdio: 'inherit'})
+  if (config.isDevelopment) {
+    spawn('npm', ['run', 'backend'], {
+      shell: false,
+      stdio: 'inherit'
+    })
+  } else {
+    console.log('getting node path')
+    const nodePath = shell.which('node')
+    const babelRegister = path.resolve(__dirname, '../babel-register.cjs')
+    const backendFile = path.resolve(__dirname, '../server/backend-server.js')
+    console.log('node path: ', nodePath)
+    console.log('dir: ', __dirname)
+    spawn(nodePath.toString(), ['-r', babelRegister, backendFile], {
+      stdio: 'inherit',
+      shell: true
+    })
+
+    //const node = process.execPath.includes('electron')
+    //? process.execPath.replace(/electron(\.exe)?$/, 'node')
+    //: process.execPath
+
+    //spawn(node, ['-r', babelRegister, backendFile], {
+    //shell: false,
+    //stdio: 'inherit'
+    //})
+  }
 
   mainWindow = createAppWindow()
 
