@@ -2,6 +2,7 @@
 dist
 node_modules
 build
+server-dist
 *.mp4
 *.mkv
 *.mp3
@@ -9,4 +10,5 @@ build
 /music
 src/config/conversation.json
 src/config/config.ts
+src/config/intents.yml
 .env
