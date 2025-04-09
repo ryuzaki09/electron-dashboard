@@ -29,23 +29,13 @@ function createWindow() {
   } else {
     console.log('getting node path')
     const nodePath = shell.which('node')
-    const babelRegister = path.resolve(__dirname, '../babel-register.cjs')
-    const backendFile = path.resolve(__dirname, '../server/backend-server.js')
+    const backendFile = path.resolve(__dirname, '../server-dist/index.js')
     console.log('node path: ', nodePath)
     console.log('dir: ', __dirname)
-    spawn(nodePath.toString(), ['-r', babelRegister, backendFile], {
+    spawn(nodePath.toString(), [backendFile], {
       stdio: 'inherit',
       shell: true
     })
-
-    //const node = process.execPath.includes('electron')
-    //? process.execPath.replace(/electron(\.exe)?$/, 'node')
-    //: process.execPath
-
-    //spawn(node, ['-r', babelRegister, backendFile], {
-    //shell: false,
-    //stdio: 'inherit'
-    //})
   }
 
   mainWindow = createAppWindow()

@@ -12,7 +12,7 @@ export interface IFile {
   domain?: string
 }
 
-const basePath = process.cwd()
+const basePath = path.join(__dirname, '../')
 
 export function getFilesRecursively(originalPath: string) {
   const mediaPath = originalPath
@@ -64,10 +64,13 @@ export function getFilesRecursively(originalPath: string) {
   return startScan(originalPath)
 }
 
-const doc = yaml.load(fs.readFileSync('../src/config/intents.yml', 'utf8'))
+const intentFile = path.join(__dirname, '../src/config/intents.yml')
+
+// console.log('FILE: ', intentFile)
+const doc = yaml.load(fs.readFileSync(intentFile, 'utf8'))
 
 export function checkIntent(speechText: string) {
-  let sentenceWords = []
+  let sentenceWords: string[] = []
   console.log('Finding intent for: ', speechText)
   const intent = doc.intents.find((intent) => {
     const sentence = intent.sentences.find((sentence) => {

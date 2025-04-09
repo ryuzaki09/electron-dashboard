@@ -16,6 +16,7 @@
     "oldstart-electron": "electron -r ./babel-register.js ./index.ts",
     "backend": "node -r ./babel-register.cjs ./server/backend-server.js",
     "frontend": "NODE_ENV=development BROWSER=none node -r ./babel-register.cjs server/frontend-server.js",
+    "bundle-backend": "ncc build server/backend-server.js -o server-dist",
     "dev": "npm run frontend",
     "clean:install": "rm -rf node_modules && npm install",
     "tsc": "tsc"
@@ -59,6 +60,7 @@
     "@types/webpack-hot-middleware": "2.25.9",
     "@typescript-eslint/eslint-plugin": "3.6.1",
     "@typescript-eslint/parser": "3.6.1",
+    "@vercel/ncc": "0.38.3",
     "babel-eslint": "10.0.1",
     "babel-loader": "^10.0.0",
     "body-parser": "1.20.3",
@@ -107,7 +109,8 @@
       "files": [
         "build/**/*",
         "dist/**/*",
-        "server/**/*",
+        "src/config/**/*",
+        "server-dist/**/*",
         "node_modules/**/*",
         "package.json"
       ],
@@ -117,6 +120,24 @@
       ]
     },
     "extraFiles": [],
+    "extraResources": [
+      {
+        "from": "src/config/intents.yml",
+        "to": "config/intents.yml"
+      },
+      {
+        "from": "public",
+        "to": "public"
+      },
+      {
+        "from": "music",
+        "to": "music"
+      },
+      {
+        "from": "tts_responses",
+        "to": "tts_responses"
+      }
+    ],
     "deb": {
       "depends": [
         "libgtk-3-0",

@@ -15,12 +15,16 @@ const app = express()
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 // serve static files
-app.use(express.static(path.join(process.cwd(), 'public')))
+app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'dist')))
 // mount a virtual static path
 app.use('/media', express.static(mediaPath))
-app.use('/music', express.static(path.join(process.cwd(), 'music')))
-app.use('/tts_responses', express.static('tts_responses/'))
+app.use('/music', express.static(path.join(__dirname, 'music')))
+// app.use('/tts_responses', express.static('tts_responses/'))
+app.use(
+  '/tts_responses',
+  express.static(path.join(__dirname, 'tts_responses/'))
+)
 
 app.use('/', mediaRouter)
 app.use('/home-assistant', homeAssistantRouter)
