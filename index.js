@@ -2,12 +2,18 @@ import path from 'path'
 import {app} from 'electron'
 import installer, {REACT_DEVELOPER_TOOLS} from 'electron-devtools-installer'
 import menu from 'electron-context-menu'
-import 'dotenv/config'
+import dotenv from 'dotenv'
 import {config} from './src/config'
 import {spawn} from 'child_process'
 import shell from 'shelljs'
 
 import {createAppWindow} from './main/electron-application.ts'
+
+if (config.isDevelopment) {
+  dotenv.config()
+} else {
+  dotenv.config({path: path.join(process.resourcesPath, '.env')})
+}
 
 menu({
   prepend: (params) => [
@@ -27,11 +33,16 @@ function createWindow() {
       stdio: 'inherit'
     })
   } else {
-    console.log('getting node path')
+    // Production
+    // console.log('getting node path')
     const nodePath = shell.which('node')
-    const backendFile = path.resolve(__dirname, '../server-dist/index.js')
-    // console.log('node path: ', nodePath)
-    // console.log('dir: ', __dirname)
+    // const backendFile = path.resolve(__dirname, '../server-dist/index.js')
+    // spawn(nodePath.toString(), [backendFile], {
+    //   stdio: 'inherit',
+    //   shell: true
+    // })
+    // Packaged version
+    const backendFile = path.join(process.resourcesPath, 'server', 'index.js')
     spawn(nodePath.toString(), [backendFile], {
       stdio: 'inherit',
       shell: true

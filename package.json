@@ -7,7 +7,7 @@
     "build": "NODE_ENV=production npm run build:renderer && npm run build:main",
     "build:renderer": "rm -rf ./dist && webpack --config webpack.config.prod.js",
     "build:main": "rm -rf ./build && webpack --config webpack.config.electron.js",
-    "build:pi": "electron-builder --linux --armv7l",
+    "build:pi": "npm run build && npm run bundle-backend && electron-builder --linux --armv7l",
     "start": "electron .",
     "test": "jest test/unit/",
     "test:acceptance": "mocha -r @babel/register test/acceptance/ --timeout 15000",
@@ -112,14 +112,28 @@
         "server-dist/**/*",
         "node_modules/**/*",
         "package.json"
-      ],
-      "asarUnpack": [
-        "server/**/*",
-        "babel-register.cjs"
       ]
     },
+    "asarUnpack": [
+      "server/**/*",
+      "babel-register.cjs"
+    ],
     "extraFiles": [],
     "extraResources": [
+      {
+        "from": "server-dist",
+        "to": "server",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": ".env.production",
+        "to": ".env",
+        "filter": [
+          "**/*"
+        ]
+      },
       {
         "from": "src/config/intents.yml",
         "to": "config/intents.yml"
@@ -127,10 +141,6 @@
       {
         "from": "public",
         "to": "public"
-      },
-      {
-        "from": "music",
-        "to": "music"
       },
       {
         "from": "tts_responses",

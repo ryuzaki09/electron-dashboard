@@ -11,3 +11,4 @@ src/config/conversation.json
 src/config/config.ts
 src/config/intents.yml
 .env
+.env.production
