@@ -9,11 +9,7 @@ import shell from 'shelljs'
 
 import {createAppWindow} from './main/electron-application.ts'
 
-if (config.isDevelopment) {
-  dotenv.config()
-} else {
-  dotenv.config({path: path.join(process.resourcesPath, '.env')})
-}
+loadEnvFile()
 
 menu({
   prepend: (params) => [
@@ -33,20 +29,24 @@ function createWindow() {
       stdio: 'inherit'
     })
   } else {
-    // Production
-    // console.log('getting node path')
     const nodePath = shell.which('node')
-    // const backendFile = path.resolve(__dirname, '../server-dist/index.js')
-    // spawn(nodePath.toString(), [backendFile], {
-    //   stdio: 'inherit',
-    //   shell: true
-    // })
-    // Packaged version
-    const backendFile = path.join(process.resourcesPath, 'server', 'index.js')
-    spawn(nodePath.toString(), [backendFile], {
-      stdio: 'inherit',
-      shell: true
-    })
+    if (app.isPackaged) {
+      // console.log('getting node path')
+      //
+      // Packaged version
+      const backendFile = path.join(process.resourcesPath, 'server', 'index.js')
+      spawn(nodePath.toString(), [backendFile], {
+        stdio: 'inherit',
+        shell: true
+      })
+    } else {
+      // Production
+      const backendFile = path.resolve(__dirname, '../server-dist/index.js')
+      spawn(nodePath.toString(), [backendFile], {
+        stdio: 'inherit',
+        shell: true
+      })
+    }
   }
 
   mainWindow = createAppWindow()
@@ -86,3 +86,15 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+function loadEnvFile() {
+  if (config.isDevelopment) {
+    dotenv.config()
+  } else {
+    if (app.isPackaged) {
+      dotenv.config({path: path.join(process.resourcesPath, '.env')})
+    } else {
+      dotenv.config({path: path.join(__dirname, '.env.production')})
+    }
+  }
+}
