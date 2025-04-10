@@ -1,18 +1,22 @@
 import fs from 'fs'
 import path from 'path'
 import yaml from 'js-yaml'
+import {userMusicPath, userMusicFirstFolder, baseMediaPath} from './constants'
 
 export interface IFile {
   name: string
   path: string
   type: 'folder' | 'file'
+  firstFolder: string
   basePath: string
   folders?: string[]
   url?: string
   domain?: string
+  filePath?: string
 }
 
-const basePath = path.join(__dirname, '../')
+// const basePath = path.join(__dirname, '../')
+const basePath = userMusicPath.replace(userMusicFirstFolder, '')
 
 export function getFilesRecursively(originalPath: string) {
   const mediaPath = originalPath
@@ -32,6 +36,7 @@ export function getFilesRecursively(originalPath: string) {
         if (item.isDirectory()) {
           results.push({
             name: item.name,
+            firstFolder: userMusicFirstFolder,
             path: relativePath,
             type: 'folder',
             basePath
@@ -43,13 +48,19 @@ export function getFilesRecursively(originalPath: string) {
           item.name.endsWith('.mp3') &&
           !item.name.startsWith('.')
         ) {
+          // filePath without the root music part and the file name
+          const filePath = item.path
+            .replace(basePath, '')
+            .replace(userMusicFirstFolder, '')
           results.push({
             name: item.name,
             path: relativePath,
             type: 'file',
+            firstFolder: userMusicFirstFolder,
             basePath,
-            url: `/music/${item.name}`,
-            domain: process.env.BACKEND_HOST
+            url: `/music${filePath}/${item.name}`,
+            domain: process.env.BACKEND_HOST,
+            filePath
           })
         }
       })

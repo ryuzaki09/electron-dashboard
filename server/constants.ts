@@ -1,9 +1,13 @@
 import path from 'path'
+import os from 'os'
 
-const baseDir = path.resolve(__dirname, '..')
-console.log('🛠️ [DEBUG] baseDir =', baseDir)
-
-export const mediaPath = path.join(baseDir, 'media')
-export const musicPath = path.join(baseDir, 'music', 'Japanese')
-console.log('🛠️ [DEBUG] mediaPath =', mediaPath)
-console.log('🛠️ [DEBUG] musicPath =', musicPath)
+export const baseMediaPath = path.join(os.homedir(), 'media')
+export const userVideoPath = path.join(os.homedir(), 'media/video')
+export const userMusicFirstFolder = 'Japanese'
+export const userMusicPath = path.join(
+  os.homedir(),
+  'media/music',
+  userMusicFirstFolder
+)
+console.log('🛠️ [DEBUG] videoPath =', userVideoPath)
+console.log('🛠️ [DEBUG] musicPath =', userMusicPath)

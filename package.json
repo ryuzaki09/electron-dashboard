@@ -103,7 +103,6 @@
     "productName": "DashyB",
     "linux": {
       "target": [
-        "AppImage",
         "deb"
       ],
       "files": [

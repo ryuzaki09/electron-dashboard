@@ -28,11 +28,15 @@ export function transformMusicMedia(data: IMediaFile[]) {
   const files = items.filter((item) => item.type === 'file')
 
   mediaItems = files.reduce((acc, file) => {
-    // path parts example - ['chinese', 'Andy Lau']
+    // path parts example - ['chinese', 'Andy Lau - I love you.mp3']
+    // path parts can represent how deep the folder level is
     const pathParts = file.path
-      .replace(`${file.basePath}${virtualPath}/`, '')
+      // .replace(`${file.basePath}${virtualPath}/`, '')
+      .replace(`${file.basePath}`, '')
       .split('/')
 
+    // console.log('path parts: ', pathParts)
+    // if path parts = 2 as example above, that means the tracks is under the first folder
     if (pathParts.length === FOLDER_LEVEL_SCAN) {
       if (acc[pathParts[0]] && acc[pathParts[0]].files) {
         acc[pathParts[0]].files.push(file)
@@ -43,6 +47,8 @@ export function transformMusicMedia(data: IMediaFile[]) {
       }
     }
 
+    // if path parts is greater than 2 then there is another folder under the first folder.
+    // catches all tracks and adds it under second level folder.
     if (pathParts.length > FOLDER_LEVEL_SCAN) {
       if (acc[pathParts[0]] && acc[pathParts[0]][pathParts[1]]) {
         acc[pathParts[0]][pathParts[1]].files.push(file)

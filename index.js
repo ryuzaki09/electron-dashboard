@@ -30,8 +30,8 @@ function createWindow() {
     console.log('getting node path')
     const nodePath = shell.which('node')
     const backendFile = path.resolve(__dirname, '../server-dist/index.js')
-    console.log('node path: ', nodePath)
-    console.log('dir: ', __dirname)
+    // console.log('node path: ', nodePath)
+    // console.log('dir: ', __dirname)
     spawn(nodePath.toString(), [backendFile], {
       stdio: 'inherit',
       shell: true

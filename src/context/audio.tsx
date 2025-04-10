@@ -62,7 +62,7 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
     stop()
     const file = list[0]
     const filePath = file.path.replace(file.basePath, '')
-    setStreamUrl(`${file.domain}${filePath}`)
+    setStreamUrl(`${file.domain}${file.url}`)
     // console.log('play')
     setPlayingTrack(file)
     play()
