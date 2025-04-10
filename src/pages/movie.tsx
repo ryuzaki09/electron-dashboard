@@ -19,7 +19,7 @@ export function Movie() {
 }
 
 function VideoList({fetchApi}) {
-  const data: any[] = useCachedPromise('fetchVideos', fetchApi())
+  const data: any[] = useCachedPromise('fetchVideos', fetchApi()) || []
 
   return (
     <>

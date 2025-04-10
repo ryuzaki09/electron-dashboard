@@ -2,12 +2,14 @@ import path from 'path'
 import {app} from 'electron'
 import installer, {REACT_DEVELOPER_TOOLS} from 'electron-devtools-installer'
 import menu from 'electron-context-menu'
-import 'dotenv/config'
+import dotenv from 'dotenv'
 import {config} from './src/config'
 import {spawn} from 'child_process'
 import shell from 'shelljs'
 
 import {createAppWindow} from './main/electron-application.ts'
+
+loadEnvFile()
 
 menu({
   prepend: (params) => [
@@ -27,25 +29,22 @@ function createWindow() {
       stdio: 'inherit'
     })
   } else {
-    console.log('getting node path')
     const nodePath = shell.which('node')
-    const babelRegister = path.resolve(__dirname, '../babel-register.cjs')
-    const backendFile = path.resolve(__dirname, '../server/backend-server.js')
-    console.log('node path: ', nodePath)
-    console.log('dir: ', __dirname)
-    spawn(nodePath.toString(), ['-r', babelRegister, backendFile], {
-      stdio: 'inherit',
-      shell: true
-    })
-
-    //const node = process.execPath.includes('electron')
-    //? process.execPath.replace(/electron(\.exe)?$/, 'node')
-    //: process.execPath
-
-    //spawn(node, ['-r', babelRegister, backendFile], {
-    //shell: false,
-    //stdio: 'inherit'
-    //})
+    // if app is Packaged version
+    if (app.isPackaged) {
+      const backendFile = path.join(process.resourcesPath, 'server', 'index.js')
+      spawn(nodePath.toString(), [backendFile], {
+        stdio: 'inherit',
+        shell: true
+      })
+    } else {
+      // Production
+      const backendFile = path.resolve(__dirname, '../server-dist/index.js')
+      spawn(nodePath.toString(), [backendFile], {
+        stdio: 'inherit',
+        shell: true
+      })
+    }
   }
 
   mainWindow = createAppWindow()
@@ -85,3 +84,15 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+function loadEnvFile() {
+  if (config.isDevelopment) {
+    dotenv.config()
+  } else {
+    if (app.isPackaged) {
+      dotenv.config({path: path.join(process.resourcesPath, '.env')})
+    } else {
+      dotenv.config({path: path.join(__dirname, '.env.production')})
+    }
+  }
+}

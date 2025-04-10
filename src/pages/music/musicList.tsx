@@ -44,8 +44,8 @@ export function MusicList({musicPromise}: IMusicListProps) {
 
   const onClickPlay = (file: any) => {
     stop()
-    const filePath = file.path.replace(file.basePath, '')
-    setStreamUrl(`${file.domain}${filePath}`)
+    // const filePath = file.path.replace(file.basePath, '')
+    setStreamUrl(`${file.domain}${file.url}`)
     play()
       .then(() => {
         console.log('Playing')

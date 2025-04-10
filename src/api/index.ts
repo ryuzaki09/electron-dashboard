@@ -8,8 +8,8 @@ export const api = {
 
   fetchVideos: async () => {
     const result = await fetch(`${process.env.BACKEND_HOST}/videos`)
-    const data = result.json()
+    const data = await result.json()
 
-    return data
+    return data.length > 0 ? data : []
   }
 }

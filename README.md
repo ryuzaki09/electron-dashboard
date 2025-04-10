@@ -50,7 +50,10 @@ It currently has the ability to connect to openai and use it get weather informa
 
 ### Setup
 
-The app plays music in the `music` folder and videos in the `media` folder. If there is a central place for these media, a good option is to mount these folders so they don't need to be moved or copied.
+The app plays music in the `music` folder and videos in the `video` folder at the home directory under media folder e.g `$HOME/media/music` and `$HOME/media/video`. If you these media on a NAS for example, a good option is to mount these folders so they don't need to be moved or copied and then symlink them using:
+```
+ln -s <source_folder> ~/media
+```
 
 To run the app, enter:
 

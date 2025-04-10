@@ -1,6 +1,6 @@
 import express from 'express'
 import fs from 'fs'
-import {mediaPath, musicPath} from '../constants'
+import {userVideoPath, userMusicPath} from '../constants'
 import {IFile, getFilesRecursively} from '../utils'
 
 const router = express.Router()
@@ -21,16 +21,17 @@ router.use((_req, res, next) => {
 
 router.get('/videos', (_req: express.Request, res) => {
   console.log('FETCHING VIDEOS')
-  fs.readdir(mediaPath, (err, files) => {
+  fs.readdir(userVideoPath, (err, files) => {
     if (err) {
       return res.status(500).json({error: 'Unable to read files'})
     }
     const mediaFiles = files
       .map((file) => ({
         name: file,
-        url: `/media/${file}`,
+        url: `/video/${file}`,
         domain: process.env.BACKEND_HOST
       }))
+      // ignore files that starts with a dot .
       .filter((f) => !f.name.startsWith('.'))
 
     res.json(mediaFiles)
@@ -46,7 +47,7 @@ router.get('/musicMedia', (_req: express.Request, res) => {
       now - lastCacheTime > CACHE_DURATION ||
       !musicMediaCache.length
     ) {
-      musicMediaCache = getFilesRecursively(musicPath)
+      musicMediaCache = getFilesRecursively(userMusicPath)
       lastCacheTime = now
     }
 

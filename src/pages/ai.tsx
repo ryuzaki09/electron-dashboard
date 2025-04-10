@@ -61,11 +61,11 @@ export function Assistant() {
     socket.emit('audio_chunk', {data: hexData})
   }
 
-  const recordAudio = () => {
+  const recordAudio = (): Promise<Blob> => {
     return new Promise((resolve) => {
       navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
         const mediaRecorder = new MediaRecorder(stream)
-        const audioChunks = []
+        const audioChunks: any[] = []
 
         mediaRecorder.ondataavailable = (event) => {
           audioChunks.push(event.data)
