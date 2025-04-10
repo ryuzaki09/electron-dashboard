@@ -30,10 +30,8 @@ function createWindow() {
     })
   } else {
     const nodePath = shell.which('node')
+    // if app is Packaged version
     if (app.isPackaged) {
-      // console.log('getting node path')
-      //
-      // Packaged version
       const backendFile = path.join(process.resourcesPath, 'server', 'index.js')
       spawn(nodePath.toString(), [backendFile], {
         stdio: 'inherit',
