@@ -7,7 +7,6 @@ server-dist
 *.mkv
 *.mp3
 *.zip
-/music
 src/config/conversation.json
 src/config/config.ts
 src/config/intents.yml

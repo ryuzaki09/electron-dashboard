@@ -38,8 +38,8 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
         if (shufflePlayList.length > 0) {
           setShufflePlayIndex((prevIndex) => prevIndex + 1)
           const file = shufflePlayList[shufflePlayIndex + 1]
-          const filePath = file.path.replace(file.basePath, '')
-          setStreamUrl(`${file.domain}${filePath}`)
+          // const filePath = file.path.replace(file.basePath, '')
+          setStreamUrl(`${file.domain}${file.url}`)
           setPlayingTrack(file)
           play()
         }
@@ -61,7 +61,7 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
     setShufflePlayList(list)
     stop()
     const file = list[0]
-    const filePath = file.path.replace(file.basePath, '')
+    // const filePath = file.path.replace(file.basePath, '')
     setStreamUrl(`${file.domain}${file.url}`)
     // console.log('play')
     setPlayingTrack(file)
@@ -83,8 +83,8 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
       setShufflePlayIndex((prevIndex) => prevIndex - 1)
 
       const file = shufflePlayList[shufflePlayIndex - 1]
-      const filePath = file.path.replace(file.basePath, '')
-      setStreamUrl(`${file.domain}${filePath}`)
+      // const filePath = file.path.replace(file.basePath, '')
+      setStreamUrl(`${file.domain}${file.url}`)
       setPlayingTrack(file)
       play()
     }
@@ -99,8 +99,8 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
       setShufflePlayIndex((prevIndex) => prevIndex + 1)
 
       const file = shufflePlayList[shufflePlayIndex + 1]
-      const filePath = file.path.replace(file.basePath, '')
-      setStreamUrl(`${file.domain}${filePath}`)
+      // const filePath = file.path.replace(file.basePath, '')
+      setStreamUrl(`${file.domain}${file.url}`)
       setPlayingTrack(file)
       play()
     }
