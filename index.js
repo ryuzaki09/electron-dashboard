@@ -59,7 +59,7 @@ function createWindow() {
     mainWindow.loadFile(path.join(__dirname, '../dist/main-screen.html'))
   }
 
-  mainWindow.webContents.openDevTools({mode: 'detach'})
+  // mainWindow.webContents.openDevTools({mode: 'detach'})
 }
 
 app.on('ready', createWindow)

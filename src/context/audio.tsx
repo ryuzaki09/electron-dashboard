@@ -26,19 +26,20 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
   const [playingTrack, setPlayingTrack] = React.useState<any>(null)
   const [shufflePlayList, setShufflePlayList] = React.useState<IAudioFile[]>([])
   const [shufflePlayIndex, setShufflePlayIndex] = React.useState(0)
+  const [playerVolume, setPlayerVolume] = React.useState(0.5)
 
   React.useEffect(
     () => {
       if (!player.current) return
 
       const audioPlayer = player.current
+
       function onEnd() {
         setPlayState(PlayStates.stopped)
 
         if (shufflePlayList.length > 0) {
           setShufflePlayIndex((prevIndex) => prevIndex + 1)
           const file = shufflePlayList[shufflePlayIndex + 1]
-          // const filePath = file.path.replace(file.basePath, '')
           setStreamUrl(`${file.domain}${file.url}`)
           setPlayingTrack(file)
           play()
@@ -61,7 +62,6 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
     setShufflePlayList(list)
     stop()
     const file = list[0]
-    // const filePath = file.path.replace(file.basePath, '')
     setStreamUrl(`${file.domain}${file.url}`)
     // console.log('play')
     setPlayingTrack(file)
@@ -83,7 +83,6 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
       setShufflePlayIndex((prevIndex) => prevIndex - 1)
 
       const file = shufflePlayList[shufflePlayIndex - 1]
-      // const filePath = file.path.replace(file.basePath, '')
       setStreamUrl(`${file.domain}${file.url}`)
       setPlayingTrack(file)
       play()
@@ -122,6 +121,27 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
     setPlayState(PlayStates.stopped)
   }
 
+  function increaseVolume() {
+    if (playerVolume < 1) {
+      const newVolume = playerVolume + 0.1
+      player.current.volume = newVolume
+      setPlayerVolume(newVolume)
+    }
+  }
+
+  function decreaseVolume() {
+    if (playerVolume > 0) {
+      const newVolume = playerVolume - 0.1
+      player.current.volume = newVolume
+      setPlayerVolume(newVolume)
+    }
+  }
+
+  function setVolume(volume: number) {
+    player.current.volume = volume
+    setPlayerVolume(volume)
+  }
+
   const isFirstTrack = shufflePlayList.length > 0 && !shufflePlayIndex
   const isLastTrack =
     shufflePlayList.length > 0 &&
@@ -139,6 +159,10 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
         resume,
         previous,
         next,
+        increaseVolume,
+        decreaseVolume,
+        setVolume,
+        playerVolume,
         playState,
         playingTrack,
         isFirstTrack,

@@ -33,7 +33,7 @@ if (fs.existsSync(userMusicPath)) {
 // app.use('/tts_responses', express.static('tts_responses/'))
 app.use(
   '/tts_responses',
-  express.static(path.join(__dirname, 'tts_responses/'))
+  express.static(path.join(__dirname, '../tts_responses/'))
 )
 
 app.use('/', mediaRouter)
