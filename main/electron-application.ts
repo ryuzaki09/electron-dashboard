@@ -3,7 +3,7 @@ import {config} from '../src/config'
 
 export function createAppWindow(path, windowOpts = {}) {
   const defaultOpts = {
-    width: 800,
+    width: 1024,
     height: 600,
     webPreferences: {nodeIntegration: true}
   }

@@ -9,6 +9,7 @@ import MovieIcon from '../icons/movie'
 import HomeAssistantIcon from '../icons/homeAssistant'
 import {useAudio, PlayStates} from '../../context/audio'
 import {useVoiceAssistant} from '../../hooks/useVoiceAssistant'
+import {config} from '../../config'
 
 import styles from './index.module.css'
 
@@ -32,12 +33,13 @@ export function Header() {
           <Link to="/home-assistant">
             <HomeAssistantIcon />
           </Link>
-          <button onClick={isListening ? () => {} : () => setIsListening(true)}>
-            {isListening ? 'Listening..' : 'Press to talk'}
-          </button>
-          {/*<Link to="/assistant">
-            <HomeIcon />
-          </Link>*/}
+          {config.isDevelopment && (
+            <button
+              onClick={isListening ? () => {} : () => setIsListening(true)}
+            >
+              {isListening ? 'Listening..' : 'Press to talk'}
+            </button>
+          )}
         </nav>
       </header>
       <MediaControls />
@@ -53,9 +55,20 @@ function MediaControls() {
     pause,
     previous,
     next,
+    setVolume,
+    increaseVolume,
+    decreaseVolume,
+    playerVolume,
     isLastTrack,
     isFirstTrack
   } = useAudio()
+  console.log('getVolume: ', playerVolume)
+
+  function onVolumeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const {value} = e.target
+
+    setVolume(+value / 10)
+  }
 
   return (
     <div
@@ -63,6 +76,27 @@ function MediaControls() {
         [styles.mediaControlsActive]: playingTrack
       })}
     >
+      <span
+        className={classnames(styles.volume, styles.active)}
+        onClick={decreaseVolume}
+      >
+        <Icon name="volumeLow" />
+      </span>
+      <input
+        type="range"
+        id="volume"
+        name="volume"
+        min="0"
+        max="10"
+        value={playerVolume * 10}
+        onChange={onVolumeChange}
+      />
+      <span
+        className={classnames(styles.volume, styles.active)}
+        onClick={increaseVolume}
+      >
+        <Icon name="volumeHigh" />
+      </span>
       <div>
         <div>{playingTrack && `Playing: ${playingTrack.name}`}</div>
       </div>

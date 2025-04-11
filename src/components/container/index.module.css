@@ -1,6 +1,8 @@
 .appContainer {
   background-color: var(--color-plex-black);
   padding: 0.5rem;
+  --header-height: 75px;
+  --nav-height: 60px;
 }
 
 .container {
