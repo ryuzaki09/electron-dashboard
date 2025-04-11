@@ -10,7 +10,7 @@
   }
 }
 .time {
-  font-size: clamp(4rem, 80px, 12vw);
+  font-size: clamp(4rem, 120px, 20vw);
   font-weight: 700;
 }
 

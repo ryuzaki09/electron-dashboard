@@ -1,10 +1,10 @@
 import React from 'react'
 import {VideoPlayer} from '@ryusenpai/shared-components'
-import {Container} from '../components/container'
-import {useCachedPromise} from '../hooks/useCachedPromise'
-import {api} from '../api'
+import {Container} from '../../components/container'
+import {useCachedPromise} from '../../hooks/useCachedPromise'
+import {api} from '../../api'
 
-import styles from './movie.module.css'
+import styles from './index.module.css'
 
 export function Movie() {
   return (

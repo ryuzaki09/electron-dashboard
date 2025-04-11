@@ -23,7 +23,9 @@ function TimeDisplay() {
   const {amPm, time} = useTime()
   return (
     <div className={styles.dateTimeWrapper}>
-      <time className={styles.time}>{time}</time> {amPm}
+      <div>
+        <time className={styles.time}>{time}</time> {amPm}
+      </div>
       <div>{format(date, "eeee', 'do LLL")}</div>
     </div>
   )
