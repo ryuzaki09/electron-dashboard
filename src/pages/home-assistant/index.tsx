@@ -83,6 +83,7 @@ function Device({device}) {
           }
           variant="lightswitch"
           value={isOn}
+          size="large"
         />
       </div>
     </div>
