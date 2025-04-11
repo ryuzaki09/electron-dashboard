@@ -1,6 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-import {Link} from 'react-router-dom'
+import {Link, useLocation} from 'react-router-dom'
 import {Icon} from '@ryusenpai/shared-components'
 
 import HomeIcon from '../icons/home'
@@ -62,7 +62,7 @@ function MediaControls() {
     isLastTrack,
     isFirstTrack
   } = useAudio()
-  console.log('getVolume: ', playerVolume)
+  const {pathname} = useLocation()
 
   function onVolumeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const {value} = e.target
@@ -70,10 +70,13 @@ function MediaControls() {
     setVolume(+value / 10)
   }
 
+  const isMusicPage = pathname === '/music'
+  const shouldShowControls = isMusicPage || (!isMusicPage && playingTrack)
+
   return (
     <div
       className={classnames(styles.mediaControls, {
-        [styles.mediaControlsActive]: playingTrack
+        [styles.mediaControlsActive]: shouldShowControls
       })}
     >
       <span
@@ -101,7 +104,10 @@ function MediaControls() {
         <div>{playingTrack && `Playing: ${playingTrack.name}`}</div>
       </div>
       <div className={styles.controls}>
-        <span onClick={previous} className={!isFirstTrack ? styles.active : ''}>
+        <span
+          onClick={previous}
+          className={!isFirstTrack && playingTrack ? styles.active : ''}
+        >
           <Icon name="previous" />
         </span>
         <span
@@ -132,7 +138,10 @@ function MediaControls() {
         >
           <Icon name="play" />
         </span>
-        <span onClick={next} className={isLastTrack ? '' : styles.active}>
+        <span
+          onClick={next}
+          className={isLastTrack || !playingTrack ? '' : styles.active}
+        >
           <Icon name="next" />
         </span>
       </div>
