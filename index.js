@@ -64,6 +64,8 @@ function createWindow() {
 
 app.on('ready', createWindow)
 app.commandLine.appendSwitch('disable-features', 'Autofill')
+app.commandLine.appendSwitch('disable_gpu')
+app.disableHardwareAcceleration()
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
