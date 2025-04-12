@@ -96,14 +96,17 @@ export function MusicList({musicPromise}: IMusicListProps) {
   }
 
   const shouldShowRootList = firstLevelFolder === ''
-  const shouldShowLevel1List = firstLevelFolder !== ''
+  const shouldShowLevel1List =
+    firstLevelFolder !== '' && secondLevelFolder === ''
   //const shouldShowLevel1List =
   //levelIndex === 0 && levelItemIndex !== null && level2Directory === null
-  const shouldShowLevel1Files = firstLevelFolder !== ''
+  const shouldShowLevel1Files =
+    firstLevelFolder !== '' && secondLevelFolder === ''
   //const shouldShowLevel1Files =
   //levelIndex === 0 && levelItemIndex !== null && level2Directory === null
   const shouldShowLevel2Files =
-    levelIndex === 0 && level2Directory !== null && levelItemIndex !== null
+    // levelIndex === 0 && level2Directory !== null && levelItemIndex !== null
+    firstLevelFolder !== '' && secondLevelFolder !== ''
 
   const firstLevelFolders = React.useMemo(
     () => {
@@ -179,7 +182,7 @@ export function MusicList({musicPromise}: IMusicListProps) {
                 </li>
               ))}
             {shouldShowLevel2Files &&
-              musicList[levelIndex][1][level2Directory].files.map(
+              musicList[firstLevelFolder][secondLevelFolder].files.map(
                 (f, index) => (
                   <li key={`${index}_${f.name}`} onClick={() => onClickPlay(f)}>
                     <span>{f.name}</span>

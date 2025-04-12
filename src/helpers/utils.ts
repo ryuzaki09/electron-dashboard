@@ -9,8 +9,7 @@ import MistIcon from '../components/icons/weather/mist'
 
 import type {IWeatherForecastDto} from '../api/types'
 
-const virtualPath = '/music'
-const FOLDER_LEVEL_SCAN = 2
+const ROOT_FOLDER_LEVEL = 2
 
 interface IMediaFile {
   name: string
@@ -19,7 +18,18 @@ interface IMediaFile {
   basePath: string
 }
 
-export function transformMusicMedia(data: IMediaFile[]) {
+interface ITransformedMedia {
+  root: {
+    [key: string]: {
+      [key: string]: {
+        files: IMediaFile[]
+      } & { files: IMediaFile[] }
+    } & { files: IMediaFile[]}
+  }
+}
+
+
+export function transformMusicMedia(data: IMediaFile[]): ITransformedMedia {
   let mediaItems: any = []
   const items = data
 
@@ -28,19 +38,22 @@ export function transformMusicMedia(data: IMediaFile[]) {
   const files = items.filter((item) => item.type === 'file')
 
   mediaItems = files.reduce((acc, file) => {
-    // path parts example - ['chinese', 'Andy Lau - I love you.mp3']
+    // path parts example - ['', 'Andy Lau - I love you.mp3']
     // path parts can represent how deep the folder level is
     const pathParts = file.path
       // .replace(`${file.basePath}${virtualPath}/`, '')
       .replace(`${file.basePath}`, '')
       .split('/')
 
-     //console.log('path parts: ', pathParts)
     const rootFolder = pathParts[0] === ''
       ? 'root'
       : pathParts[0]
-    // if path parts = 2 as example above, that means the tracks is under the first folder
-    if (pathParts.length === FOLDER_LEVEL_SCAN) {
+
+    const firstLevelFolder = pathParts[1]
+    const secondLevelFolder = pathParts[2]
+
+    // if path parts = 2 as example above, that means the tracks is under the root folder
+    if (pathParts.length === ROOT_FOLDER_LEVEL) {
       if (acc[rootFolder] && acc[rootFolder].files) {
         acc[rootFolder].files.push(file)
       } else {
@@ -50,13 +63,23 @@ export function transformMusicMedia(data: IMediaFile[]) {
       }
     }
 
-    // if path parts is greater than 2 then there is another folder under the first folder.
-    // catches all tracks and adds it under second level folder.
-    if (pathParts.length > FOLDER_LEVEL_SCAN) {
-      if (acc[rootFolder] && acc[rootFolder][pathParts[1]]) {
-        acc[rootFolder][pathParts[1]].files.push(file)
+    // if path parts length = 3 ['', 'english', 'Billie Jean.mp3'], pathParts[1] is the first level folder
+    if (pathParts.length === ROOT_FOLDER_LEVEL + 1) {
+      if (acc[rootFolder] && acc[rootFolder][firstLevelFolder]) {
+        acc[rootFolder][firstLevelFolder].files.push(file)
       } else {
-        acc[rootFolder][pathParts[1]] = {
+        acc[rootFolder][firstLevelFolder] = {
+          files: [file]
+        }
+      }
+    }
+    // if path parts is greater than 3 then there is another folder under the first level folder.
+    // catches all tracks and adds it under second level folder.
+    if (pathParts.length > ROOT_FOLDER_LEVEL + 1) {
+      if (acc[rootFolder] && acc[rootFolder][firstLevelFolder][secondLevelFolder]) {
+        acc[rootFolder][firstLevelFolder][secondLevelFolder].files.push(file)
+      } else {
+        acc[rootFolder][firstLevelFolder][secondLevelFolder] = {
           files: [file]
         }
       }
