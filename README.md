@@ -60,3 +60,71 @@ To run the app, enter:
 ```
 npm run dev
 ```
+
+
+### Deploy to Raspberry Pi
+
+#### Installation
+
+I have tested on Raspberry Pi 3B and using the 32bit Bullseye OS is recommended.
+
+On fresh setup, perform these actions:
+```
+sudo apt update
+sudo apt upgrade
+sudo apt install --no-install-recommends \
+  xserver-xorg \
+  x11-xserver-utils \
+  xinit \
+  openbox \
+  xorg \
+  chromium-browser
+```
+
+Ensure nodejs is installed on the Raspberry Pi is installed using `nvm` or `fnm` because you need a version of at least `v18` for nodejs.
+
+Ensure the Raspberry Pi is setup to Auto Login via the `raspi-config`, by going to `System Options` then `Boot / Auto Login` and select `Desktop Autologin`. You might need to install `lightdm` first so ensure that is installed also via `sudo apt install lightdm`.
+
+#### Running as a service
+
+To auto start an run as a service, you must first determine the path of `node`.
+Run `which node` to get the file path, you will need this later.
+my example: `/run/user/1000/fnm_multishells/1066_1744449316744/bin/node`.
+Also run `echo $PATH`, you will need the output of this also.
+
+create a service file via 
+```
+sudo nano /etc/systemd/system/dashyb.service 
+```
+and add this in the file:
+```
+[Unit]
+Description=DashyB Electron App
+After=graphical.target
+Requires=graphical.target
+
+[Service]
+Environment=PATH=/run/user/1000/fnm_multishells/746_1744448951417/bin:/home/pi/.local/share/fnm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/pi/.Xauthority
+EnvironmentFile=/opt/DashyB/resources/.env
+Type=simple
+ExecStartPre=/bin/sleep 10
+ExecStart=/opt/DashyB/dashyb
+Restart=always
+User=pi
+WorkingDirectory=/opt/DashyB/resources
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=graphical.target
+```
+Notice the line `Environment=PATH...`, replace this line with the path of your `node` version stripping out the `/node` at the end and prefix to the output of your `$PATH` output.
+
+#### Deploy the app
+
+There is a `deploy.sh.sample` file, simply do `cp deploy.sh.sample deploy.sh` and edit the file via `sudo nano deploy.sh`.
+In the file simply replace the `REMOTE_USER`, `REMOTE_HOST` and `DEB_FILE` with the username to ssh to the pi, the IP address of the pi and the name of the packaged `.deb` file respectively.
+
+Finally run the file via `bash deploy.sh` to deploy. It will copy the deb file and unpackage and finally reboot the pi. You may need to enter your ssh password if you have not added your ssh key.
