@@ -35,13 +35,16 @@ export function transformMusicMedia(data: IMediaFile[]) {
       .replace(`${file.basePath}`, '')
       .split('/')
 
-    // console.log('path parts: ', pathParts)
+     //console.log('path parts: ', pathParts)
+    const rootFolder = pathParts[0] === ''
+      ? 'root'
+      : pathParts[0]
     // if path parts = 2 as example above, that means the tracks is under the first folder
     if (pathParts.length === FOLDER_LEVEL_SCAN) {
-      if (acc[pathParts[0]] && acc[pathParts[0]].files) {
-        acc[pathParts[0]].files.push(file)
+      if (acc[rootFolder] && acc[rootFolder].files) {
+        acc[rootFolder].files.push(file)
       } else {
-        acc[pathParts[0]] = {
+        acc[rootFolder] = {
           files: [file]
         }
       }
@@ -50,10 +53,10 @@ export function transformMusicMedia(data: IMediaFile[]) {
     // if path parts is greater than 2 then there is another folder under the first folder.
     // catches all tracks and adds it under second level folder.
     if (pathParts.length > FOLDER_LEVEL_SCAN) {
-      if (acc[pathParts[0]] && acc[pathParts[0]][pathParts[1]]) {
-        acc[pathParts[0]][pathParts[1]].files.push(file)
+      if (acc[rootFolder] && acc[rootFolder][pathParts[1]]) {
+        acc[rootFolder][pathParts[1]].files.push(file)
       } else {
-        acc[pathParts[0]][pathParts[1]] = {
+        acc[rootFolder][pathParts[1]] = {
           files: [file]
         }
       }

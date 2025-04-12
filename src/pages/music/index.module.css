@@ -48,6 +48,10 @@
     text-overflow: ellipsis;
     font-size: 18px;
 
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+
     & span {
       display: inline-block;
       width: 100%;
@@ -59,8 +63,17 @@
     cursor: pointer;
     color: var(--color-plex-black);
     & span {
-      animation: scrolling 12s linear infinite;
+      /*animation: scrolling 12s linear infinite;*/
     }
+
+    & svg path {
+      fill: var(--color-plex-black);
+    }
+  }
+
+  & svg {
+    width: 30px;
+    height: 30px;
   }
 }
 

@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import yaml from 'js-yaml'
 import {userMusicPath, userMusicFirstFolder, baseMediaPath} from './constants'
+import {musicRootFoldersToScan} from '../src/config'
 
 export interface IFile {
   name: string
@@ -33,7 +34,20 @@ export function getFilesRecursively(originalPath: string) {
         )
 
         // directory
-        if (item.isDirectory()) {
+        if (
+          !isRecursive &&
+          item.isDirectory() &&
+          musicRootFoldersToScan.includes(item.name.toLowerCase())
+        ) {
+          results.push({
+            name: item.name,
+            firstFolder: userMusicFirstFolder,
+            path: relativePath,
+            type: 'folder',
+            basePath
+          })
+          results = results.concat(startScan(fullPath, true))
+        } else if (isRecursive && item.isDirectory()) {
           results.push({
             name: item.name,
             firstFolder: userMusicFirstFolder,

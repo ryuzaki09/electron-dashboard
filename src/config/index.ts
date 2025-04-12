@@ -11,3 +11,10 @@ export const config = {
   picovoiceKey: process.env.PICOVOICE_KEY,
   whisperHost: process.env.WHISPER_HOST
 }
+
+export const musicRootFoldersToScan = [
+  'japanese',
+  'english',
+  'chinese',
+  'korean'
+]

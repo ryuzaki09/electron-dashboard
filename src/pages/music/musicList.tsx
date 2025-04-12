@@ -3,6 +3,7 @@ import React from 'react'
 import {useCachedPromise} from '../../hooks/useCachedPromise'
 import {transformMusicMedia} from '../../helpers/utils'
 import {useAudio} from '../../context/audio'
+import FolderIcon from '../../components/icons/folder'
 
 import styles from './index.module.css'
 
@@ -10,8 +11,12 @@ interface IMusicListProps {
   musicPromise: () => Promise<any>
 }
 
+const TRACK_FILES_KEY = 'files'
+
 export function MusicList({musicPromise}: IMusicListProps) {
-  const [musicList, setMusicList] = React.useState<any[]>([])
+  const [musicList, setMusicList] = React.useState<any>(null)
+  const [firstLevelFolder, setFirstLevelFolder] = React.useState('')
+  const [secondLevelFolder, setSecondLevelFolder] = React.useState('')
   const [levelIndex, setLevelIndex] = React.useState<null | number>(null)
   const [levelItemIndex, setLevelItemIndex] = React.useState<number | null>(
     null
@@ -21,25 +26,23 @@ export function MusicList({musicPromise}: IMusicListProps) {
   )
   const {setStreamUrl, setShuffleList, setPlayingTrack, play, stop} = useAudio()
 
-  if (!musicList.length) {
+  if (!musicList) {
     const data: any[] = useCachedPromise('fetchMusic', musicPromise())
     const result = transformMusicMedia(data)
-    const fileEntries = Object.entries(result)
+    console.log('transformed: ', result)
 
-    if (fileEntries.length > 0 && !musicList.length) {
-      setMusicList(fileEntries)
+    if (result.root) {
+      setMusicList(result.root)
     }
-    // console.log('fileEntries: ', fileEntries)
   }
-  // console.log('musicList: ', musicList)
 
-  const onClickFirstLevel = (levelItemIndex: number) => {
+  const onClickFirstLevel = (folderName: string) => {
+    setFirstLevelFolder(folderName)
     setLevelIndex(0)
-    setLevelItemIndex(levelItemIndex)
   }
   const onClickSecondLevel = (dirname: string) => {
-    setLevel2Directory(dirname)
-    setLevelItemIndex(1)
+    setSecondLevelFolder(dirname)
+    setLevelIndex(1)
   }
 
   const onClickPlay = (file: any) => {
@@ -59,50 +62,76 @@ export function MusicList({musicPromise}: IMusicListProps) {
   const goUpLevel = () => {
     if (levelIndex === null) return
 
-    if (
-      levelIndex === 0 &&
-      levelItemIndex !== null &&
-      level2Directory === null
-    ) {
+    if (levelIndex === 0) {
       setLevelIndex(null)
+      setFirstLevelFolder('')
       return
     }
 
-    setLevel2Directory(null)
-    setLevelItemIndex(0)
-  }
-
-  const shufflePlay = () => {
-    if (level2Directory === null) {
-      const musicItem = musicList[(levelIndex || 1) - 1]
-      const files = (musicItem && musicItem[1] && musicItem[1].files) || []
-      // shuffle the list
-      files.sort(() => Math.random() - 0.5)
-      setShuffleList(files)
-    } else {
-      const musicItem = musicList[(levelIndex || 1) - 1]
-      const files =
-        (musicItem && musicItem[1] && musicItem[1][level2Directory].files) || []
-      // shuffle the list
-      files.sort(() => Math.random() - 0.5)
-      setShuffleList(files)
+    if (levelIndex === 1) {
+      setLevelIndex(0)
+      setSecondLevelFolder('')
+      return
     }
   }
 
-  const shouldShowRootList = levelIndex !== 0 && !levelItemIndex
-  const shouldShowLevel1List =
-    levelIndex === 0 && levelItemIndex !== null && level2Directory === null
-  const shouldShowLevel1Files =
-    levelIndex === 0 && levelItemIndex !== null && level2Directory === null
+  const shufflePlay = () => {
+    if (secondLevelFolder !== '') {
+      const tracks = musicList[firstLevelFolder][secondLevelFolder].files
+      tracks.sort(() => Math.random() - 0.5)
+      setShuffleList(tracks)
+      return
+    }
+
+    if (firstLevelFolder !== '' && secondLevelFolder === '') {
+      const tracks = musicList[firstLevelFolder].files
+      tracks.sort(() => Math.random() - 0.5)
+      setShuffleList(tracks)
+      return
+    }
+
+    const tracks = musicList.files
+    tracks.sort(() => Math.random() - 0.5)
+    setShuffleList(tracks)
+  }
+
+  const shouldShowRootList = firstLevelFolder === ''
+  const shouldShowLevel1List = firstLevelFolder !== ''
+  //const shouldShowLevel1List =
+  //levelIndex === 0 && levelItemIndex !== null && level2Directory === null
+  const shouldShowLevel1Files = firstLevelFolder !== ''
+  //const shouldShowLevel1Files =
+  //levelIndex === 0 && levelItemIndex !== null && level2Directory === null
   const shouldShowLevel2Files =
     levelIndex === 0 && level2Directory !== null && levelItemIndex !== null
 
+  const firstLevelFolders = React.useMemo(
+    () => {
+      if (musicList && firstLevelFolder !== '') {
+        const folders = Object.entries(musicList[firstLevelFolder]).filter(
+          (f) => f[0] !== TRACK_FILES_KEY
+        )
+        return folders
+      }
+
+      return []
+    },
+    [musicList, firstLevelFolder]
+  )
+
+  console.log('musicList: ', musicList)
+  console.log('firstLevel: ', firstLevelFolders)
+  //if (musicList && firstLevelFolder !== '') {
+  //console.log('musicList keys: ', Object.entries(musicList[firstLevelFolder]))
+  //}
   return (
     <div className={styles.musicListWrapper}>
       <div>
         <button
           className={
-            levelIndex !== null ? styles.backActive : styles.backNotActive
+            firstLevelFolder !== '' || secondLevelFolder !== ''
+              ? styles.backActive
+              : styles.backNotActive
           }
           onClick={goUpLevel}
         >
@@ -114,38 +143,49 @@ export function MusicList({musicPromise}: IMusicListProps) {
         <ul className={styles.fileList}>
           <>
             {shouldShowRootList &&
-              musicList.map((item, index) => {
-                const [name] = item
-                return (
+              musicList &&
+              Object.keys(musicList).map((name, index) => {
+                return name === TRACK_FILES_KEY ? null : (
                   <li
                     key={`${index}_${name}`}
-                    onClick={() => onClickFirstLevel(index)}
+                    onClick={() => onClickFirstLevel(name)}
                   >
-                    {name}
+                    <FolderIcon /> {name}
                   </li>
                 )
               })}
+            {shouldShowRootList &&
+              musicList &&
+              musicList.files &&
+              musicList.files.map((f, index) => (
+                <li key={f.url} onClick={() => onClickPlay(f)}>
+                  {f.name}
+                </li>
+              ))}
             {shouldShowLevel1List &&
-              Object.entries(musicList[levelIndex][1]).map((f, index) => {
+              firstLevelFolders.length > 0 &&
+              firstLevelFolders.map((f, index) => {
                 const [key] = f
                 return key === 'files' ? null : (
                   <li key={key} onClick={() => onClickSecondLevel(key)}>
-                    <span>{key}</span>
+                    <FolderIcon /> <span>{key}</span>
                   </li>
                 )
               })}
             {shouldShowLevel1Files &&
-              musicList[levelIndex][1].files.map((f) => (
-                <li key={f.name} onClick={() => onClickPlay(f)}>
+              musicList[firstLevelFolder].files.map((f) => (
+                <li key={f.url} onClick={() => onClickPlay(f)}>
                   <span>{f.name}</span>
                 </li>
               ))}
             {shouldShowLevel2Files &&
-              musicList[levelIndex][1][level2Directory].files.map((f) => (
-                <li key={f.name} onClick={() => onClickPlay(f)}>
-                  <span>{f.name}</span>
-                </li>
-              ))}
+              musicList[levelIndex][1][level2Directory].files.map(
+                (f, index) => (
+                  <li key={`${index}_${f.name}`} onClick={() => onClickPlay(f)}>
+                    <span>{f.name}</span>
+                  </li>
+                )
+              )}
           </>
         </ul>
       </div>
