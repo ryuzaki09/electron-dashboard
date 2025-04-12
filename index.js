@@ -33,9 +33,11 @@ function createWindow() {
     // if app is Packaged version
     if (app.isPackaged) {
       const backendFile = path.join(process.resourcesPath, 'server', 'index.js')
-      spawn(nodePath.toString(), [backendFile], {
+      // spawn(nodePath.toString(), [backendFile], {
+      spawn('/usr/bin/env', ['node', backendFile], {
         stdio: 'inherit',
-        shell: true
+        shell: false,
+        cwd: path.dirname(backendFile)
       })
     } else {
       // Production
