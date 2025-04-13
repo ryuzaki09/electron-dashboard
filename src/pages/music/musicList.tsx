@@ -1,8 +1,10 @@
 import React from 'react'
+import {Modal} from '@ryusenpai/shared-components'
 
 import {useCachedPromise} from '../../hooks/useCachedPromise'
 import {transformMusicMedia} from '../../helpers/utils'
 import {useAudio} from '../../context/audio'
+import {IMediaItem, plexApi} from '../../api/plexApi'
 import FolderIcon from '../../components/icons/folder'
 
 import styles from './index.module.css'
@@ -19,6 +21,7 @@ export function MusicList({musicPromise}: IMusicListProps) {
   const [secondLevelFolder, setSecondLevelFolder] = React.useState('')
   const [levelIndex, setLevelIndex] = React.useState<null | number>(null)
   const {setStreamUrl, setShuffleList, setPlayingTrack, play, stop} = useAudio()
+  const [playlistModalIsOpen, setPlaylistModalIsOpen] = React.useState(false)
 
   if (!musicList) {
     const data: any[] = useCachedPromise('fetchMusic', musicPromise())
@@ -106,22 +109,31 @@ export function MusicList({musicPromise}: IMusicListProps) {
     [musicList, firstLevelFolder]
   )
 
+  const handleShowPlaylists = () => {
+    setPlaylistModalIsOpen(true)
+  }
+
   // console.log('musicList: ', musicList)
   // console.log('firstLevel: ', firstLevelFolders)
   return (
     <div className={styles.musicListWrapper}>
       <div>
-        <button
-          className={
-            firstLevelFolder !== '' || secondLevelFolder !== ''
-              ? styles.backActive
-              : styles.backNotActive
-          }
-          onClick={goUpLevel}
-        >
-          Back
-        </button>
-        <button onClick={shufflePlay}>Shuffle Play</button>
+        <div>
+          <button
+            className={
+              firstLevelFolder !== '' || secondLevelFolder !== ''
+                ? styles.backActive
+                : styles.backNotActive
+            }
+            onClick={goUpLevel}
+          >
+            Back
+          </button>
+          <button onClick={shufflePlay}>Shuffle Play</button>
+        </div>
+        <div>
+          <button onClick={handleShowPlaylists}>Show Playlists</button>
+        </div>
       </div>
       <div className={styles.listWrapper}>
         <ul className={styles.fileList}>
@@ -173,6 +185,36 @@ export function MusicList({musicPromise}: IMusicListProps) {
           </>
         </ul>
       </div>
+      {playlistModalIsOpen && (
+        <div className={styles.modalWrapper}>
+          <Modal
+            onClose={() => setPlaylistModalIsOpen(false)}
+            title="Playlists"
+            content={<Playlists />}
+          />
+        </div>
+      )}
     </div>
+  )
+}
+
+function Playlists() {
+  const [playlists, setPlaylists] = React.useState<IMediaItem[]>([])
+  React.useEffect(() => {
+    const getData = async () => {
+      const result = await plexApi.getPlaylists()
+      if (result.length > 0) {
+        setPlaylists(result)
+      }
+    }
+
+    getData()
+  }, [])
+
+  return (
+    <>
+      {playlists.length > 0 &&
+        playlists.map((p) => <li key={p.guid}>{p.title}</li>)}
+    </>
   )
 }

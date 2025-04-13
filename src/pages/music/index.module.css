@@ -81,6 +81,16 @@
   padding: 0.5rem 0;
 }
 
+.modalWrapper {
+  & > div > div {
+    border-radius: 0px;
+    background-color: var(--color-plex-black);
+    border: 2px solid var(--color-primary);
+
+    padding: var(--space-x-large);
+  }
+}
+
 @keyframes scrolling {
   0% {
     transform: translate(100%, 0);
