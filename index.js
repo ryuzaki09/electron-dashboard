@@ -9,6 +9,7 @@ import shell from 'shelljs'
 
 import {createAppWindow} from './main/electron-application.ts'
 
+const PORT = process.env.PORT || 3000
 loadEnvFile()
 
 menu({
@@ -52,7 +53,7 @@ function createWindow() {
   mainWindow = createAppWindow()
 
   if (config.isDevelopment) {
-    mainWindow.loadURL('http://localhost:3000')
+    mainWindow.loadURL(`http://localhost:${PORT}`)
 
     installer(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension: ${name}`))

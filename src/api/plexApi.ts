@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export interface IMediaItem {
+export interface IPlaylistItem {
   addedAt: number
   duration: number
   guid: string
@@ -13,11 +13,41 @@ export interface IMediaItem {
   type: string
 }
 
+export type TPlaylistViewDto = Omit<IPlaylistItem, 'addedAt' | 'duration'>
+
+export interface IMediaItem {
+  Image: Array<{alt: string; type: 'coverPoster'; url: string}>
+  Media: Array<{
+    Part: Array<{
+      container: string
+      duration: number
+      file: string
+      id: number
+      key: string
+      size: number
+    }>
+  }>
+  originalTitle: string
+  key: string
+  ratingKey: string
+  title: string
+  summary: string
+  type: 'track'
+}
+
 export const plexApi = {
   getPlaylists: async () => {
     const result = await axios.get('http://172.16.170.101:3000/plex/playlists')
     console.log('plex result: ', result)
     return result.data ? transformPlexPlaylists(result.data) : []
+  },
+
+  getPlaylistItems: async (ratingKey: IPlaylistItem['ratingKey']) => {
+    const {data} = await axios.get(
+      `http://172.16.170.101:3000/plex/playlist/${ratingKey}`
+    )
+
+    return data ? transformPlaylistTracks(data) : []
   }
 }
 
@@ -28,7 +58,7 @@ const excludePlaylists = [
   'recently played'
 ]
 
-function transformPlexPlaylists(data: IMediaItem[]) {
+function transformPlexPlaylists(data: IPlaylistItem[]) {
   return data
     .filter((d) => !excludePlaylists.includes(d.title.toLowerCase()))
     .map((d) => ({
@@ -41,4 +71,20 @@ function transformPlexPlaylists(data: IMediaItem[]) {
       title: d.title,
       type: d.type
     }))
+}
+
+export interface ITrackViewDto {
+  name: string
+  domain: string
+  type: 'file'
+  url: string
+}
+
+function transformPlaylistTracks(data: IMediaItem[]): ITrackViewDto[] {
+  return data.map((d) => ({
+    name: d.title,
+    domain: 'http://172.16.170.20:32400',
+    type: 'file',
+    url: d.Media[0].Part[0].key
+  }))
 }

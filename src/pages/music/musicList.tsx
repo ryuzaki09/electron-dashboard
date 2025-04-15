@@ -4,7 +4,7 @@ import {Modal} from '@ryusenpai/shared-components'
 import {useCachedPromise} from '../../hooks/useCachedPromise'
 import {transformMusicMedia} from '../../helpers/utils'
 import {useAudio} from '../../context/audio'
-import {IMediaItem, plexApi} from '../../api/plexApi'
+import {plexApi, TPlaylistViewDto} from '../../api/plexApi'
 import FolderIcon from '../../components/icons/folder'
 
 import styles from './index.module.css'
@@ -20,8 +20,9 @@ export function MusicList({musicPromise}: IMusicListProps) {
   const [firstLevelFolder, setFirstLevelFolder] = React.useState('')
   const [secondLevelFolder, setSecondLevelFolder] = React.useState('')
   const [levelIndex, setLevelIndex] = React.useState<null | number>(null)
-  const {setStreamUrl, setShuffleList, setPlayingTrack, play, stop} = useAudio()
   const [playlistModalIsOpen, setPlaylistModalIsOpen] = React.useState(false)
+
+  const {setStreamUrl, setShuffleList, setPlayingTrack, play, stop} = useAudio()
 
   if (!musicList) {
     const data: any[] = useCachedPromise('fetchMusic', musicPromise())
@@ -190,7 +191,9 @@ export function MusicList({musicPromise}: IMusicListProps) {
           <Modal
             onClose={() => setPlaylistModalIsOpen(false)}
             title="Playlists"
-            content={<Playlists />}
+            content={
+              <Playlists closeFn={() => setPlaylistModalIsOpen(false)} />
+            }
           />
         </div>
       )}
@@ -198,8 +201,10 @@ export function MusicList({musicPromise}: IMusicListProps) {
   )
 }
 
-function Playlists() {
-  const [playlists, setPlaylists] = React.useState<IMediaItem[]>([])
+function Playlists({closeFn}: {closeFn: () => void}) {
+  const [playlists, setPlaylists] = React.useState<TPlaylistViewDto[]>([])
+  const {setShuffleList} = useAudio()
+
   React.useEffect(() => {
     const getData = async () => {
       const result = await plexApi.getPlaylists()
@@ -211,10 +216,27 @@ function Playlists() {
     getData()
   }, [])
 
+  const playPlaylist = async (item: TPlaylistViewDto) => {
+    console.log('item: ', item)
+    const result = await plexApi.getPlaylistItems(item.ratingKey)
+    console.log('playlist Tracks: ', result)
+    result.sort(() => Math.random() - 0.5)
+    setShuffleList(result)
+    closeFn()
+  }
+
   return (
-    <>
+    <ul>
       {playlists.length > 0 &&
-        playlists.map((p) => <li key={p.guid}>{p.title}</li>)}
-    </>
+        playlists.map((p) => (
+          <li key={p.guid}>
+            <div>{p.title}</div>
+            <div className={styles.playlistActions}>
+              <span>Plex</span>
+              <button onClick={() => playPlaylist(p)}>Play</button>
+            </div>
+          </li>
+        ))}
+    </ul>
   )
 }
