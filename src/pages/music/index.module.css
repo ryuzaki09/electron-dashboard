@@ -94,6 +94,10 @@
 
     padding: var(--space-x-large);
     overflow-y: scroll;
+
+    svg, path {
+      stroke: var(--color-primary);
+    }
   }
 
   & ul {
