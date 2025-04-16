@@ -6,7 +6,7 @@ export const openAiAPI = {
     formData.append('audio', audio, 'recording.wav')
     console.log('calling whisper')
     const response = await axios.post(
-      `${process.env.BACKEND_HOST}/openai/converse`,
+      `${process.env.LOCAL_API_URL}/openai/converse`,
       formData,
       {
         headers: {
@@ -22,7 +22,7 @@ export const openAiAPI = {
   textToSpeech: async (text: string) => {
     console.log('text to speech')
     const response = await axios.post(
-      `${process.env.BACKEND_HOST}/openai/tts`,
+      `${process.env.LOCAL_API_URL}/openai/tts`,
       {
         text
       }

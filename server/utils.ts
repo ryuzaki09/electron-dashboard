@@ -72,7 +72,7 @@ export function getFilesRecursively(originalPath: string) {
             firstFolder: userMusicFirstFolder,
             basePath,
             url: `/music${filePath}/${item.name}`,
-            domain: process.env.BACKEND_HOST,
+            domain: process.env.LOCAL_API_URL,
             filePath
           })
         }

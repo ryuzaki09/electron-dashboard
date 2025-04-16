@@ -17,14 +17,14 @@ export const homeAssistantApi = {
   closeSignal: () => (signal = null),
   conversation: async (text: string) => {
     const result = await axios.post(
-      `${process.env.BACKEND_HOST}/home-assistant/conversation`,
+      `${process.env.LOCAL_API_URL}/home-assistant/conversation`,
       {text}
     )
     console.log('result: ', result)
   },
 
   getStates: async () => {
-    return axios.get(`${process.env.BACKEND_HOST}/home-assistant/states`)
+    return axios.get(`${process.env.LOCAL_API_URL}/home-assistant/states`)
   },
 
   getLights: async (): Promise<IDeviceState[]> => {

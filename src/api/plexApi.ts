@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {config} from '../config'
 
 export interface IPlaylistItem {
   addedAt: number
@@ -35,16 +36,20 @@ export interface IMediaItem {
   type: 'track'
 }
 
+const client = axios.create({
+  baseURL: config.localApiUrl
+})
+
 export const plexApi = {
   getPlaylists: async () => {
-    const result = await axios.get('http://172.16.170.101:3000/plex/playlists')
+    const result = await client.get('/plex/playlists')
     console.log('plex result: ', result)
     return result.data ? transformPlexPlaylists(result.data) : []
   },
 
   getPlaylistItems: async (ratingKey: IPlaylistItem['ratingKey']) => {
-    const {data} = await axios.get(
-      `http://172.16.170.101:3000/plex/playlist/${ratingKey}`
+    const {data} = await client.get(
+      `/plex/playlist/${ratingKey}`
     )
 
     return data ? transformPlaylistTracks(data) : []
@@ -83,7 +88,7 @@ export interface ITrackViewDto {
 function transformPlaylistTracks(data: IMediaItem[]): ITrackViewDto[] {
   return data.map((d) => ({
     name: d.title,
-    domain: 'http://172.16.170.20:32400',
+    domain: config.plexUrl || '',
     type: 'file',
     url: d.Media[0].Part[0].key
   }))
