@@ -63,9 +63,8 @@ export function getFilesRecursively(originalPath: string) {
           !item.name.startsWith('.')
         ) {
           // filePath without the root music part and the file name
-          const filePath = item.path
-            .replace(basePath, '')
-            .replace(userMusicFirstFolder, '')
+          const filePath = item.path.replace(basePath, '')
+          // .replace(userMusicFirstFolder, '')
           results.push({
             name: item.name,
             path: relativePath,
@@ -73,7 +72,7 @@ export function getFilesRecursively(originalPath: string) {
             firstFolder: userMusicFirstFolder,
             basePath,
             url: `/music${filePath}/${item.name}`,
-            domain: process.env.BACKEND_HOST,
+            domain: process.env.LOCAL_API_URL,
             filePath
           })
         }

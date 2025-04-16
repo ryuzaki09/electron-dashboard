@@ -38,11 +38,20 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
         setPlayState(PlayStates.stopped)
 
         if (shufflePlayList.length > 0) {
-          setShufflePlayIndex((prevIndex) => prevIndex + 1)
-          const file = shufflePlayList[shufflePlayIndex + 1]
-          setStreamUrl(`${file.domain}${file.url}`)
-          setPlayingTrack(file)
-          play()
+          if (shufflePlayIndex < shufflePlayList.length - 1) {
+            // console.log('ended: ', shufflePlayList)
+            setShufflePlayIndex((prevIndex) => prevIndex + 1)
+            const file = shufflePlayList[shufflePlayIndex + 1]
+            // console.log('ended next file: ', file)
+            setStreamUrl(`${file.domain}${file.url}`)
+            setPlayingTrack(file)
+            play()
+          } else {
+            setShufflePlayList([])
+            setShufflePlayIndex(0)
+            setPlayingTrack(null)
+            stop()
+          }
         }
       }
       audioPlayer.addEventListener('ended', onEnd)
@@ -98,7 +107,6 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
       setShufflePlayIndex((prevIndex) => prevIndex + 1)
 
       const file = shufflePlayList[shufflePlayIndex + 1]
-      // const filePath = file.path.replace(file.basePath, '')
       setStreamUrl(`${file.domain}${file.url}`)
       setPlayingTrack(file)
       play()

@@ -108,8 +108,11 @@ module.exports = {
       'process.env.OPENWEATHER_KEY': JSON.stringify(
         process.env.OPENWEATHER_KEY || ''
       ),
-      'process.env.BACKEND_HOST': JSON.stringify(
-        process.env.BACKEND_HOST || ''
+      'process.env.LOCAL_API_URL': JSON.stringify(
+        process.env.LOCAL_API_URL || ''
+      ),
+      'process.env.BACKEND_API_URL': JSON.stringify(
+        process.env.BACKEND_API_URL || ''
       ),
       'process.env.PICOVOICE_KEY': JSON.stringify(
         process.env.PICOVOICE_KEY || ''
@@ -130,6 +133,7 @@ module.exports = {
       'process.env.USE_WAKEWORD': JSON.stringify(
         process.env.USE_WAKEWORD || ''
       ),
+      'process.env.PLEX_URL': JSON.stringify(process.env.PLEX_URL || ''),
       'process.env.ENV': JSON.stringify(process.env.ENV || '')
     })
     // SECOND SCREEN

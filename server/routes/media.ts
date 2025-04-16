@@ -29,7 +29,7 @@ router.get('/videos', (_req: express.Request, res) => {
       .map((file) => ({
         name: file,
         url: `/video/${file}`,
-        domain: process.env.BACKEND_HOST
+        domain: process.env.LOCAL_API_URL
       }))
       // ignore files that starts with a dot .
       .filter((f) => !f.name.startsWith('.'))

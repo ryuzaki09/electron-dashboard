@@ -8,7 +8,7 @@ import {mainStore} from '../store/mainStore'
 import styles from './main.module.css'
 
 export function Main() {
-  return (
+    return (
     <Container>
       <div className={styles.contentContainer}>
         <TimeDisplay />

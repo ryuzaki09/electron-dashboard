@@ -36,8 +36,8 @@ module.exports = merge(common, {
       'process.env.OPENWEATHER_KEY': JSON.stringify(
         process.env.OPENWEATHER_KEY || ''
       ),
-      'process.env.BACKEND_HOST': JSON.stringify(
-        process.env.BACKEND_HOST || ''
+      'process.env.LOCAL_API_URL': JSON.stringify(
+        process.env.LOCAL_API_URL || ''
       ),
       'process.env.PICOVOICE_KEY': JSON.stringify(
         process.env.PICOVOICE_KEY || ''
