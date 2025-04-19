@@ -20,10 +20,6 @@ export function Header() {
   const {isListening, setIsListening} = useVoiceAssistant()
   console.log('isListening: ', isListening)
 
-  const restartApp = () => {
-    window.electronAPI.restartApp()
-  }
-
   const onChangeTheme = (theme: {text: string; value: string}) => {
     mainStore.getState().setTheme(theme.value)
   }

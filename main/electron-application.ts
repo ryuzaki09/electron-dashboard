@@ -1,11 +1,15 @@
 import {BrowserWindow} from 'electron'
 import {config} from '../src/config'
+import path from 'path'
 
-export function createAppWindow(path, windowOpts = {}) {
+export function createAppWindow(urlPath, windowOpts = {}) {
   const defaultOpts = {
     width: 1024,
     height: 600,
-    webPreferences: {nodeIntegration: true}
+    webPreferences: {
+      nodeIntegration: true,
+      //preload: path.join(__dirname, '../preload.js')
+    }
   }
 
   const prodOptions = config.isDevelopment
