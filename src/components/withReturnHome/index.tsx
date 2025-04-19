@@ -1,6 +1,8 @@
 import React from 'react'
 import {useLocation, useNavigate} from 'react-router-dom'
 
+const IDLE_TIMEOUT = 60000 // 1minute
+
 export function WithReturnHome({children}: {children: React.ReactNode}) {
   const location = useLocation()
   const navigate = useNavigate()
@@ -23,7 +25,7 @@ export function WithReturnHome({children}: {children: React.ReactNode}) {
 
         timerRef.current = setTimeout(() => {
           navigate('/')
-        }, 10000)
+        }, IDLE_TIMEOUT)
       }
 
       if (location.pathname !== '/') {
