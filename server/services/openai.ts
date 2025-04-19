@@ -12,9 +12,9 @@ const openai = new OpenAI({
 })
 
 const systemPrompt: ChatCompletionMessageParam = {
-  role: 'developer',
+  role: 'system',
   content: `You are a helpful assistant that have the knowledge of the universe. You will answer in a concise and simplified manner.
-  Today's date is ${dateAndDay}.`
+  Today's date is ${dateAndDay}. When asked to action (i.e. start, set) about a timer, DO NOT call any functions and ONLY respond in this format "<action> timer for HH:mm:ss".`
 }
 
 const MAX_HISTORY = 10
@@ -22,18 +22,18 @@ let chatHistory: ChatCompletionMessageParam[] = []
 
 export const openAiAPI = {
   speechToText: async (audio: Uploadable) => {
-    console.log('calling whisper')
+    console.log('Backend calling whisper')
     const response = await openai.audio.transcriptions.create({
       file: audio,
       model: 'whisper-1'
     })
 
-    console.log('got response: ', response.text)
+    console.log('Backend got stt response: ', response.text)
     return response.text
   },
 
   createChat: async (transcription: string) => {
-    console.log('calling chat: ', transcription)
+    console.log('Backend calling chat: ', transcription)
     chatHistory.push({
       role: 'user',
       content: transcription
@@ -43,7 +43,8 @@ export const openAiAPI = {
       chatHistory.shift()
     }
     const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo-1106',
+      // model: 'gpt-3.5-turbo-1106',
+      model: 'gpt-4.1-nano-2025-04-14',
       messages: [systemPrompt, ...chatHistory],
       tools: functions
     })
@@ -55,13 +56,13 @@ export const openAiAPI = {
         message
       })
     }
-    console.log('got response from chat: ', message)
+    console.log('Backend got response from chat: ', message)
 
-    return response.choices[0].message.content
+    return message.content || response.choices[0].message.content
   },
 
   textToSpeech: async (text: string) => {
-    console.log('requesting openai text to speech: ', text)
+    console.log('Backend requesting openai text to speech: ', text)
     try {
       const response = await openai.audio.speech.create({
         model: 'tts-1',

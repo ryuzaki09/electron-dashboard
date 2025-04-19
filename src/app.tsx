@@ -9,6 +9,7 @@ import {Assistant} from './pages/assistant'
 import {MusicProvider} from './context/audio'
 import {WithWeatherForecast} from './components/withWeatherForecast'
 import {mainStore} from './store/mainStore'
+import {useTimerStore} from './store/timerStore'
 
 import styles from './app.module.css'
 
@@ -20,6 +21,8 @@ const themesMap = {
 
 export default function App() {
   const theme = mainStore((state) => state.theme)
+
+  const {timers} = useTimerStore((state) => state)
 
   const themeColor = themesMap[theme]
 

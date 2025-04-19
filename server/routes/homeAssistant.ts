@@ -23,7 +23,7 @@ router.post(
         }
       }
     )
-    // console.log('home result: ', result.data.response)
+    // console.log('home conversation result: ', result.data.response)
 
     res.send({message: 'ok'})
   }

@@ -1,6 +1,24 @@
 import axios from 'axios'
 
 export const openAiAPI = {
+  speechToText: async (audio: Blob) => {
+    const formData = new FormData()
+    formData.append('audio', audio, 'recording.wav')
+
+    const {data} = await axios.post(
+      `${process.env.LOCAL_API_URL}/openai/stt`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+    console.log('transcribed result: ', data)
+
+    return data ? data : ''
+    // return result.data.transcription || ''
+  },
   converse: async (audio: Blob) => {
     const formData = new FormData()
     formData.append('audio', audio, 'recording.wav')
@@ -29,5 +47,19 @@ export const openAiAPI = {
     )
 
     return response
+  },
+
+  chat: async (transcription: string) => {
+    const response = await axios.post(
+      `${process.env.LOCAL_API_URL}/openai/chat`,
+      {
+        text: transcription
+      }
+    )
+    console.log('Frontend chat response: ', response)
+
+    return response.data.choices
+      ? response.data.choices[0].message.content
+      : response.data
   }
 }
