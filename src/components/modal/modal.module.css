@@ -1,0 +1,54 @@
+.modalWrapper {
+  font-size: 18px;
+  color: var(--color-primary);
+
+  & > div > div {
+    width: 70vw;
+    height: 70vh;
+
+    border-radius: 0px;
+    background-color: var(--color-plex-black);
+    border: 2px solid var(--color-primary);
+
+    padding: var(--space-x-large);
+    overflow-y: scroll;
+
+    svg,
+    path {
+      stroke: var(--color-primary);
+    }
+  }
+
+  & ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  & li {
+    border-top: 1px solid var(--color-primary);
+    padding-block: var(--space-sm);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  & li:last-child {
+    border-bottom: 1px solid var(--color-primary);
+  }
+
+  & .playlistActions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-med);
+
+    span {
+      background-color: var(--color-plex-orange);
+      color: var(--color-plex-black);
+      padding: var(--space-xxs) var(--space-xs);
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 10px;
+    }
+  }
+}

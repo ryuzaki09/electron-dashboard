@@ -8,22 +8,35 @@ import {HomeAssistant} from './pages/home-assistant'
 import {Assistant} from './pages/assistant'
 import {MusicProvider} from './context/audio'
 import {WithWeatherForecast} from './components/withWeatherForecast'
+import {mainStore} from './store/mainStore'
 
-import './app.module.css'
+import styles from './app.module.css'
+
+const themesMap = {
+  default: styles.defaultTheme,
+  skyGreen: styles.skyGreenTheme,
+  naruto: styles.narutoTheme
+}
 
 export default function App() {
+  const theme = mainStore((state) => state.theme)
+
+  const themeColor = themesMap[theme]
+
   return (
     <MusicProvider>
       <WithWeatherForecast>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/music" element={<Music />} />
-            <Route path="/movie" element={<Movie />} />
-            <Route path="/home-assistant" element={<HomeAssistant />} />
-            <Route path="/assistant" element={<Assistant />} />
-          </Routes>
-        </Router>
+        <main className={themeColor}>
+          <Router>
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/music" element={<Music />} />
+              <Route path="/movie" element={<Movie />} />
+              <Route path="/home-assistant" element={<HomeAssistant />} />
+              <Route path="/assistant" element={<Assistant />} />
+            </Routes>
+          </Router>
+        </main>
       </WithWeatherForecast>
     </MusicProvider>
   )
