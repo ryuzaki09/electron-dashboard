@@ -11,6 +11,17 @@ body {
   font-size: 16px;
 }
 
+.defaultTheme {
+  --color-primary: #f4bbbb;
+}
+
+.skyGreenTheme {
+  --color-primary: #d5f4e6;
+}
+.narutoTheme {
+  --color-primary: orange;
+}
+
 .appContainer {
   width: 100%;
 }

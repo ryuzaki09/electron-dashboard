@@ -124,7 +124,24 @@ Notice the line `Environment=PATH...`, replace this line with the path of your `
 
 #### Deploy the app
 
-There is a `deploy.sh.sample` file, simply do `cp deploy.sh.sample deploy.sh` and edit the file via `sudo nano deploy.sh`.
+To deploy the app to a Raspberry Pi, first run
+```
+npm run build:pi
+```
+this will compile and bundle the app and finally package it into a `.deb` file.
+
+The next step, there is a `deploy.sh.sample` file, simply do 
+```
+cp deploy.sh.sample deploy.sh
+```
+edit this file with
+```
+sudo nano deploy.sh
+```
 In the file simply replace the `REMOTE_USER`, `REMOTE_HOST` and `DEB_FILE` with the username to ssh to the pi, the IP address of the pi and the name of the packaged `.deb` file respectively.
 
-Finally run the file via `bash deploy.sh` to deploy. It will copy the deb file and unpackage and finally reboot the pi. You may need to enter your ssh password if you have not added your ssh key.
+Finally run the file the following to deploy.
+```
+bash deploy.sh
+```
+This will copy the deb file and unpackage and finally reboot the pi. You may need to enter your ssh password if you have not added your ssh key.
