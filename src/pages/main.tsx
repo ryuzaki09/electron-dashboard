@@ -4,11 +4,14 @@ import {format} from 'date-fns'
 import {Container} from '../components/container'
 import {useTime} from '../hooks/useTime'
 import {mainStore} from '../store/mainStore'
+import { useTimerStore } from '../store/timerStore'
 
 import styles from './main.module.css'
 
 export function Main() {
-    return (
+  const timers = useTimerStore((state) => state.timers)
+
+  return (
     <Container>
       <div className={styles.contentContainer}>
         <TimeDisplay />

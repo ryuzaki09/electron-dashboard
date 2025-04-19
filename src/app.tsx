@@ -8,6 +8,7 @@ import {HomeAssistant} from './pages/home-assistant'
 import {Assistant} from './pages/assistant'
 import {MusicProvider} from './context/audio'
 import {WithWeatherForecast} from './components/withWeatherForecast'
+import {WithReturnHome} from './components/withReturnHome'
 import {mainStore} from './store/mainStore'
 import {useTimerStore} from './store/timerStore'
 
@@ -21,7 +22,6 @@ const themesMap = {
 
 export default function App() {
   const theme = mainStore((state) => state.theme)
-
   const {timers} = useTimerStore((state) => state)
 
   const themeColor = themesMap[theme]
@@ -31,13 +31,15 @@ export default function App() {
       <WithWeatherForecast>
         <main className={themeColor}>
           <Router>
-            <Routes>
-              <Route path="/" element={<Main />} />
-              <Route path="/music" element={<Music />} />
-              <Route path="/movie" element={<Movie />} />
-              <Route path="/home-assistant" element={<HomeAssistant />} />
-              <Route path="/assistant" element={<Assistant />} />
-            </Routes>
+            <WithReturnHome>
+              <Routes>
+                <Route path="/" element={<Main />} />
+                <Route path="/music" element={<Music />} />
+                <Route path="/movie" element={<Movie />} />
+                <Route path="/home-assistant" element={<HomeAssistant />} />
+                <Route path="/assistant" element={<Assistant />} />
+              </Routes>
+            </WithReturnHome>
           </Router>
         </main>
       </WithWeatherForecast>
