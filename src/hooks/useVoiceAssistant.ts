@@ -5,6 +5,7 @@ import {usePorcupine} from '@picovoice/porcupine-react'
 import {MediaRecorderAPI} from '../lib/mediaRecorder'
 import {config} from '../config'
 import {ai} from '../lib/ai'
+import {findIntent} from '../config/intents'
 
 const porcupineModel = {
   publicPath: '/porcupine_params_02.pv',
@@ -133,11 +134,29 @@ export function useVoiceAssistant() {
   async function handleSpeechReponse(audioBlob: Blob) {
     setIsListening(false)
     // send audio to AI to transcribe and get answer back from AI
-    const aiResponse = await ai.converse(audioBlob)
-    console.log('AI response: ', aiResponse)
+    const transcription = await ai.speechToText(audioBlob)
+    const aiResponse = await ai.chat(transcription)
+    const foundIntent = findIntent(aiResponse)
+    if (foundIntent) {
+      console.log('foundIntent: ', foundIntent)
+
+      if (foundIntent.triggerFn) {
+        foundIntent.triggerFn()
+      }
+
+      if (foundIntent.tts) {
+        const speechAudio = await ai.textToSpeech(foundIntent.tts)
+
+        // play audio
+        const audio = new Audio(speechAudio.data.audioUrl)
+        audio.muted = false
+        await audio.play()
+      }
+      return
+    }
     const speechAudio = await ai.textToSpeech(aiResponse)
-    // const aiAudioResponse = await openAiAPI.converse(audioBlob)
-    // console.log('tts result: ', aiAudioResponse)
+
+    // play audio
     const audio = new Audio(speechAudio.data.audioUrl)
     audio.muted = false
     await audio.play()

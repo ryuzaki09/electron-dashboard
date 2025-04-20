@@ -76,7 +76,7 @@ export const localAi = {
     return result
   },
 
-  getAiResponse: async (transcription: string) => {
+  chat: async (transcription: string) => {
     const result = await aiClient.post('/chat/completions', {
       model: 'qwen2.5:latest',
       messages: [
