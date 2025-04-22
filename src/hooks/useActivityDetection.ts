@@ -1,12 +1,13 @@
 import React from 'react'
-import {useLocation, useNavigate} from 'react-router-dom'
-import {config} from '../../config'
 
-const IDLE_TIMEOUT = 60000 // 1minute
+interface IActivityProps {
+  timeout: number
+  onDetectionFn: () => void
+}
 
-export function WithReturnHome({children}: {children: React.ReactNode}) {
-  const location = useLocation()
-  const navigate = useNavigate()
+export function useActivityDetection({timeout, onDetectionFn}: IActivityProps) {
+  const [startDetection, setStartDetection] = React.useState(false)
+  const [activityDetected, setActivityDetected] = React.useState(false)
   const timerRef = React.useRef<NodeJS.Timeout | null>(null)
 
   React.useEffect(
@@ -25,14 +26,18 @@ export function WithReturnHome({children}: {children: React.ReactNode}) {
         }
 
         timerRef.current = setTimeout(() => {
-          navigate('/')
-        }, IDLE_TIMEOUT)
+          console.log('Calling detect function')
+          onDetectionFn()
+        }, timeout)
       }
 
-      if (location.pathname !== '/' && !config.isDevelopment) {
+      if (startDetection) {
+        console.log('STARTED')
         events.forEach((event) => {
           window.addEventListener(event, resetTimer)
         })
+
+        resetTimer()
       }
 
       return () => {
@@ -45,8 +50,10 @@ export function WithReturnHome({children}: {children: React.ReactNode}) {
         })
       }
     },
-    [location]
+    [startDetection, timeout, onDetectionFn]
   )
 
-  return <>{children}</>
+  return {
+    setStartDetection
+  }
 }

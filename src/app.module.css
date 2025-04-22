@@ -2,6 +2,8 @@
   --color-primary: #f4bbbb;
   --color-plex-black: #3f4245;
   --color-plex-orange: #e5a00d;
+  --font-sm: 30px;
+  --font-med: 45px;
 }
 
 body {
@@ -9,6 +11,10 @@ body {
   background-color: var(--color-plex-black);
   font-family: 'Outfit';
   font-size: 16px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .defaultTheme {

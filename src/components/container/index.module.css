@@ -1,7 +1,7 @@
 .appContainer {
   background-color: var(--color-plex-black);
   padding: 0.5rem;
-  --header-height: 75px;
+  --header-height: 72px;
   --nav-height: 60px;
 }
 
@@ -9,5 +9,6 @@
   /*height: calc(100vh - 105px);*/
   border-radius: 10px;
   color: var(--color-primary);
+  margin-top: calc(var(--header-height) + 0.5rem);
   /*overflow-y: scroll;*/
 }
