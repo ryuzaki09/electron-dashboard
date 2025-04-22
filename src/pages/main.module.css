@@ -2,15 +2,19 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: var(--space-sm);
+  place-items: center;
+  gap: var(--space-sm);
 }
 
 .dateTimeWrapper {
+  text-align: center;
+
   & > div {
-    font-size: clamp(10%, 20px, 8vw);
+    font-size: clamp(10%, 30px, 8vw);
   }
 }
 .time {
-  font-size: clamp(4rem, 120px, 20vw);
+  font-size: clamp(4rem, 150px, 20vw);
   font-weight: 700;
 }
 
@@ -42,7 +46,7 @@
     display: flex;
     align-items: center;
     gap: var(--space-med);
-    font-size: 24px;
+    font-size: 30px;
   }
 }
 
@@ -50,6 +54,9 @@
   display: flex;
   gap: var(--space-med);
 
+  & p {
+    font-size: 20px;
+  }
   & svg {
     width: 40px;
   }

@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 import {Icon, ModernDropdown} from '@ryusenpai/shared-components'
 
@@ -12,23 +13,49 @@ import {themeOptions} from '../../config/constants'
 import {CustomModal} from '../modal/modal'
 import {MediaControls} from './mediaControls'
 import {mainStore} from '../../store/mainStore'
+import {useActivityDetection} from '../../hooks/useActivityDetection'
 
 import styles from './index.module.css'
 
 export function Header() {
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false)
   const {isListening, setIsListening} = useVoiceAssistant()
+  const [navIsOpen, setNavIsOpen] = React.useState(false)
+  const {setStartDetection} = useActivityDetection({
+    timeout: 5000,
+    onDetectionFn: () => setNavIsOpen(false)
+  })
   console.log('isListening: ', isListening)
 
   const onChangeTheme = (theme: {text: string; value: string}) => {
     mainStore.getState().setTheme(theme.value)
   }
 
+  React.useEffect(
+    () => {
+      if (navIsOpen) {
+        console.log('start detection')
+        setStartDetection(true)
+      }
+    },
+    [navIsOpen]
+  )
+
   return (
     <>
-      <header>
-        <nav className={styles.navWrapper}>
-          <div>
+      <header className={styles.header}>
+        <nav
+          className={classnames(styles.navWrapper, {
+            [styles.navIsOpen]: navIsOpen
+          })}
+        >
+          <div
+            className={styles.settingsWrapper}
+            onClick={() => setNavIsOpen((prevState) => !prevState)}
+          >
+            <Icon name="settings" />
+          </div>
+          <div className={classnames(styles.navItems)}>
             <Link to="/">
               <HomeIcon />
             </Link>
@@ -48,12 +75,6 @@ export function Header() {
                 {isListening ? 'Listening..' : 'Press to talk'}
               </button>
             )}
-          </div>
-          <div
-            className={styles.settingsWrapper}
-            onClick={() => setSettingsModalOpen(true)}
-          >
-            <Icon name="settings" />
           </div>
         </nav>
       </header>

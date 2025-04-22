@@ -6,6 +6,7 @@ import {transformMusicMedia} from '../../helpers/utils'
 import {useAudio} from '../../context/audio'
 import {plexApi, TPlaylistViewDto} from '../../api/plexApi'
 import FolderIcon from '../../components/icons/folder'
+import {CustomModal} from '../../components/modal/modal'
 
 import styles from './index.module.css'
 
@@ -17,12 +18,9 @@ const TRACK_FILES_KEY = 'files'
 
 export function MusicList({musicPromise}: IMusicListProps) {
   const [musicList, setMusicList] = React.useState<any>(null)
-  const [firstLevelFolder, setFirstLevelFolder] = React.useState('')
-  const [secondLevelFolder, setSecondLevelFolder] = React.useState('')
-  const [levelIndex, setLevelIndex] = React.useState<null | number>(null)
   const [playlistModalIsOpen, setPlaylistModalIsOpen] = React.useState(false)
-
-  const {setStreamUrl, setShuffleList, setPlayingTrack, play, stop} = useAudio()
+  const [songListModalIsOpen, setSongListModalIsOpen] = React.useState(false)
+  const {playingTrack} = useAudio()
 
   if (!musicList) {
     const data: any[] = useCachedPromise('fetchMusic', musicPromise())
@@ -33,6 +31,54 @@ export function MusicList({musicPromise}: IMusicListProps) {
       setMusicList(result.root)
     }
   }
+
+  // console.log('musicList: ', musicList)
+  // console.log('playingtrack: ', playingTrack)
+  return (
+    <div className={styles.musicListWrapper}>
+      <div>
+        <button onClick={() => setSongListModalIsOpen(true)}>Show Songs</button>
+        <button onClick={() => setPlaylistModalIsOpen(true)}>
+          Show Playlists
+        </button>
+      </div>
+      <div className={styles.musicContent}>
+        {playingTrack && <div>{playingTrack.name}</div>}
+      </div>
+      {songListModalIsOpen && (
+        <div className={styles.songsModalWrapper}>
+          <CustomModal
+            title="Local Music"
+            onClose={() => setSongListModalIsOpen(false)}
+            content={
+              <SongsList
+                musicList={musicList}
+                onTrackClickCb={() => setSongListModalIsOpen(false)}
+              />
+            }
+          />
+        </div>
+      )}
+      {playlistModalIsOpen && (
+        <div className={styles.modalWrapper}>
+          <Modal
+            onClose={() => setPlaylistModalIsOpen(false)}
+            title="Playlists"
+            content={
+              <Playlists closeFn={() => setPlaylistModalIsOpen(false)} />
+            }
+          />
+        </div>
+      )}
+    </div>
+  )
+}
+
+function SongsList({musicList, onTrackClickCb}) {
+  const [firstLevelFolder, setFirstLevelFolder] = React.useState('')
+  const [secondLevelFolder, setSecondLevelFolder] = React.useState('')
+  const [levelIndex, setLevelIndex] = React.useState<null | number>(null)
+  const {setStreamUrl, setShuffleList, setPlayingTrack, play, stop} = useAudio()
 
   const onClickFirstLevel = (folderName: string) => {
     setFirstLevelFolder(folderName)
@@ -50,6 +96,7 @@ export function MusicList({musicPromise}: IMusicListProps) {
       .then(() => {
         console.log('Playing')
         setPlayingTrack(file)
+        onTrackClickCb()
       })
       .catch((e) => {
         console.log('Cannot play: ', e)
@@ -109,32 +156,20 @@ export function MusicList({musicPromise}: IMusicListProps) {
     },
     [musicList, firstLevelFolder]
   )
-
-  const handleShowPlaylists = () => {
-    setPlaylistModalIsOpen(true)
-  }
-
-  // console.log('musicList: ', musicList)
-  // console.log('firstLevel: ', firstLevelFolders)
   return (
-    <div className={styles.musicListWrapper}>
-      <div>
-        <div>
-          <button
-            className={
-              firstLevelFolder !== '' || secondLevelFolder !== ''
-                ? styles.backActive
-                : styles.backNotActive
-            }
-            onClick={goUpLevel}
-          >
-            Back
-          </button>
-          <button onClick={shufflePlay}>Shuffle Play</button>
-        </div>
-        <div>
-          <button onClick={handleShowPlaylists}>Show Playlists</button>
-        </div>
+    <>
+      <div className={styles.folderNav}>
+        <button
+          className={
+            firstLevelFolder !== '' || secondLevelFolder !== ''
+              ? styles.backActive
+              : styles.backNotActive
+          }
+          onClick={goUpLevel}
+        >
+          Back
+        </button>
+        <button onClick={shufflePlay}>Shuffle Play</button>
       </div>
       <div className={styles.listWrapper}>
         <ul className={styles.fileList}>
@@ -186,18 +221,7 @@ export function MusicList({musicPromise}: IMusicListProps) {
           </>
         </ul>
       </div>
-      {playlistModalIsOpen && (
-        <div className={styles.modalWrapper}>
-          <Modal
-            onClose={() => setPlaylistModalIsOpen(false)}
-            title="Playlists"
-            content={
-              <Playlists closeFn={() => setPlaylistModalIsOpen(false)} />
-            }
-          />
-        </div>
-      )}
-    </div>
+    </>
   )
 }
 

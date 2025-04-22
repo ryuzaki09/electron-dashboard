@@ -11,6 +11,8 @@ export function WithWeatherForecast({children}: {children: React.ReactNode}) {
 
   React.useEffect(
     () => {
+      const getTodayDate = () => today
+
       let timeoutId: NodeJS.Timeout
       async function getWeather() {
         const data = await weatherApi.getForecast()
@@ -24,7 +26,7 @@ export function WithWeatherForecast({children}: {children: React.ReactNode}) {
       }
 
       timeoutId = setTimeout(() => {
-        if (today !== todayDate) {
+        if (today !== getTodayDate()) {
           setTodayDate(today)
           getWeather()
         }
