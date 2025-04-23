@@ -7,7 +7,7 @@
     "build": "NODE_ENV=production npm run build:renderer && npm run build:main",
     "build:renderer": "rm -rf ./dist && webpack --config webpack.config.prod.js",
     "build:main": "rm -rf ./build && webpack --config webpack.config.electron.js",
-    "build:pi": "npm run build && npm run bundle-backend && electron-builder --linux --armv7l",
+    "build:pi": "npm test && npm run build && npm run bundle-backend && electron-builder --linux --armv7l",
     "start": "electron .",
     "test": "jest --config ./jest.config.js",
     "test:acceptance": "mocha -r @babel/register test/acceptance/ --timeout 15000",
