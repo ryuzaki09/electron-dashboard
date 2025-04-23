@@ -1,6 +1,6 @@
 const config = {
   verbose: true,
-  preset: 'ts-jest/presets/default-esm', // <--- switch to ESM-aware preset
+  preset: 'ts-jest',
   modulePaths: ['<rootDir>/src/'],
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
