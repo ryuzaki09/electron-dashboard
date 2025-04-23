@@ -20,7 +20,7 @@ export function useTime() {
   return {amPm, time}
 }
 
-function getTimeString() {
+export function getTimeString() {
   const dateTime = new Date()
   const minutes = dateTime.getMinutes()
   const hours = dateTime.getHours()
