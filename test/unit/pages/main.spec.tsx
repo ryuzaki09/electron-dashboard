@@ -1,4 +1,6 @@
 import React from 'react'
+//import '@picovoice/porcupine-web'
+//jest.mock('@picovoice/porcupine-web')
 import {format} from 'date-fns'
 import {MemoryRouter, Routes, Route} from 'react-router'
 import {render, fireEvent, screen, waitFor} from '@testing-library/react'
@@ -10,7 +12,7 @@ import {Main} from '../../../src/pages/main'
 describe('Main Component', () => {
   function renderComponent() {
     render(
-      <MemoryRouter initialEntries={['/home-media/hk']}>
+      <MemoryRouter initialEntries={['/']}>
         <Routes>
           <Route path="/" element={<Main />} />
         </Routes>
