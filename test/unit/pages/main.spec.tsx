@@ -37,7 +37,10 @@ describe('Main Component', () => {
   function renderComponent() {
     render(
       <MusicProvider>
-        <MemoryRouter initialEntries={['/']}>
+        <MemoryRouter
+          initialEntries={['/']}
+          future={{v7_relativeSplatPath: true, v7_startTransition: true}}
+        >
           <Routes>
             <Route path="/" element={<Main />} />
           </Routes>
