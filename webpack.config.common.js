@@ -134,7 +134,8 @@ module.exports = {
         process.env.USE_WAKEWORD || ''
       ),
       'process.env.PLEX_URL': JSON.stringify(process.env.PLEX_URL || ''),
-      'process.env.ENV': JSON.stringify(process.env.ENV || '')
+      'process.env.ENV': JSON.stringify(process.env.ENV || ''),
+      'process.env.USE_EXTERNAL_BACKEND': JSON.stringify(process.env.USE_EXTERNAL_BACKEND || ''),
     })
     // SECOND SCREEN
     //new htmlWebpackPlugin({

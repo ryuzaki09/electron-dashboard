@@ -37,7 +37,7 @@ export interface IMediaItem {
 }
 
 const client = axios.create({
-  baseURL: config.localApiUrl
+  baseURL: config.externalApiUrl
 })
 
 export const plexApi = {
