@@ -25,6 +25,7 @@ export function Header() {
     timeout: 5000,
     onDetectionFn: () => setNavIsOpen(false)
   })
+  const [showSettings, setShowSettings] = React.useState(false)
   console.log('isListening: ', isListening)
 
   const onChangeTheme = (theme: {text: string; value: string}) => {
@@ -33,13 +34,33 @@ export function Header() {
 
   React.useEffect(
     () => {
+      let timeoutId: NodeJS.Timeout
       if (navIsOpen) {
         console.log('start detection')
         setStartDetection(true)
+
+        setShowSettings(true)
+
+        timeoutId = setTimeout(() => {
+          setShowSettings(false)
+        }, 5000)
+      }
+
+      return () => {
+        clearTimeout(timeoutId)
       }
     },
     [navIsOpen]
   )
+
+  const handleOnClickSettingsMenu = () => {
+    if (showSettings) {
+      setSettingsModalOpen(true)
+      return
+    }
+
+    setNavIsOpen((prevState) => !prevState)
+  }
 
   return (
     <>
@@ -51,9 +72,13 @@ export function Header() {
         >
           <div
             className={styles.settingsWrapper}
-            onClick={() => setNavIsOpen((prevState) => !prevState)}
+            onClick={handleOnClickSettingsMenu}
           >
-            <Icon name="settings" />
+            <Icon
+              name={
+                showSettings || settingsModalOpen ? 'settings' : 'hamburgerMenu'
+              }
+            />
           </div>
           <div className={classnames(styles.navItems)}>
             <Link to="/">

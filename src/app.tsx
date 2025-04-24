@@ -17,7 +17,9 @@ import styles from './app.module.css'
 const themesMap = {
   default: styles.defaultTheme,
   skyGreen: styles.skyGreenTheme,
-  naruto: styles.narutoTheme
+  naruto: styles.narutoTheme,
+  creamPurple: styles.creamPurpleTheme,
+  hyperRed: styles.hyperRedTheme
 }
 
 export default function App() {

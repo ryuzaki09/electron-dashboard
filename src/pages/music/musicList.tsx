@@ -48,7 +48,6 @@ export function MusicList({musicPromise}: IMusicListProps) {
       {songListModalIsOpen && (
         <div className={styles.songsModalWrapper}>
           <CustomModal
-            title="Local Music"
             onClose={() => setSongListModalIsOpen(false)}
             content={
               <SongsList

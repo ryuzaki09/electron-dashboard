@@ -177,7 +177,7 @@
 }
 
 .modalContent {
-  --dropdown-width: 130px;
+  --dropdown-width: 180px;
   & [role='listbox'] {
     display: flex;
     justify-content: space-between;

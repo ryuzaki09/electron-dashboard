@@ -2,6 +2,10 @@
   font-size: 18px;
   color: var(--color-primary);
 
+  & > div {
+    z-index: 5;
+  }
+
   & > div > div {
     width: 70vw;
     height: 70vh;

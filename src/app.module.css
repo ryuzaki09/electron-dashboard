@@ -28,6 +28,13 @@ body {
   --color-primary: orange;
 }
 
+.creamPurpleTheme {
+  --color-primary: #b0aac0;
+}
+.hyperRedTheme {
+  --color-primary: #e06377;
+}
+
 .appContainer {
   width: 100%;
 }
