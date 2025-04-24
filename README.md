@@ -18,6 +18,8 @@ I wanted a custom dashboard that I had full control over, a simple yet provides 
 - Video: plays videos with full screen ability.
 - Home Assistant: controls lights and switches.
 
+Note: Because this is for a touchscreen, this has been developed and tested for a fixed screen size of 1024x600 that I was using. There is not really much responsiveness if using different screen sizes.
+
 #### Prerequisites
 
 1. Weather information - it is using the [Openweathermap](https://openweathermap.org/) API, so a key is required.
@@ -54,6 +56,8 @@ The app plays music in the `music` folder and videos in the `video` folder at th
 ```
 ln -s <source_folder> ~/media
 ```
+
+There is also an option to use a separate Backend Service to fetch the music, by setting in the `.env` file with `USE_EXTERNAL_BACKEND=true` and specify the `BACKEND_API_URL=http://<host_ip>:<port>` then it will fetch from there.
 
 To run the app, enter:
 

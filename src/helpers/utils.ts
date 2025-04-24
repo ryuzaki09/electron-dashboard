@@ -65,7 +65,7 @@ export function transformMusicMedia(data: IMediaFile[]): ITransformedMedia {
 
     // if path parts length = 3 ['', 'english', 'Billie Jean.mp3'], pathParts[1] is the first level folder
     if (pathParts.length === ROOT_FOLDER_LEVEL + 1) {
-      if (acc[rootFolder] && acc[rootFolder][firstLevelFolder]) {
+      if (acc[rootFolder] && acc[rootFolder][firstLevelFolder] && acc[rootFolder][firstLevelFolder].files) {
         acc[rootFolder][firstLevelFolder].files.push(file)
       } else {
         acc[rootFolder][firstLevelFolder] = {
@@ -73,11 +73,43 @@ export function transformMusicMedia(data: IMediaFile[]): ITransformedMedia {
         }
       }
     }
+
     // if path parts is greater than 3 then there is another folder under the first level folder.
     // catches all tracks and adds it under second level folder.
     if (pathParts.length > ROOT_FOLDER_LEVEL + 1) {
-      if (acc[rootFolder] && acc[rootFolder][firstLevelFolder][secondLevelFolder]) {
+      if (
+        acc[rootFolder] &&
+        acc[rootFolder][firstLevelFolder] &&
+        acc[rootFolder][firstLevelFolder][secondLevelFolder] &&
+        acc[rootFolder][firstLevelFolder][secondLevelFolder].files 
+      ) {
         acc[rootFolder][firstLevelFolder][secondLevelFolder].files.push(file)
+      } else if (
+        acc[rootFolder] &&
+        acc[rootFolder][firstLevelFolder] &&
+        !acc[rootFolder][firstLevelFolder][secondLevelFolder]
+      ) {
+        acc[rootFolder][firstLevelFolder] = {
+          ...acc[rootFolder][firstLevelFolder],
+          [secondLevelFolder]: {
+            files: [file]
+          }
+        }
+
+      } else if (
+        acc[rootFolder] &&
+        !acc[rootFolder][firstLevelFolder]
+      ) {
+
+        acc[rootFolder] = {
+          ...acc[rootFolder],
+          [firstLevelFolder]: {
+            [secondLevelFolder]: {
+              files: [file]
+            }
+          }
+        }
+
       } else {
         acc[rootFolder][firstLevelFolder][secondLevelFolder] = {
           files: [file]

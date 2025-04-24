@@ -1,15 +1,22 @@
+import axios from 'axios'
+import {config} from '../config'
+
+const client = axios.create({
+  baseURL: config.useExternalBackendApi
+    ? config.externalApiUrl
+    : config.localApiUrl
+})
+
 export const api = {
   fetchMusic: async () => {
-    const resp = await fetch(`${process.env.LOCAL_API_URL}/musicMedia`)
-    const result = resp.json()
+    const {data} = await client.get(`/musicMedia`)
 
-    return result
+    return data
   },
 
   fetchVideos: async () => {
-    const result = await fetch(`${process.env.LOCAL_API_URL}/videos`)
-    const data = await result.json()
+    const {data} = await client.get(`/videos`)
 
-    return data.length > 0 ? data : []
+    return data.data.length > 0 ? data.data : []
   }
 }
