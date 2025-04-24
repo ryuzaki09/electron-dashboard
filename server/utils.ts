@@ -62,8 +62,12 @@ export function getFilesRecursively(originalPath: string) {
           item.name.endsWith('.mp3') &&
           !item.name.startsWith('.')
         ) {
+          const fileFullPath = path.join(dir, item.name)
           // filePath without the root music part and the file name
-          const filePath = item.path.replace(basePath, '')
+          // i.e. from the root of the 'music' folder to the file /music/NewFolder/
+          const filePath = fileFullPath
+            .replace(basePath, '')
+            .replace(`/${item.name}`, '')
           // .replace(userMusicFirstFolder, '')
           results.push({
             name: item.name,
