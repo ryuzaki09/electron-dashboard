@@ -25,19 +25,19 @@ export function WithWeatherForecast({children}: {children: React.ReactNode}) {
         getWeather()
       }
 
-      timeoutId = setTimeout(() => {
+      timeoutId = setInterval(() => {
         console.log('checking today')
-        if (today !== getTodayDate()) {
+        if (todayDate !== getTodayDate()) {
           setTodayDate(today)
           getWeather()
         }
       }, ONE_HOUR)
 
       return () => {
-        clearTimeout(timeoutId)
+        clearInterval(timeoutId)
       }
     },
-    [weatherData]
+    [todayDate, weatherData]
   )
 
   return <>{children}</>
