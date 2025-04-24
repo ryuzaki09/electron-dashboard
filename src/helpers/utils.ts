@@ -30,6 +30,7 @@ interface ITransformedMedia {
 
 
 export function transformMusicMedia(data: IMediaFile[]): ITransformedMedia {
+  console.log('opriginal: ', data)
   let mediaItems: any = []
   const items = data
 
@@ -65,19 +66,63 @@ export function transformMusicMedia(data: IMediaFile[]): ITransformedMedia {
 
     // if path parts length = 3 ['', 'english', 'Billie Jean.mp3'], pathParts[1] is the first level folder
     if (pathParts.length === ROOT_FOLDER_LEVEL + 1) {
-      if (acc[rootFolder] && acc[rootFolder][firstLevelFolder]) {
+      if (acc[rootFolder] && acc[rootFolder][firstLevelFolder] && acc[rootFolder][firstLevelFolder].files) {
         acc[rootFolder][firstLevelFolder].files.push(file)
       } else {
+        console.log('file first: ', file)
         acc[rootFolder][firstLevelFolder] = {
           files: [file]
         }
+        // acc[rootFolder][firstLevelFolder] = {
+        //   files: [file]
+        // }
       }
+    }
+
+    if (firstLevelFolder === 'Chinese') {
+      console.log('file: ', file)
+      console.log('acc: ', acc)
+      console.log('firstLevelFolder: ', firstLevelFolder)
+      console.log('secondLevel: ', secondLevelFolder)
     }
     // if path parts is greater than 3 then there is another folder under the first level folder.
     // catches all tracks and adds it under second level folder.
     if (pathParts.length > ROOT_FOLDER_LEVEL + 1) {
-      if (acc[rootFolder] && acc[rootFolder][firstLevelFolder][secondLevelFolder]) {
+      if (
+        acc[rootFolder] &&
+        acc[rootFolder][firstLevelFolder] &&
+        acc[rootFolder][firstLevelFolder][secondLevelFolder] &&
+        acc[rootFolder][firstLevelFolder][secondLevelFolder].files 
+      ) {
+        console.log('first: ', file)
         acc[rootFolder][firstLevelFolder][secondLevelFolder].files.push(file)
+      } else if (
+        acc[rootFolder] &&
+        acc[rootFolder][firstLevelFolder] &&
+        !acc[rootFolder][firstLevelFolder][secondLevelFolder]
+      ) {
+        console.log('second: ', file)
+        acc[rootFolder][firstLevelFolder] = {
+          ...acc[rootFolder][firstLevelFolder],
+          [secondLevelFolder]: {
+            files: [file]
+          }
+        }
+
+      } else if (
+        acc[rootFolder] &&
+        !acc[rootFolder][firstLevelFolder]
+      ) {
+
+        acc[rootFolder] = {
+          ...acc[rootFolder],
+          [firstLevelFolder]: {
+            [secondLevelFolder]: {
+              files: [file]
+            }
+          }
+        }
+
       } else {
         acc[rootFolder][firstLevelFolder][secondLevelFolder] = {
           files: [file]

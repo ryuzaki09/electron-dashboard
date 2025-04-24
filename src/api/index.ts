@@ -3,7 +3,8 @@ import {config} from '../config'
 
 const client = axios.create({
   baseURL: config.useExternalBackendApi
-    ? config.externalApiUrl
+    ? // ? config.externalApiUrl
+      'http://localhost:3001'
     : config.localApiUrl
 })
 

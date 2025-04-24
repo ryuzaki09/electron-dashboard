@@ -26,6 +26,7 @@ export function WithWeatherForecast({children}: {children: React.ReactNode}) {
       }
 
       timeoutId = setTimeout(() => {
+        console.log('checking today')
         if (today !== getTodayDate()) {
           setTodayDate(today)
           getWeather()
