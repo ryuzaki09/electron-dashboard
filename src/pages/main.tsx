@@ -7,17 +7,20 @@ import {mainStore} from '../store/mainStore'
 import { useTimerStore } from '../store/timerStore'
 
 import styles from './main.module.css'
+import { WithPhotoLibrary } from '../components/withPhotoLibrary'
 
 export function Main() {
   const timers = useTimerStore((state) => state.timers)
 
   return (
-    <Container>
-      <div className={styles.contentContainer}>
-        <TimeDisplay />
-        <WeatherInformation />
-      </div>
-    </Container>
+    <WithPhotoLibrary>
+      <Container>
+        <div className={styles.contentContainer}>
+          <TimeDisplay />
+          <WeatherInformation />
+        </div>
+      </Container>
+    </WithPhotoLibrary>
   )
 }
 
