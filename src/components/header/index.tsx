@@ -21,9 +21,9 @@ export function Header() {
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false)
   const {isListening, setIsListening} = useVoiceAssistant()
   const [navIsOpen, setNavIsOpen] = React.useState(false)
-  const {setStartDetection} = useActivityDetection({
+  const {activateDetection} = useActivityDetection({
     timeout: 5000,
-    onDetectionFn: () => setNavIsOpen(false)
+    delayFn: () => setNavIsOpen(false)
   })
   const [showSettings, setShowSettings] = React.useState(false)
   console.log('isListening: ', isListening)
@@ -37,7 +37,7 @@ export function Header() {
       let timeoutId: NodeJS.Timeout
       if (navIsOpen) {
         console.log('start detection')
-        setStartDetection(true)
+        activateDetection()
 
         setShowSettings(true)
 
