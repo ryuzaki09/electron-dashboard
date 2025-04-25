@@ -7,15 +7,18 @@ import {useTime} from '../hooks/useTime'
 import {mainStore} from '../store/mainStore'
 
 import styles from './main.module.css'
+import { WithPhotoLibrary } from '../components/withPhotoLibrary'
 
 export function Main() {
   return (
-    <Container>
-      <div className={styles.contentContainer}>
-        <TimeDisplay />
-        <WeatherInformation />
-      </div>
-    </Container>
+    <WithPhotoLibrary>
+      <Container>
+        <div className={styles.contentContainer}>
+          <TimeDisplay />
+          <WeatherInformation />
+        </div>
+      </Container>
+    </WithPhotoLibrary>
   )
 }
 
