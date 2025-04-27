@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import {config} from '../config'
-import {today, getCurrentTime} from '../helpers/time'
+import {getToday, getCurrentTime} from '../helpers/time'
 import {getFunctionCall} from '../helpers/localAiHandler'
 
 const aiClient = axios.create({
@@ -35,7 +35,7 @@ You MUST respond in structured JSON format when an action is required.
     }
   }
 - If no action is required, respond normally.
-Today's date is ${today}.
+Today's date is ${getToday()}.
 The current time is ${getCurrentTime()}. 
 `
 }

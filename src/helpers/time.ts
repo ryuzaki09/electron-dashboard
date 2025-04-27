@@ -1,8 +1,8 @@
 import {format, add} from 'date-fns'
 
-export const today = format(new Date(), 'dd/MM/yyyy')
+export const getToday = () => format(new Date(), 'dd/MM/yyyy')
 
-export const dateAndDay = format(new Date(), 'iiii dd/MM/yyyy')
+export const getDateAndDay = () => format(new Date(), 'iiii dd/MM/yyyy')
 
 export const getCurrentTime = () => {
   const date = new Date()
@@ -24,7 +24,7 @@ export const timestampToFriendlyDateString = (timestamp: number) => {
 
 export const formatCorrectDate = (date: string) => {
   if (date === 'today') {
-    return today
+    return getToday()
   }
 
   if (date === 'tomorrow') {

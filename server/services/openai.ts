@@ -5,7 +5,7 @@ import fs from 'fs'
 import 'dotenv/config'
 import {functions} from '../helpers/openai'
 import {getFunctionCall} from './functionCallers'
-import {dateAndDay} from '../../src/helpers/time'
+import {getDateAndDay} from '../../src/helpers/time'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY
@@ -14,7 +14,7 @@ const openai = new OpenAI({
 const systemPrompt: ChatCompletionMessageParam = {
   role: 'system',
   content: `You are a helpful assistant that have the knowledge of the universe. You will answer in a concise and simplified manner.
-  Today's date is ${dateAndDay}. When asked to action (i.e. start, set) about a timer, DO NOT call any functions and ONLY respond in this format "<action> timer for HH:mm:ss".`
+  Today's date is ${getDateAndDay()}. When asked to action (i.e. start, set) about a timer, DO NOT call any functions and ONLY respond in this format "<action> timer for HH:mm:ss".`
 }
 
 const MAX_HISTORY = 10
