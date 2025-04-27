@@ -1,5 +1,10 @@
 .appContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
-  gap: 1rem;
+  height: calc(100vh - var(--header-height) - 2rem);
+  overflow-y: scroll;
+
+  & > div {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+    gap: 1rem;
+  }
 }

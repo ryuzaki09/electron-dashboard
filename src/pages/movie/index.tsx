@@ -22,7 +22,7 @@ function VideoList({fetchApi}) {
   const data: any[] = useCachedPromise('fetchVideos', fetchApi()) || []
 
   return (
-    <>
+    <div>
       {data
         ? data.map((file) => (
             <div key={file.url}>
@@ -36,6 +36,6 @@ function VideoList({fetchApi}) {
             </div>
           ))
         : null}
-    </>
+    </div>
   )
 }

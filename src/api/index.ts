@@ -16,7 +16,9 @@ export const api = {
 
   fetchVideos: async () => {
     const {data} = await client.get(`/videos`)
+    // const {data} = await axios.get(`http://localhost:8081/videos`)
 
-    return data.data.length > 0 ? data.data : []
+    console.log('video data: ', data)
+    return data.length > 0 ? data : []
   }
 }

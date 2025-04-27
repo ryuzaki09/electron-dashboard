@@ -4,13 +4,10 @@ import {format} from 'date-fns'
 import {Container} from '../components/container'
 import {useTime} from '../hooks/useTime'
 import {mainStore} from '../store/mainStore'
-import { useTimerStore } from '../store/timerStore'
 
 import styles from './main.module.css'
 
 export function Main() {
-  const timers = useTimerStore((state) => state.timers)
-
   return (
     <Container>
       <div className={styles.contentContainer}>
@@ -56,7 +53,13 @@ function WeatherInformation() {
         {daily.length > 0 && daily.map((d, index: number) => {
           const Icon = d.weather.icon
           return index > 0 && index < 4 ? (
-            <div key={d.dt.day}><Icon /><p>{d.dt.day}<br />{d.temp.min}&deg;C / {d.temp.max}&deg;C</p></div>
+            <div key={d.dt.day}>
+              <Icon />
+              <p>
+                {d.dt.day}<br />
+                {d.temp.min}&deg;C / {d.temp.max}&deg;C
+              </p>
+            </div>
           ) : null
         })}
       </div>
