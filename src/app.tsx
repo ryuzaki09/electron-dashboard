@@ -9,6 +9,7 @@ import {Assistant} from './pages/assistant'
 import {MusicProvider} from './context/audio'
 import {WithWeatherForecast} from './components/withWeatherForecast'
 import {WithReturnHome} from './components/withReturnHome'
+import {WithTimer} from './components/withTimer'
 import {mainStore} from './store/mainStore'
 import {useTimerStore} from './store/timerStore'
 
