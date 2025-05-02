@@ -19,6 +19,8 @@ router.use((_req, res, next) => {
   next()
 })
 
+const allowedFileExtensions = ['.mkv', '.mp4', '.avi']
+
 router.get('/videos', (_req: express.Request, res) => {
   console.log('FETCHING VIDEOS')
   fs.readdir(userVideoPath, (err, files) => {
@@ -32,13 +34,17 @@ router.get('/videos', (_req: express.Request, res) => {
         domain: process.env.LOCAL_API_URL
       }))
       // ignore files that starts with a dot .
-      .filter((f) => !f.name.startsWith('.'))
+      .filter((f) => {
+        const ext = f.name.toLowerCase().slice(-4)
+        return !f.name.startsWith('.') && allowedFileExtensions.includes(ext)
+      })
+    console.log('MEDIA files: ', mediaFiles)
 
     res.json(mediaFiles)
   })
 })
 
-router.get('/musicMedia', (_req: express.Request, res) => {
+router.get('/music', (_req: express.Request, res) => {
   try {
     console.log('FETCHING FILES')
     const now = Date.now()

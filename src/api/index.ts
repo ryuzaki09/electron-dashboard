@@ -9,14 +9,14 @@ const client = axios.create({
 
 export const api = {
   fetchMusic: async () => {
-    const {data} = await client.get(`/musicMedia`)
+    const {data} = await client.get(`/media/music`)
 
     return data
   },
 
   fetchVideos: async () => {
-    const {data} = await client.get(`/videos`)
-    // const {data} = await axios.get(`http://localhost:8081/videos`)
+    const {data} = await client.get(`/media/videos`)
+    // const {data} = await axios.get(`http://localhost:8081/media/videos`)
 
     console.log('video data: ', data)
     return data.length > 0 ? data : []

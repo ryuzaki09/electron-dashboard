@@ -6,6 +6,7 @@ import {MediaRecorderAPI} from '../lib/mediaRecorder'
 import {config} from '../config'
 import {ai} from '../lib/ai'
 import {findIntent} from '../config/intents'
+import {openWakeWordSocket} from '../services/websocket'
 
 const porcupineModel = {
   publicPath: '/porcupine_params_02.pv',
@@ -66,17 +67,9 @@ export function useVoiceAssistant() {
         const stream = recorder.stream
         if (!stream) return
 
-        const audioContext = new AudioContext()
-        const source = audioContext.createMediaStreamSource(stream)
-        const analyser = audioContext.createAnalyser()
-        source.connect(analyser)
-        analyser.fftSize = 512 // adjust for better noise sensitivity
-
-        const bufferLength = analyser.frequencyBinCount
-        const dataArray = new Uint8Array(bufferLength)
+        const {dataArray, bufferLength, analyser} = createAudioData(stream)
 
         let silenceTimer: NodeJS.Timeout | null = null
-
         let runCheckSilence: boolean = isListening
 
         function checkForSilence() {
@@ -93,8 +86,7 @@ export function useVoiceAssistant() {
               silenceTimer = setTimeout(async () => {
                 console.log("It's silent")
                 runCheckSilence = false
-                // const audioBlob = await recorder.stop()
-                // await handleSpeechReponse(audioBlob as Blob)
+
                 stopRecording()
               }, 1500) // stop after 1.5 seconds of silence
             }
@@ -117,6 +109,22 @@ export function useVoiceAssistant() {
     },
     [isListening, recorder]
   )
+
+  function createAudioData(stream: MediaStream) {
+    const audioContext = new AudioContext()
+    const source = audioContext.createMediaStreamSource(stream)
+    const analyser = audioContext.createAnalyser()
+    source.connect(analyser)
+    analyser.fftSize = 512 // adjust for better noise sensitivity
+
+    const bufferLength = analyser.frequencyBinCount
+
+    return {
+      dataArray: new Uint8Array(bufferLength),
+      bufferLength,
+      analyser
+    }
+  }
 
   function stopRecording() {
     const stopAll = async () => {

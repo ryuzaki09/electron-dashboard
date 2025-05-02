@@ -36,7 +36,7 @@ app.use(
   express.static(path.join(__dirname, '../tts_responses/'))
 )
 
-app.use('/', mediaRouter)
+app.use('/media', mediaRouter)
 app.use('/home-assistant', homeAssistantRouter)
 app.use('/openai', openaiRouter)
 

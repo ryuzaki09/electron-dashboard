@@ -16,6 +16,16 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage})
 
+router.use((_req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET, PATCH, PUT')
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  )
+  next()
+})
+
 router.post('/stt', upload.single('audio'), async (req, res) => {
   const file = req.file
   console.log('checking FILE')
