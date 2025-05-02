@@ -37,7 +37,7 @@ export const coords = {
 
 you can get the coordinates on this [page](https://openweathermap.org/api/geocoding-api) and make the API `http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}`
 
-3. Home Assistant - A long live token is required. Enter the `HA_HOST=<HOST_IP>` and `HA_LONG_LIVE_TOKEN=<TOKEN>` in the `src/config/.env` file.
+3. Home Assistant - A long live token is required. Enter the `HA_HOST=<HOST_IP>` and `HA_LONG_LIVE_TOKEN=<TOKEN>` in the `.env` file.
 
 ### Still in development
 

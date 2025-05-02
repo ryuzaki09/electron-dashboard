@@ -14,6 +14,7 @@ import {mainStore} from './store/mainStore'
 import {useTimerStore} from './store/timerStore'
 
 import styles from './app.module.css'
+import {WithMQTT} from './components/withMqtt'
 
 const themesMap = {
   default: styles.defaultTheme,
@@ -32,19 +33,21 @@ export default function App() {
   return (
     <MusicProvider>
       <WithWeatherForecast>
-        <main className={themeColor}>
-          <Router>
-            <WithReturnHome>
-              <Routes>
-                <Route path="/" element={<Main />} />
-                <Route path="/music" element={<Music />} />
-                <Route path="/movie" element={<Movie />} />
-                <Route path="/home-assistant" element={<HomeAssistant />} />
-                <Route path="/assistant" element={<Assistant />} />
-              </Routes>
-            </WithReturnHome>
-          </Router>
-        </main>
+        <WithMQTT>
+          <main className={themeColor}>
+            <Router>
+              <WithReturnHome>
+                <Routes>
+                  <Route path="/" element={<Main />} />
+                  <Route path="/music" element={<Music />} />
+                  <Route path="/movie" element={<Movie />} />
+                  <Route path="/home-assistant" element={<HomeAssistant />} />
+                  <Route path="/assistant" element={<Assistant />} />
+                </Routes>
+              </WithReturnHome>
+            </Router>
+          </main>
+        </WithMQTT>
       </WithWeatherForecast>
     </MusicProvider>
   )

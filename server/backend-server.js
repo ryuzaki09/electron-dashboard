@@ -9,6 +9,7 @@ import mediaRouter from './routes/media'
 import homeAssistantRouter from './routes/homeAssistant'
 import openaiRouter from './routes/openai'
 import {userVideoPath, userMusicPath} from './constants'
+import {startMqtt} from './services/mqtt'
 
 const PORT = process.env.BACKEND_PORT || 8081
 const app = express()
@@ -47,4 +48,5 @@ app.listen(PORT, (err) => {
   console.log(
     chalk.redBright.bold(`Backend Listening at http://localhost:${PORT}/`)
   )
+  startMqtt()
 })
