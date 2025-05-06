@@ -53,7 +53,8 @@ describe('transformWeatherData', () => {
     expect(result.daily[0].weather.icon).toBe(CloudIcon)
     expect(result.daily[0].dt).toEqual({
       day: expect.any(String),
-      month: expect.any(String)
+      month: expect.any(String),
+      timestamp: expect.any(Number)
     })
   })
 })
