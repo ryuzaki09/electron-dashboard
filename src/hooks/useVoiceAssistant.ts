@@ -10,16 +10,11 @@ export function useVoiceAssistant() {
   const [recorder] = React.useState(new MediaRecorderAPI())
   const [isListening, setIsListening] = React.useState(false)
 
-  React.useEffect(
-    () => {
+  React.useEffect(() => {
+    if (config.openWakeWordServer) {
       openWakeWordSocket.start({wakeWordDetectedFn: () => setIsListening(true)})
-      // if (keywordDetection !== null) {
-      //   setIsListening(true)
-      // }
-    },
-    // [keywordDetection]
-    []
-  )
+    }
+  }, [])
 
   // console.log('porcupineIsListening: ', porcupineIsListening)
   React.useEffect(
