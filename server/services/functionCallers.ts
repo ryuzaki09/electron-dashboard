@@ -2,7 +2,12 @@ import axios from 'axios'
 // import 'dotenv/config'
 import {config} from '../../src/config'
 import {coords} from '../../src/config/config'
-import {timestampToDayOfWeek, timestampToUKdate, formatCorrectDate, timestampToFriendlyDateString} from '../../src/helpers/time'
+import {
+  timestampToDayOfWeek,
+  timestampToUKdate,
+  formatCorrectDate,
+  timestampToFriendlyDateString
+} from '../../src/helpers/time'
 
 import type {IWeatherForecastDto} from '../../src/api/types'
 
@@ -29,13 +34,18 @@ export async function getWeatherForecast({date}: {date: string}) {
 
   const formattedDate = formatCorrectDate(date)
   const foundDay = daysOfWeek.find((d) => date.includes(d))
+  console.log('found day: ', foundDay)
+  console.log('formattedDate: ', formattedDate)
 
   const dailyData = data.daily
   const foundDailyData = dailyData.find(
-    (d: IWeatherForecastDto['daily'][number]) =>
-      timestampToUKdate(d.dt) === formattedDate ||
-      timestampToDayOfWeek(d.dt).toLowerCase() === formattedDate.toLowerCase() ||
-      timestampToDayOfWeek(d.dt).toLowerCase() === foundDay
+    (d: IWeatherForecastDto['daily'][number]) => {
+      console.log('timestampToUKdate: ', timestampToUKdate(d.dt))
+      console.log('timestampToDayOfWeek: ', timestampToDayOfWeek(d.dt))
+      return timestampToUKdate(d.dt) === formattedDate ||
+        timestampToDayOfWeek(d.dt).toLowerCase() === formattedDate.toLowerCase() ||
+        timestampToDayOfWeek(d.dt).toLowerCase() === foundDay
+      }
   )
 
   console.log('found daily data: ', foundDailyData)

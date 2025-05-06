@@ -9,15 +9,7 @@ let musicMediaCache: IFile[] | null = null
 let lastCacheTime = 0
 const CACHE_DURATION = 1000 * 60 * 120 // 120minutes
 
-router.use((_req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Methods', 'GET, PATCH, PUT, DELETE')
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  )
-  next()
-})
+const allowedFileExtensions = ['.mkv', '.mp4', '.avi']
 
 router.get('/videos', (_req: express.Request, res) => {
   console.log('FETCHING VIDEOS')
@@ -32,13 +24,17 @@ router.get('/videos', (_req: express.Request, res) => {
         domain: process.env.LOCAL_API_URL
       }))
       // ignore files that starts with a dot .
-      .filter((f) => !f.name.startsWith('.'))
+      .filter((f) => {
+        const ext = f.name.toLowerCase().slice(-4)
+        return !f.name.startsWith('.') && allowedFileExtensions.includes(ext)
+      })
+    console.log('MEDIA files: ', mediaFiles)
 
     res.json(mediaFiles)
   })
 })
 
-router.get('/musicMedia', (_req: express.Request, res) => {
+router.get('/music', (_req: express.Request, res) => {
   try {
     console.log('FETCHING FILES')
     const now = Date.now()

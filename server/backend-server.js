@@ -36,7 +36,18 @@ app.use(
   express.static(path.join(__dirname, '../tts_responses/'))
 )
 
-app.use('/', mediaRouter)
+// Global CORS middleware
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET, PATCH, PUT, DELETE')
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  )
+  next()
+})
+
+app.use('/media', mediaRouter)
 app.use('/home-assistant', homeAssistantRouter)
 app.use('/openai', openaiRouter)
 

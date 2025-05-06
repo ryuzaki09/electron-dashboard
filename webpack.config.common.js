@@ -123,6 +123,9 @@ module.exports = {
       'process.env.OPENWEBUI_HOST': JSON.stringify(
         process.env.OPENWEBUI_HOST || ''
       ),
+      'process.env.OPEN_WAKEWORD_IP_PORT': JSON.stringify(
+        process.env.OPEN_WAKEWORD_IP_PORT || ''
+      ),
       'process.env.WHISPER_HOST': JSON.stringify(
         process.env.WHISPER_HOST || ''
       ),
@@ -135,7 +138,9 @@ module.exports = {
       ),
       'process.env.PLEX_URL': JSON.stringify(process.env.PLEX_URL || ''),
       'process.env.ENV': JSON.stringify(process.env.ENV || ''),
-      'process.env.USE_EXTERNAL_BACKEND': JSON.stringify(process.env.USE_EXTERNAL_BACKEND || ''),
+      'process.env.USE_EXTERNAL_BACKEND': JSON.stringify(
+        process.env.USE_EXTERNAL_BACKEND || ''
+      )
     })
     // SECOND SCREEN
     //new htmlWebpackPlugin({

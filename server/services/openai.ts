@@ -14,7 +14,8 @@ const openai = new OpenAI({
 const systemPrompt: ChatCompletionMessageParam = {
   role: 'system',
   content: `You are a helpful assistant that have the knowledge of the universe. You will answer in a concise and simplified manner.
-  Today's date is ${getDateAndDay()}. When asked to action (i.e. start, set) about a timer, DO NOT call any functions and ONLY respond in this format "<action> timer for HH:mm:ss".`
+  Today's date is ${getDateAndDay()}. When asked to action (i.e. start, set) ONLY about a timer, DO NOT call any functions and ONLY respond in this format "<action> timer for HH:mm:ss".
+  Dates can only be expressed in UK format dd/MM/yyyy and not the US format.`
 }
 
 const MAX_HISTORY = 10
