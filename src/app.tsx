@@ -33,7 +33,9 @@ export default function App() {
     <MusicProvider>
       <WithWeatherForecast>
         <main className={themeColor}>
-          <Router>
+          <Router
+            future={{v7_startTransition: true, v7_relativeSplatPath: true}}
+          >
             <WithReturnHome>
               <Routes>
                 <Route path="/" element={<Main />} />

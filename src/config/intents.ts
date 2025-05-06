@@ -6,7 +6,7 @@ import {
   timestampToDayOfWeek,
   formatCorrectDate
 } from '../helpers/time'
-import {response} from 'express'
+import {homeAssistantApi} from '../api/homeAssistantApi'
 
 interface IIntent {
   [key: string]: {
@@ -38,11 +38,7 @@ export const intents: IIntent = {
       "what's the weather on {slot}"
     ],
     triggerFn: (transcription: string, sentence: string) => {
-      const filteredSentence = sentence.replace('{slot}', '').trim()
-      const date = transcription
-        .toLowerCase()
-        .replace(filteredSentence, '')
-        .replace('?', '')
+      const date = getSlotArgument(transcription, sentence)
       const weather = mainStore.getState().weather
       const formattedDate = formatCorrectDate(date.trim())
       const foundDay = daysOfWeek.find((d) => date.includes(d))
@@ -104,7 +100,26 @@ export const intents: IIntent = {
     triggerFn: () => {},
     responseFromTrigger: false,
     tts: 'Timer has been stopped'
+  },
+  toggleHA: {
+    sentences: ['turn on {slot}', 'turn off {slot}'],
+    triggerFn: (transcription: string) => {
+      // const device = getSlotArgument(transcription, sentence)
+      homeAssistantApi
+        .conversation(transcription)
+        .then((res) => console.log('Action triggered'))
+    },
+    responseFromTrigger: false,
+    tts: 'Completed'
   }
+}
+
+function getSlotArgument(transcription: string, sentence: string) {
+  const filteredSentence = sentence.replace('{slot}', '').trim()
+  return transcription
+    .toLowerCase()
+    .replace(filteredSentence, '')
+    .replace('?', '')
 }
 
 export function findIntent(speechText: string) {
@@ -119,17 +134,16 @@ export function findIntent(speechText: string) {
         .replace(`{slot}`, '')
         .trim()
         .split(' ')
-      console.log('Sentence words: ', sentenceWords)
+      // console.log('Sentence words: ', sentenceWords)
 
       const match =
         speechText &&
         sentenceWords.every((word) => speechText.toLowerCase().includes(word))
       return match
     })
-    console.log('Sentence: ', sentence)
+    // console.log('Sentence: ', sentence)
 
     if (sentence) {
-      // foundIntent = intent
       foundSentence = sentence
     }
 
