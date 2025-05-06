@@ -1,6 +1,4 @@
 import React from 'react'
-import {BuiltInKeyword} from '@picovoice/porcupine-web'
-import {usePorcupine} from '@picovoice/porcupine-react'
 
 import {MediaRecorderAPI} from '../lib/mediaRecorder'
 import {config} from '../config'
@@ -8,54 +6,19 @@ import {ai} from '../lib/ai'
 import {findIntent} from '../config/intents'
 import {openWakeWordSocket} from '../services/websocket'
 
-const porcupineModel = {
-  publicPath: '/porcupine_params_02.pv',
-  customWritePath: 'porcupine_params_02.pv',
-  forceWrite: true
-  // base64: '/base64_output'
-}
-
 export function useVoiceAssistant() {
   const [recorder] = React.useState(new MediaRecorderAPI())
   const [isListening, setIsListening] = React.useState(false)
-  const {
-    keywordDetection,
-    isLoaded,
-    isListening: porcupineIsListening,
-    error,
-    init,
-    start,
-    stop,
-    release
-  } = usePorcupine()
 
   React.useEffect(
     () => {
-      if (keywordDetection !== null) {
-        setIsListening(true)
-      }
+      openWakeWordSocket.start({wakeWordDetectedFn: () => setIsListening(true)})
+      // if (keywordDetection !== null) {
+      //   setIsListening(true)
+      // }
     },
-    [keywordDetection]
-  )
-
-  React.useEffect(
-    () => {
-      if (isLoaded) return
-      const initialize = async () => {
-        console.log('initialize')
-        await init(
-          config.picovoiceKey as string,
-          [BuiltInKeyword.OkayGoogle],
-          porcupineModel
-        )
-        console.log('START')
-        // start()
-      }
-      if (config.useWakeWord) {
-        initialize()
-      }
-    },
-    [isLoaded, init, start]
+    // [keywordDetection]
+    []
   )
 
   // console.log('porcupineIsListening: ', porcupineIsListening)
@@ -143,25 +106,30 @@ export function useVoiceAssistant() {
     setIsListening(false)
     // send audio to AI to transcribe and get answer back from AI
     const transcription = await ai.speechToText(audioBlob)
-    const aiResponse = await ai.chat(transcription)
-    const foundIntent = findIntent(aiResponse)
+    console.log('TRANSCRIPTION: ', transcription)
+    // const aiResponse = await ai.chat(transcription)
+    const foundIntent = findIntent(transcription)
     if (foundIntent) {
       console.log('foundIntent: ', foundIntent)
 
-      if (foundIntent.triggerFn) {
-        foundIntent.triggerFn()
-      }
+      const triggerResult = foundIntent.intent.triggerFn(
+        transcription,
+        foundIntent.sentence
+      )
 
-      if (foundIntent.tts) {
-        const speechAudio = await ai.textToSpeech(foundIntent.tts)
+      const speechAudio = await ai.textToSpeech(
+        foundIntent.intent.responseFromTrigger
+          ? (triggerResult as string)
+          : foundIntent.intent.tts
+      )
 
-        // play audio
-        const audio = new Audio(speechAudio.data.audioUrl)
-        audio.muted = false
-        await audio.play()
-      }
+      // play audio
+      const audio = new Audio(speechAudio.data.audioUrl)
+      audio.muted = false
+      await audio.play()
       return
     }
+    const aiResponse = await ai.chat(transcription)
     const speechAudio = await ai.textToSpeech(aiResponse)
 
     // play audio

@@ -154,7 +154,8 @@ export function transformWeatherData(data: IWeatherForecastDto) {
       ...d,
       dt: {
         day: format(new Date(d.dt * 1000), 'iii do'),
-        month: format(new Date(d.dt * 1000), 'LLL')
+        month: format(new Date(d.dt * 1000), 'LLL'),
+        timestamp: d.dt
       },
       weather: {
         ...d.weather[0],

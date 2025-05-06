@@ -1,8 +1,8 @@
-// import WebSocket from 'ws'
+import {config} from '../config'
 
 const WS_URL = `ws://172.16.170.200:8000/ws`
 
-const start = (socketUrl: string) => {
+const start = (socketUrl: string, receiveCb: (event: any) => void) => {
   const ws = new WebSocket(socketUrl || WS_URL)
   ws.addEventListener('open', (event) => {
     console.log('Connected to AI socket')
@@ -12,10 +12,14 @@ const start = (socketUrl: string) => {
   // Listen for messages
   ws.addEventListener('message', (event) => {
     console.log('Message from server ', event.data)
+    receiveCb(event.data)
   })
 
-  ws.addEventListener('close', (event) => {
+  ws.addEventListener('close', () => {
     console.log('socket closed')
+    setTimeout(() => {
+      start(socketUrl, receiveCb)
+    }, 5000)
   })
 
   function sendMessage(message: string) {
@@ -24,13 +28,16 @@ const start = (socketUrl: string) => {
 
   return {
     start,
-    sendMessage,
-    close
+    sendMessage
   }
 }
 
 export const openWakeWordSocket = {
-  start: () => {
-    start('ws://localhost:9091')
+  start: ({wakeWordDetectedFn}: {wakeWordDetectedFn: () => void}) => {
+    const receiveMsgCallback = (eventData) => {
+      console.log('EVENT DATA: ', eventData)
+      wakeWordDetectedFn()
+    }
+    start(`ws://${config.openWakeWordServer}`, receiveMsgCallback)
   }
 }

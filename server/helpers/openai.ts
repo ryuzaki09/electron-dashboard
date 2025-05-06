@@ -12,7 +12,7 @@ export const functions: ChatCompletionTool[] = [
           date: {
             type: 'string',
             description:
-              'The date, for example: "today", "tomorrow", "Monday", Tuesday", etc to be in the format of dd/mm/yyyy'
+              'The UK date dd/MM/yyyy or day of the week for example: "today", "tomorrow", "Monday", Tuesday", etc.'
           }
         },
         required: ['date'],

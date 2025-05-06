@@ -11,6 +11,7 @@ export const config = {
   localApiUrl: process.env.LOCAL_API_URL,
   openweatherKey: process.env.OPENWEATHER_KEY,
   openrouteApiKey: process.env.OPENROUTE_KEY,
+  openWakeWordServer: process.env.OPEN_WAKEWORD_IP_PORT,
   picovoiceKey: process.env.PICOVOICE_KEY,
   plexUrl: process.env.PLEX_URL,
   whisperHost: process.env.WHISPER_HOST
