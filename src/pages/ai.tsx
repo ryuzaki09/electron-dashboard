@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {Buffer} from 'buffer'
-import {websocket} from '../services/websocket'
+// import {websocket} from '../services/websocket'
 import {Container} from '../components/container'
 import io from 'socket.io-client'
 
