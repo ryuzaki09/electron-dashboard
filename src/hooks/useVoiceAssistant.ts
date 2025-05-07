@@ -16,7 +16,6 @@ export function useVoiceAssistant() {
     }
   }, [])
 
-  // console.log('porcupineIsListening: ', porcupineIsListening)
   React.useEffect(
     () => {
       async function startRecord() {
@@ -46,7 +45,7 @@ export function useVoiceAssistant() {
                 runCheckSilence = false
 
                 stopRecording()
-              }, 1500) // stop after 1.5 seconds of silence
+              }, 1300) // stop after 1.3 seconds of silence
             }
           } else {
             if (silenceTimer) {
@@ -86,13 +85,9 @@ export function useVoiceAssistant() {
 
   function stopRecording() {
     const stopAll = async () => {
-      // stop()
       const audioBlob = await recorder.stop()
       // console.log('AUDIO: ', audioBlob)
       await handleSpeechReponse(audioBlob as Blob)
-      if (config.useWakeWord) {
-        stop()
-      }
     }
     stopAll()
   }

@@ -19,20 +19,65 @@ body {
 
 .defaultTheme {
   --color-primary: #f4bbbb;
+  --color-voice-bg: #6e6060;
+  --color-voice-gradient: linear-gradient(
+    90deg,
+    rgba(110, 96, 96, 1) 0%,
+    rgba(245, 194, 181, 1) 34%,
+    rgba(237, 221, 83, 1) 62%,
+    rgba(245, 194, 181, 1) 79%,
+    rgba(110, 96, 96, 1) 100%
+  );
 }
 
 .skyGreenTheme {
   --color-primary: #d5f4e6;
+  --color-voice-bg: #6e6060;
+  --color-voice-gradient: linear-gradient(
+    90deg,
+    rgba(110, 96, 96, 1) 0%,
+    rgba(213, 244, 230, 1) 30%,
+    rgba(237, 221, 83, 1) 57%,
+    rgba(213, 244, 230, 1) 79%,
+    rgba(110, 96, 96, 1) 100%
+  );
 }
 .narutoTheme {
-  --color-primary: orange;
+  --color-primary: #fcbb42;
+  --color-voice-bg: #6e6060;
+  --color-voice-gradient: linear-gradient(
+    90deg,
+    rgba(110, 96, 96, 1) 0%,
+    rgba(252, 187, 66, 1) 29%,
+    rgba(237, 221, 83, 1) 57%,
+    rgba(252, 187, 66, 1) 79%,
+    rgba(110, 96, 96, 1) 100%
+  );
 }
 
 .creamPurpleTheme {
   --color-primary: #b0aac0;
+  --color-voice-bg: #6e6060;
+  --color-voice-gradient: linear-gradient(
+    90deg,
+    rgba(110, 96, 96, 1) 0%,
+    rgba(176, 170, 192, 1) 29%,
+    rgba(237, 221, 83, 1) 57%,
+    rgba(176, 170, 192, 1) 79%,
+    rgba(110, 96, 96, 1) 100%
+  );
 }
 .hyperRedTheme {
   --color-primary: #e06377;
+  --color-voice-bg: #6e6060;
+  --color-voice-gradient: linear-gradient(
+    90deg,
+    rgba(110, 96, 96, 1) 0%,
+    rgba(224, 99, 119, 1) 29%,
+    rgba(237, 221, 83, 1) 57%,
+    rgba(224, 99, 119, 1) 79%,
+    rgba(110, 96, 96, 1) 100%
+  );
 }
 
 .appContainer {

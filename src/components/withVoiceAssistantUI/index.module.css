@@ -1,0 +1,21 @@
+.assistantWrapper {
+  /*position: absolute;*/
+  /*inset: 0;*/
+  /*z-index: 2;*/
+}
+
+.assistantUI {
+  position: absolute;
+  z-index: 2;
+  background: var(--color-voice-gradient);
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 20px;
+
+  transition: all 0.3s ease-in-out;
+
+  &.assistantActive {
+    width: 100%;
+  }
+}
