@@ -119,23 +119,18 @@ function SongsList({musicList, onTrackClickCb}) {
   }
 
   const shufflePlay = () => {
+    let tracks = []
+
     if (secondLevelFolder !== '') {
-      const tracks = musicList[firstLevelFolder][secondLevelFolder].files
-      tracks.sort(() => Math.random() - 0.5)
-      setShuffleList(tracks)
-      return
+      tracks = musicList[firstLevelFolder][secondLevelFolder].files
+    } else if (firstLevelFolder !== '' && secondLevelFolder === '') {
+      tracks = musicList[firstLevelFolder].files
+    } else {
+      tracks = musicList.files
     }
-
-    if (firstLevelFolder !== '' && secondLevelFolder === '') {
-      const tracks = musicList[firstLevelFolder].files
-      tracks.sort(() => Math.random() - 0.5)
-      setShuffleList(tracks)
-      return
-    }
-
-    const tracks = musicList.files
     tracks.sort(() => Math.random() - 0.5)
     setShuffleList(tracks)
+    onTrackClickCb()
   }
 
   const shouldShowRootList = firstLevelFolder === ''
