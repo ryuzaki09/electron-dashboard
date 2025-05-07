@@ -5,16 +5,26 @@ import {config} from '../config'
 import {ai} from '../lib/ai'
 import {findIntent} from '../config/intents'
 import {openWakeWordSocket} from '../services/websocket'
+import {mainStore} from '../store/mainStore'
 
 export function useVoiceAssistant() {
   const [recorder] = React.useState(new MediaRecorderAPI())
-  const [isListening, setIsListening] = React.useState(false)
+  // const [isListening, setIsListening] = React.useState(false)
+  const {
+    voiceAssistantIsListening: isListening,
+    setVoiceAssistantIsListening: setIsListening
+  } = mainStore()
 
-  React.useEffect(() => {
-    if (config.openWakeWordServer) {
-      openWakeWordSocket.start({wakeWordDetectedFn: () => setIsListening(true)})
-    }
-  }, [])
+  React.useEffect(
+    () => {
+      if (config.openWakeWordServer) {
+        openWakeWordSocket.start({
+          wakeWordDetectedFn: () => setIsListening(true)
+        })
+      }
+    },
+    [setIsListening]
+  )
 
   React.useEffect(
     () => {

@@ -1,19 +1,12 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import {useVoiceAssistant} from '../../hooks/useVoiceAssistant'
+import {mainStore} from '../../store/mainStore'
 
 import styles from './index.module.css'
 
 export function WithVoiceAssistantUI({children}: {children: React.ReactNode}) {
-  // const [isActive, setIsActive] = React.useState(false)
-  const {isListening} = useVoiceAssistant()
-
-  // React.useEffect(() => {
-  //   setInterval(() => {
-  //     setIsActive((prevState) => !prevState)
-  //   }, 5000)
-  // }, [])
+  const {voiceAssistantIsListening: isListening} = mainStore()
 
   React.useEffect(
     () => {
