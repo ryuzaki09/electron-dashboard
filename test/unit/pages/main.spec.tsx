@@ -4,7 +4,7 @@ import {MemoryRouter, Routes, Route} from 'react-router'
 import {render, fireEvent, screen, waitFor} from '@testing-library/react'
 import {Main} from '../../../src/pages/main'
 import {MusicProvider} from '../../../src/context/audio'
-import {getTimeString} from '../../../src/hooks/useTime'
+import * as timeHook from '../../../src/hooks/useTime'
 import SnowIcon from '../../../src/components/icons/weather/snow'
 
 const weatherData = {
@@ -52,7 +52,7 @@ describe('Main Component', () => {
   })
 
   it('displays the current time and AM/PM', async () => {
-    const {time, amPm} = getTimeString()
+    const {time, amPm} = timeHook.getTimeString()
     renderComponent()
     await waitFor(() => screen.getByRole('time'))
     const timeElement = screen.getByRole('time')
@@ -60,11 +60,17 @@ describe('Main Component', () => {
     expect(screen.getByText(amPm)).toBeInTheDocument()
   })
 
-  it.skip('displays the weather information', async () => {
+  it('displays the weather information', async () => {
+    const expectedTime = {
+      time: '9:30',
+      amPm: 'AM'
+    }
+    jest.spyOn(timeHook, 'getTimeString').mockReturnValue(expectedTime)
     renderComponent()
     await waitFor(() => {
       screen.getByText(/Rain/i)
     })
+    expect(screen.getByText(expectedTime.time)).toBeInTheDocument()
     expect(screen.getByText(/20°C/i)).toBeInTheDocument()
     expect(screen.getByText(/Tuesday/i)).toBeInTheDocument()
     expect(screen.getByText(/15°C/i)).toBeInTheDocument()
