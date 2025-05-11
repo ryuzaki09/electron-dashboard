@@ -17,7 +17,7 @@ export interface IPlaylistItem {
 export type TPlaylistViewDto = Omit<IPlaylistItem, 'addedAt' | 'duration'>
 
 export interface IMediaItem {
-  Image: Array<{alt: string; type: 'coverPoster'; url: string}>
+  Image?: Array<{alt: string; type: 'coverPoster'; url: string}>
   Media: Array<{
     Part: Array<{
       container: string
@@ -48,9 +48,7 @@ export const plexApi = {
   },
 
   getPlaylistItems: async (ratingKey: IPlaylistItem['ratingKey']) => {
-    const {data} = await client.get(
-      `/plex/playlist/${ratingKey}`
-    )
+    const {data} = await client.get(`/plex/playlist/${ratingKey}`)
 
     return data ? transformPlaylistTracks(data) : []
   }
@@ -90,6 +88,7 @@ function transformPlaylistTracks(data: IMediaItem[]): ITrackViewDto[] {
     name: d.title,
     domain: config.plexUrl || '',
     type: 'file',
-    url: d.Media[0].Part[0].key
+    url: d.Media[0].Part[0].key,
+    art: d.Image ? d.Image[0].url : ''
   }))
 }

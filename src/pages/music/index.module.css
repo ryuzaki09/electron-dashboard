@@ -157,8 +157,14 @@
 }
 
 .musicContent {
-  & > div:first-child {
-    margin: 7rem 2rem;
+  display: flex;
+
+  & img {
+    max-width: 250px;
+  }
+
+  & > div {
+    margin: 5rem 2rem;
     font-size: var(--font-med);
   }
 }

@@ -43,6 +43,12 @@ export function MusicList({musicPromise}: IMusicListProps) {
         </button>
       </div>
       <div className={styles.musicContent}>
+        {playingTrack &&
+          playingTrack.art && (
+            <div>
+              <img src={`${playingTrack.domain}${playingTrack.art}`} />
+            </div>
+          )}
         {playingTrack && <div>{playingTrack.name}</div>}
       </div>
       {songListModalIsOpen && (

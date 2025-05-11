@@ -17,6 +17,10 @@
     padding: var(--space-x-large);
     overflow-y: scroll;
 
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
     svg,
     path {
       stroke: var(--color-primary);
