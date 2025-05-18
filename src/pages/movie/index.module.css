@@ -2,6 +2,10 @@
   height: calc(100vh - var(--header-height) - 2rem);
   overflow-y: scroll;
 
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   & > div {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));

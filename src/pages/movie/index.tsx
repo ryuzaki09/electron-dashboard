@@ -29,7 +29,7 @@ function VideoList({fetchApi}) {
               {file.name}
               <div>
                 <VideoPlayer
-                  videoSrc={`${file.domain}${file.url}`}
+                  videoSrc={encodeURI(`${file.domain}${file.url}`)}
                   enableToggleFullScreen
                 />
               </div>
