@@ -3,6 +3,7 @@ import {useLocation, useNavigate} from 'react-router-dom'
 import {config} from '../../config'
 
 const IDLE_TIMEOUT = 60000 // 1minute
+const excludePaths = ['/', '/movie']
 
 export function WithReturnHome({children}: {children: React.ReactNode}) {
   const location = useLocation()
@@ -29,7 +30,7 @@ export function WithReturnHome({children}: {children: React.ReactNode}) {
         }, IDLE_TIMEOUT)
       }
 
-      if (location.pathname !== '/' && !config.isDevelopment) {
+      if (!excludePaths.includes(location.pathname) && !config.isDevelopment) {
         events.forEach((event) => {
           window.addEventListener(event, resetTimer)
         })
