@@ -97,6 +97,7 @@ function SongsList({musicList, onTrackClickCb}) {
   const onClickPlay = (file: any) => {
     stop()
     setStreamUrl(`${file.domain}${file.url}`)
+    setShuffleList([])
     play()
       .then(() => {
         console.log('Playing')
