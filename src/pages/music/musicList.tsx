@@ -83,7 +83,14 @@ function SongsList({musicList, onTrackClickCb}) {
   const [firstLevelFolder, setFirstLevelFolder] = React.useState('')
   const [secondLevelFolder, setSecondLevelFolder] = React.useState('')
   const [levelIndex, setLevelIndex] = React.useState<null | number>(null)
-  const {setStreamUrl, setShuffleList, setPlayingTrack, play, stop} = useAudio()
+  const {
+    resetPlaylist,
+    setStreamUrl,
+    setShuffleList,
+    setPlayingTrack,
+    play,
+    stop
+  } = useAudio()
 
   const onClickFirstLevel = (folderName: string) => {
     setFirstLevelFolder(folderName)
@@ -97,7 +104,7 @@ function SongsList({musicList, onTrackClickCb}) {
   const onClickPlay = (file: any) => {
     stop()
     setStreamUrl(`${file.domain}${file.url}`)
-    setShuffleList([])
+    resetPlaylist()
     play()
       .then(() => {
         console.log('Playing')

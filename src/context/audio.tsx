@@ -77,6 +77,10 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
     play()
   }
 
+  function resetPlaylist() {
+    setShufflePlayList([])
+  }
+
   async function play() {
     if (!player.current.src) {
       return
@@ -158,6 +162,7 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
   return (
     <MusicContext.Provider
       value={{
+        resetPlaylist,
         setStreamUrl,
         setShuffleList,
         setPlayingTrack,
