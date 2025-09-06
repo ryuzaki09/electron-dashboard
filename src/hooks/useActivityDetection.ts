@@ -2,13 +2,20 @@ import React from 'react'
 
 interface IActivityProps {
   timeout: number
-  onDetectionFn: () => void
+  delayFn: () => void
 }
 
-export function useActivityDetection({timeout, onDetectionFn}: IActivityProps) {
+export function useActivityDetection({timeout, delayFn}: IActivityProps) {
   const [startDetection, setStartDetection] = React.useState(false)
-  const [activityDetected, setActivityDetected] = React.useState(false)
   const timerRef = React.useRef<NodeJS.Timeout | null>(null)
+  const delayFnRef = React.useRef(delayFn)
+
+  React.useEffect(
+    () => {
+      delayFnRef.current = delayFn
+    },
+    [delayFn]
+  )
 
   React.useEffect(
     () => {
@@ -26,10 +33,15 @@ export function useActivityDetection({timeout, onDetectionFn}: IActivityProps) {
         }
 
         timerRef.current = setTimeout(() => {
-          console.log('Calling detect function')
-          onDetectionFn()
+          // console.log('Calling delayed function')
+          delayFnRef.current()
+          setStartDetection(false)
+          timerRef.current = null
+          resetTimer()
         }, timeout)
       }
+      // console.log('startDetection: ', startDetection)
+      // console.log('timer: ', timerRef.current)
 
       if (startDetection) {
         console.log('STARTED')
@@ -50,10 +62,18 @@ export function useActivityDetection({timeout, onDetectionFn}: IActivityProps) {
         })
       }
     },
-    [startDetection, timeout, onDetectionFn]
+    [startDetection, timeout]
   )
 
+  const activateDetection = React.useCallback(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+      timerRef.current = null
+    }
+    setStartDetection(true)
+  }, [])
+
   return {
-    setStartDetection
+    activateDetection
   }
 }
