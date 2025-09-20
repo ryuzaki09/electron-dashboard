@@ -5,10 +5,20 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+.videoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+  gap: 1rem;
 
   & > div {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
-    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  & > div > div {
+    margin-top: auto;
   }
 }
