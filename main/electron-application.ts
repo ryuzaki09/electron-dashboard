@@ -2,12 +2,26 @@ import {BrowserWindow} from 'electron'
 import {config} from '../src/config'
 import path from 'path'
 
+const fiveInchDisplay = {
+  width: 1024,
+  height: 600
+}
+
+const hd720Display = {
+  width: 1280,
+  height: 720
+}
+
+const hd1080Display = {
+  width: 1920,
+  height: 1080
+}
+
 export function createAppWindow(urlPath, windowOpts = {}) {
   const defaultOpts = {
-    width: 1024,
-    height: 600,
+    ...fiveInchDisplay,
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: true
       //preload: path.join(__dirname, '../preload.js')
     }
   }
