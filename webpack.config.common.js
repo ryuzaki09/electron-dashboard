@@ -133,6 +133,8 @@ module.exports = {
       'process.env.OPENROUTE_KEY': JSON.stringify(
         process.env.OPENROUTE_KEY || ''
       ),
+      'process.env.STT_HOST': JSON.stringify(process.env.STT_HOST || ''),
+      'process.env.TTS_HOST': JSON.stringify(process.env.TTS_HOST || ''),
       'process.env.USE_WAKEWORD': JSON.stringify(
         process.env.USE_WAKEWORD || ''
       ),

@@ -3,6 +3,7 @@ import axios from 'axios'
 import {config} from '../config'
 import {getToday, getCurrentTime} from '../helpers/time'
 import {getFunctionCall} from '../helpers/localAiHandler'
+import {buildTTSBody, handleTtsResponse} from './utils'
 
 const aiClient = axios.create({
   baseURL: `http://${config.localAiHost}/api`,
@@ -49,11 +50,12 @@ interface IChatResponse {
 export const localAi = {
   speechToText: async (audio: Blob) => {
     const formData = new FormData()
-    formData.append('audio', audio, 'recording.wav')
+    // formData.append('audio', audio, 'recording.wav')
+    formData.append('file', audio, 'recording.wav')
 
     const {data} = await axios.post(
       // `http://${config.whisperHost}/ai/stt`,
-      `http://localhost:3003/transcribe`,
+      `${config.sttHost}/transcribe`,
       formData,
       {
         headers: {
@@ -63,17 +65,23 @@ export const localAi = {
     )
     console.log('transcribed result: ', data)
 
-    return data ? data.data : ''
+    // return data ? data.data : ''
+    return data ? data.text : ''
     // return result.data.transcription || ''
   },
 
   textToSpeech: async (text: string) => {
-    const result = await axios.post(`http://${config.whisperHost}/ai/tts`, {
-      text
-    })
+    // const result = await axios.post(`http://${config.whisperHost}/ai/tts`, {
+    //   text
+    // })
+    const result = await axios.post(
+      `${config.ttsHost}/v1/audio/speech`,
+      buildTTSBody(text),
+      {responseType: 'arraybuffer'}
+    )
 
     console.log('TTS result: ', result)
-    return result
+    return handleTtsResponse(result.data, true)
   },
 
   chat: async (transcription: string) => {

@@ -107,35 +107,43 @@ export function useVoiceAssistant() {
     // send audio to AI to transcribe and get answer back from AI
     const transcription = await ai.speechToText(audioBlob)
     console.log('TRANSCRIPTION: ', transcription)
-    // const aiResponse = await ai.chat(transcription)
-    const foundIntent = findIntent(transcription)
-    if (foundIntent) {
-      console.log('foundIntent: ', foundIntent)
-
-      const triggerResult = foundIntent.intent.triggerFn(
-        transcription,
-        foundIntent.sentence
-      )
-
-      const speechAudio = await ai.textToSpeech(
-        foundIntent.intent.responseFromTrigger
-          ? (triggerResult as string)
-          : foundIntent.intent.tts
-      )
-
-      // play audio
-      const audio = new Audio(speechAudio.data.audioUrl)
-      audio.muted = false
-      await audio.play()
-      return
-    }
     const aiResponse = await ai.chat(transcription)
+    // const foundIntent = findIntent(transcription)
+    // if (foundIntent) {
+    //   console.log('foundIntent: ', foundIntent)
+    //
+    //   const triggerResult = foundIntent.intent.triggerFn(
+    //     transcription,
+    //     foundIntent.sentence
+    //   )
+    //
+    //   const speechAudio = await ai.textToSpeech(
+    //     foundIntent.intent.responseFromTrigger
+    //       ? (triggerResult as string)
+    //       : foundIntent.intent.tts
+    //   )
+    //
+    //   // play audio
+    //   const audio = new Audio(speechAudio.data.audioUrl)
+    //   audio.muted = false
+    //   await audio.play()
+    //   return
+    // }
+    // const aiResponse = await ai.chat(transcription)
     const speechAudio = await ai.textToSpeech(aiResponse)
+    // const speechAudio = await ai.textToSpeech(transcription)
+    console.log('speech audio: ', speechAudio)
 
     // play audio
-    const audio = new Audio(speechAudio.data.audioUrl)
+    // const audio = new Audio(speechAudio.data.audioUrl)
+    const audio = new Audio()
+    audio.src = speechAudio
     audio.muted = false
-    await audio.play()
+    try {
+      await audio.play()
+    } catch (err) {
+      console.error('Cannot play the audio: ', err)
+    }
   }
 
   return {

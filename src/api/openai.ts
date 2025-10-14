@@ -1,19 +1,18 @@
 import axios from 'axios'
+import {config} from '../config'
+import {aiEndpoints} from './constants'
+import {buildTTSBody, handleTtsResponse} from './utils'
 
 export const openAiAPI = {
   speechToText: async (audio: Blob) => {
     const formData = new FormData()
     formData.append('audio', audio, 'recording.wav')
 
-    const {data} = await axios.post(
-      `${process.env.LOCAL_API_URL}/openai/stt`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+    const {data} = await axios.post(`${aiEndpoints.sttEndpoint}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
       }
-    )
+    })
     console.log('transcribed result: ', data)
 
     return data ? data : ''
@@ -40,13 +39,12 @@ export const openAiAPI = {
   textToSpeech: async (text: string) => {
     console.log('text to speech')
     const response = await axios.post(
-      `${process.env.LOCAL_API_URL}/openai/tts`,
-      {
-        text
-      }
+      `${aiEndpoints.ttsEndpoint}`,
+      buildTTSBody(text),
+      {...(config.ttsHost && {responseType: 'arraybuffer'})}
     )
 
-    return response
+    return handleTtsResponse(response)
   },
 
   chat: async (transcription: string) => {

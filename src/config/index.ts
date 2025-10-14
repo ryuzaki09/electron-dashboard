@@ -1,5 +1,5 @@
 export const config = {
-  useLocalAi: false,
+  useLocalAi: true,
   useWakeWord: false,
   useExternalBackendApi: process.env.USE_EXTERNAL_BACKEND === 'true',
   isDevelopment: process.env.NODE_ENV === 'development',
@@ -14,6 +14,8 @@ export const config = {
   openWakeWordServer: process.env.OPEN_WAKEWORD_IP_PORT,
   picovoiceKey: process.env.PICOVOICE_KEY,
   plexUrl: process.env.PLEX_URL,
+  sttHost: process.env.STT_HOST,
+  ttsHost: process.env.TTS_HOST,
   whisperHost: process.env.WHISPER_HOST
 }
 
