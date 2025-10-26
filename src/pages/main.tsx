@@ -1,14 +1,43 @@
 import React from 'react'
+import axios from 'axios'
 import {format} from 'date-fns'
 import classnames from 'classnames'
 
 import {Container} from '../components/container'
 import {useTime} from '../hooks/useTime'
 import {mainStore} from '../store/mainStore'
+import {createChat} from '@n8n/chat'
 
 import styles from './main.module.css'
 
+const chatUrl = process.env.N8N_WEBCHAT
+
+const sessionId = 'n8n-sessionId-custom'
 export function Main() {
+  const [loadedChatSession, setLoadedChatSession] = React.useState(null)
+  React.useEffect(() => {
+    const loadSession = async () => {
+      const result = await axios.post(chatUrl, {
+        action: 'loadPreviousSession',
+        sessionId
+      })
+      //   //
+      console.log('load result: ', result)
+      await sendChat()
+    }
+    //
+    loadSession()
+  }, [])
+
+  const sendChat = async () => {
+    const result = await axios.post(chatUrl, {
+      action: 'sendMessage',
+      chatInput: 'what is the capital of france',
+      sessionId
+    })
+    console.log('chat result: ', result)
+  }
+
   return (
     <Container>
       <div className={styles.contentContainer}>

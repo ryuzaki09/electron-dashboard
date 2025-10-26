@@ -138,6 +138,7 @@ module.exports = {
       ),
       'process.env.PLEX_URL': JSON.stringify(process.env.PLEX_URL || ''),
       'process.env.ENV': JSON.stringify(process.env.ENV || ''),
+      'process.env.N8N_WEBCHAT': JSON.stringify(process.env.N8N_WEBCHAT || ''),
       'process.env.USE_EXTERNAL_BACKEND': JSON.stringify(
         process.env.USE_EXTERNAL_BACKEND || ''
       )
