@@ -170,3 +170,38 @@ export interface IPhotoResponseDto {
   Width: number
   Year: number
 }
+
+export interface IImmichAsset {
+  id: string
+  deviceAssetId: string
+  ownerId: string
+  deviceId: string
+  type: 'IMAGE' | 'VIDEO'
+  originalPath: string
+  resizePath: string
+  createdAt: string
+  updatedAt: string
+  isFavorite: boolean
+  mimeType: string
+  duration: string
+  webpPath: string
+  encodedVideoPath: string
+}
+
+export interface IImmichAlbum {
+  albumName: string
+  description: string
+  id: string
+  ownerId: string
+  albumThumbnailAssetId: string
+  createdAt: string
+  updatedAt: string
+  assetCount: number
+  owner: {
+    id: string
+    email: string
+    name: string
+  }
+  assets: IImmichAsset[]
+  hasSharedLink: boolean
+}

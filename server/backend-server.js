@@ -8,6 +8,7 @@ import 'dotenv/config'
 import mediaRouter from './routes/media'
 import homeAssistantRouter from './routes/homeAssistant'
 import openaiRouter from './routes/openai'
+import photosRouter from './routes/photos'
 import {userVideoPath, userMusicPath} from './constants'
 
 const PORT = process.env.BACKEND_PORT || 8081
@@ -50,6 +51,7 @@ app.use((req, res, next) => {
 app.use('/media', mediaRouter)
 app.use('/home-assistant', homeAssistantRouter)
 app.use('/openai', openaiRouter)
+app.use('/photos', photosRouter)
 
 app.listen(PORT, (err) => {
   if (err) {
