@@ -1,6 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-import {photoPrismApi} from '../../api/photoPrism'
+import {immichApi} from '../../api/immichApi'
 import {useActivityDetection} from '../../hooks/useActivityDetection'
 
 import styles from './index.module.css'
@@ -18,10 +18,13 @@ export function WithPhotoLibrary({children}: {children: React.ReactNode}) {
   React.useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        const response = await photoPrismApi.getPhotosForAlbum(123)
-        setPhotoLib(response)
-        console.log('response: ', response)
-        // setPhotoLib(data)
+        const albums = await immichApi.getAlbums()
+        if (albums && albums.length > 0) {
+          const albumWithAssets = await immichApi.getAlbumInfo(albums[0].id)
+          if (albumWithAssets) {
+            setPhotoLib(albumWithAssets.assets)
+          }
+        }
       } catch (error) {
         console.error('Error fetching photos:', error)
       }

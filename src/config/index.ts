@@ -14,7 +14,9 @@ export const config = {
   openWakeWordServer: process.env.OPEN_WAKEWORD_IP_PORT,
   picovoiceKey: process.env.PICOVOICE_KEY,
   plexUrl: process.env.PLEX_URL,
-  whisperHost: process.env.WHISPER_HOST
+  whisperHost: process.env.WHISPER_HOST,
+  immichUrl: process.env.IMMICH_URL,
+  immichKey: process.env.IMMICH_KEY
 }
 
 export const musicRootFoldersToScan = [
