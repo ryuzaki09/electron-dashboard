@@ -42,21 +42,28 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
+        test: /\.module\.css$/,
         use: [
           miniCssExtractPlugin.loader,
-          {loader: 'css-loader', options: {modules: true}}
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            },
+          },
         ],
-        include: [path.resolve(__dirname, 'src')]
+        include: [path.resolve(__dirname, 'src')],
       },
       {
         test: /\.css$/,
         use: [miniCssExtractPlugin.loader, 'css-loader'],
+        exclude: /\.module\.css$/,
         include: [
+          path.resolve(__dirname, 'src'),
           path.resolve(__dirname, 'node_modules'),
-          path.resolve(__dirname, '@ryusenpai/shared-components'), // 👈 Ensure this is included!
-          path.resolve(__dirname, 'node_modules/@ryusenpai/shared-components') // 👈 Ensure this is included!
-        ]
+          path.resolve(__dirname, '@ryusenpai/shared-components'),
+          path.resolve(__dirname, 'node_modules/@ryusenpai/shared-components'),
+        ],
       },
       {
         test: /\.scss$/,
