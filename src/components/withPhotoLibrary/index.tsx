@@ -5,6 +5,9 @@ import {useActivityDetection} from '../../hooks/useActivityDetection'
 
 import styles from './index.module.css'
 
+const albumsToShow = ['Spain Majorca 2024']
+const FIVE_MINTUES = 1000 * 60 * 5
+
 export function WithPhotoLibrary({children}: {children: React.ReactNode}) {
   const [photoLib, setPhotoLib] = React.useState<any[]>([])
   const [photoIndex, setPhotoIndex] = React.useState(0)
@@ -19,8 +22,18 @@ export function WithPhotoLibrary({children}: {children: React.ReactNode}) {
     const fetchPhotos = async () => {
       try {
         const albums = await immichApi.getAlbums()
-        if (albums && albums.length > 0) {
-          const albumWithAssets = await immichApi.getAlbumInfo(albums[0].id)
+        if (!albums || !albums.length) {
+          return
+        }
+
+        const selectedAlbum = albums.find((a) =>
+          albumsToShow.includes(a.albumName)
+        )
+
+        //console.log('selectedAlbum: ', selectedAlbum)
+        if (selectedAlbum) {
+          const albumWithAssets = await immichApi.getAlbumInfo(selectedAlbum.id)
+          console.log('album assets: ', albumWithAssets)
           if (albumWithAssets) {
             setPhotoLib(albumWithAssets.assets)
           }
@@ -30,12 +43,21 @@ export function WithPhotoLibrary({children}: {children: React.ReactNode}) {
       }
     }
 
-    fetchPhotos()
+    setInterval(() => {
+      // Persist fetch at set interval only IF there is no photos
+      if (!photoLib.length) {
+        // set delay to wait on backend service
+        setTimeout(() => {
+          fetchPhotos()
+        }, 2000)
+      }
+    }, FIVE_MINTUES)
   }, [])
 
+  // loop through photos
   React.useEffect(
     () => {
-      let intervalId: NodeJS.Timeout | null = null
+      let intervalId: NodeJS.Timeout
       if (photoLibIsActive && photoLib.length > 0) {
         intervalId = setInterval(() => {
           setPhotoIndex((prevIndex) => {
