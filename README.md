@@ -1,4 +1,4 @@
-## Dashboard App
+# Dashboard App
 
 This app template includes:
 
@@ -69,6 +69,8 @@ npm run dev
 ### Deploy to Raspberry Pi
 
 #### Installation
+
+#### IMPORTANT - Make sure the installed Raspberry Pi OS is 32bit
 
 I have tested on Raspberry Pi 3B and using the 32bit Bullseye OS is recommended.
 
