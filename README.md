@@ -52,14 +52,18 @@ It currently has the ability to connect to openai and use it get weather informa
 
 ### Setup
 
-The app plays music in the `music` folder and videos in the `video` folder at the home directory under media folder e.g `$HOME/media/music` and `$HOME/media/video`. If you these media on a NAS for example, a good option is to mount these folders so they don't need to be moved or copied and then symlink them using:
+#### On Raspberry Pi
+
+The app plays music in the `music` folder and videos in the `video` folder at the home directory under media folder e.g `$HOME/media/music` and `$HOME/media/video`. 
+
+If you have these media on a NAS for example, a good option is to mount these folders so they don't need to be moved or copied and then symlink them using:
 ```
 ln -s <source_folder> ~/media
 ```
 
 There is also an option to use a separate Backend Service to fetch the music, by setting in the `.env` file with `USE_EXTERNAL_BACKEND=true` and specify the `BACKEND_API_URL=http://<host_ip>:<port>` then it will fetch from there.
 
-To run the app, enter:
+To run the app on your local machine, enter:
 
 ```
 npm run dev
@@ -70,9 +74,8 @@ npm run dev
 
 #### Installation
 
-#### IMPORTANT - Make sure the installed Raspberry Pi OS is 32bit
-
-I have tested on Raspberry Pi 3B and using the 32bit Bullseye OS is recommended.
+I have tested on Raspberry Pi 3B using the 32bit Bullseye OS.
+I have also tested on Raspberry Pi 4 using 64bit OS.
 
 On fresh setup, perform these actions:
 ```
@@ -130,10 +133,16 @@ Notice the line `Environment=PATH...`, replace this line with the path of your `
 
 #### Deploy the app
 
-To deploy the app to a Raspberry Pi, first run
+To deploy the app to a Raspberry Pi 32bit OS, run
 ```
 npm run build:pi
 ```
+
+For 64bit Raspberry Pi, run:
+```
+npm run build:pi64
+```
+
 this will compile and bundle the app and finally package it into a `.deb` file.
 
 The next step, there is a `deploy.sh.sample` file, simply do 
@@ -151,3 +160,7 @@ Finally run the file the following to deploy.
 bash deploy.sh
 ```
 This will copy the deb file and unpackage and finally reboot the pi. You may need to enter your ssh password if you have not added your ssh key.
+
+
+### Troublshooting
+If you see the app not running on your Pi, ssh to your Pi and try manually run `sudo dpkg -i *.deb` and see if it shows any errors. Usually it's missing packages that might have been missed.
