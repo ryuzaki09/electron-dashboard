@@ -9,6 +9,8 @@ This app template includes:
 - Jest
 - React Testing Library
 
+The frontend server loading React serves on `http://localhost:3000` while a nodejs backend server is on `http://localhost:8081`.
+
 ### Purpose
 
 I wanted a custom dashboard that I had full control over, a simple yet provides the essential controls for what I need it to do. It has a menu nav to navigate to these different screens:
@@ -163,4 +165,5 @@ This will copy the deb file and unpackage and finally reboot the pi. You may nee
 
 
 ### Troublshooting
-If you see the app not running on your Pi, ssh to your Pi and try manually run `sudo dpkg -i *.deb` and see if it shows any errors. Usually it's missing packages that might have been missed.
+- If you see the app not running on your Pi or not displaying the UI, ssh to your Pi and try manually run `sudo dpkg -i *.deb` and see if it shows any errors. Usually it's missing packages that might have been missed.
+- Home Assistant screen not loading - this is most likely the backend not running on `http://localhost:8081`, you can check by using `curl`. If this is the case then make sure the node path is correct. Enter `which node` and make sure the path matches in the `dashyb.service` file without the `node` suffix.
