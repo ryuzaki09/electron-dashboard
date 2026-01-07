@@ -24,13 +24,17 @@ router.get('/album-info/:id', async (req: express.Request, res) => {
   return data ? res.send(transformAlbum(data)) : res.send(null)
 })
 
+const excludeAlbums = ['camera', 'untitled']
+
 function transformAlbums(data: any[]) {
-  return data.map((album) => ({
-    ...album,
-    thumbnailUrl: `${process.env.IMMICH_URL}/api/asset/thumbnail/${
-      album.albumThumbnailAssetId
-    }`
-  }))
+  return data
+    .filter((d) => !excludeAlbums.includes(d.albumName.toLowerCase()))
+    .map((album) => ({
+      ...album,
+      thumbnailUrl: `${process.env.IMMICH_URL}/api/asset/thumbnail/${
+        album.albumThumbnailAssetId
+      }`
+    }))
 }
 
 const transformAlbum = (data: IImmichAlbum) => {

@@ -10,6 +10,12 @@ import styles from './main.module.css'
 import { WithPhotoLibrary } from '../components/withPhotoLibrary'
 
 export function Main() {
+  const fetchPhotoAlbums = mainStore((store) => store.fetchPhotoAlbums)
+
+  React.useEffect(() => {
+    fetchPhotoAlbums()
+  }, [fetchPhotoAlbums])
+
   return (
     <WithPhotoLibrary>
       <Container>

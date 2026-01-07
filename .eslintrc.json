@@ -27,6 +27,7 @@
       "allowBind": false,
       "ignoreRefs": true
     }],
+    "@typescript-eslint/no-empty-function": 0,
     "react/no-did-update-set-state": "error",
     "react/no-unknown-property": "error",
     "react/no-unused-prop-types": "error",
@@ -36,6 +37,7 @@
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
     "space-before-function-paren": 0,
+    "spaced-comment": 0,
     "semi": 2,
     "no-console": 0,
     "no-undef": 0
