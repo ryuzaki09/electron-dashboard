@@ -1,7 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
-import {Icon, ModernDropdown} from '@ryusenpai/shared-components'
+import {Icon, Checkbox, ModernDropdown} from '@ryusenpai/shared-components'
 
 import HomeIcon from '../icons/home'
 import MusicIcon from '../icons/music'
@@ -14,6 +14,7 @@ import {CustomModal} from '../modal/modal'
 import {MediaControls} from './mediaControls'
 import {mainStore} from '../../store/mainStore'
 import {useActivityDetection} from '../../hooks/useActivityDetection'
+import type {TImmichAlbumViewDto} from '../../api/types'
 
 import styles from './index.module.css'
 
@@ -21,11 +22,17 @@ export function Header() {
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false)
   const {isListening, setIsListening} = useVoiceAssistant()
   const [navIsOpen, setNavIsOpen] = React.useState(false)
-  const {setStartDetection} = useActivityDetection({
+  const [selectedAlbums, setSelectedAlbums] = React.useState<TImmichAlbumViewDto[]>([])
+  const {activateDetection} = useActivityDetection({
     timeout: 5000,
-    onDetectionFn: () => setNavIsOpen(false)
+    delayFn: () => setNavIsOpen(false)
   })
   const [showSettings, setShowSettings] = React.useState(false)
+  const {photoAlbums, selectedPhotoAlbums, setSelectedPhotoAlbums, fetchPhotoAlbums} = mainStore(
+    (state) => state
+  )
+  //console.log('photoAlbums: ', photoAlbums)
+  //console.log('selected albums: ', selectedPhotoAlbums)
   console.log('isListening: ', isListening)
 
   const onChangeTheme = (theme: {text: string; value: string}) => {
@@ -37,7 +44,7 @@ export function Header() {
       let timeoutId: NodeJS.Timeout
       if (navIsOpen) {
         console.log('start detection')
-        setStartDetection(true)
+        activateDetection()
 
         setShowSettings(true)
 
@@ -53,6 +60,10 @@ export function Header() {
     [navIsOpen]
   )
 
+  React.useEffect(() => {
+    setSelectedAlbums(selectedPhotoAlbums)
+  }, [selectedPhotoAlbums])
+
   const handleOnClickSettingsMenu = () => {
     if (showSettings) {
       setSettingsModalOpen(true)
@@ -60,6 +71,21 @@ export function Header() {
     }
 
     setNavIsOpen((prevState) => !prevState)
+  }
+
+  const handleOnSelectAlbum = (album: TImmichAlbumViewDto, isChecked: boolean) => {
+    if (isChecked) {
+      return setSelectedAlbums((prevState) => prevState.concat(album))
+    }
+
+    return setSelectedAlbums((prevState) => prevState.filter((p) => p !== album))
+  }
+
+  const onCloseModal = () => {
+    console.log('set albums: ', selectedAlbums)
+    setSelectedPhotoAlbums(selectedAlbums)
+    setSettingsModalOpen(false)
+    fetchPhotoAlbums()
   }
 
   return (
@@ -106,16 +132,39 @@ export function Header() {
       <MediaControls />
       {settingsModalOpen && (
         <CustomModal
-          onClose={() => setSettingsModalOpen(false)}
+          onClose={onCloseModal}
           title="Settings"
           content={
-            <div className={styles.modalContent}>
-              <p>Theme</p>
-              <ModernDropdown
-                options={themeOptions}
-                onChangeFn={onChangeTheme as any}
-              />
-            </div>
+            <>
+              <div className={styles.modalContent}>
+                <p>Theme</p>
+                <ModernDropdown
+                  options={themeOptions}
+                  onChangeFn={onChangeTheme as any}
+                />
+              </div>
+              <div className={styles.modalContent}>
+                <p>Photo Album</p>
+
+                <div className={styles.modalContentPhotoAlbums}>
+                  {photoAlbums.length > 0 &&
+                    photoAlbums.map((a) => {
+                      const found = selectedAlbums.find((s) => s.albumName === a.albumName)
+                      return (
+                        <div key={a.albumName}>
+                          <Checkbox
+                            label={a.albumName}
+                            isChecked={!!found}
+                            onChangeHandler={(isChecked) =>
+                              handleOnSelectAlbum(a, isChecked)
+                            }
+                          />
+                        </div>
+                      )
+                    })}
+                </div>
+              </div>
+            </>
           }
         />
       )}

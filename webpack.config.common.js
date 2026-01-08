@@ -145,6 +145,8 @@ module.exports = {
       ),
       'process.env.PLEX_URL': JSON.stringify(process.env.PLEX_URL || ''),
       'process.env.ENV': JSON.stringify(process.env.ENV || ''),
+      'process.env.IMMICH_URL': JSON.stringify(process.env.IMMICH_URL || ''),
+      'process.env.IMMICH_KEY': JSON.stringify(process.env.IMMICH_KEY || ''),
       'process.env.USE_EXTERNAL_BACKEND': JSON.stringify(
         process.env.USE_EXTERNAL_BACKEND || ''
       )

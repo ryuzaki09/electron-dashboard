@@ -1,0 +1,32 @@
+.wrapper {
+  display: none;
+}
+
+.photoLibActive {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--color-plex-black);
+  z-index: 5;
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 1s ease-in-out;
+    z-index: 5;
+  }
+
+  img[data-active-item='true'] {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
