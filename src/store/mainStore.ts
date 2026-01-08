@@ -13,7 +13,7 @@ interface IMainStore {
   setVoiceAssistantIsListening: (isListening: boolean) => void
   photoAlbums: Array<IImmichAlbum>
   selectedPhotoAlbums: Array<IImmichAlbum>
-  setSelectedPhotoAlbums: (photoAlbums: Array<any>) => void
+  setSelectedPhotoAlbums: (photoAlbums: Array<IImmichAlbum>) => void
   isLoadingPhotoAlbums: boolean
   fetchPhotoAlbums: () => Promise<void>
 }
@@ -48,7 +48,7 @@ export const mainStore = create<IMainStore>((set, get) => ({
     }
   },
   selectedPhotoAlbums: [],
-  setSelectedPhotoAlbums: (photoAlbums: any[]) => {
+  setSelectedPhotoAlbums: (photoAlbums: IImmichAlbum[]) => {
     set({selectedPhotoAlbums: photoAlbums})
   }
 }))

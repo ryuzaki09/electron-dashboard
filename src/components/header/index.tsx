@@ -14,7 +14,6 @@ import {CustomModal} from '../modal/modal'
 import {MediaControls} from './mediaControls'
 import {mainStore} from '../../store/mainStore'
 import {useActivityDetection} from '../../hooks/useActivityDetection'
-//import {immichApi} from '../../api/immichApi'
 import type {IImmichAlbum} from '../../api/types'
 
 import styles from './index.module.css'
@@ -29,7 +28,7 @@ export function Header() {
     delayFn: () => setNavIsOpen(false)
   })
   const [showSettings, setShowSettings] = React.useState(false)
-  const {photoAlbums, selectedPhotoAlbums, setSelectedPhotoAlbums} = mainStore(
+  const {photoAlbums, selectedPhotoAlbums, setSelectedPhotoAlbums, fetchPhotoAlbums} = mainStore(
     (state) => state
   )
   //console.log('photoAlbums: ', photoAlbums)
@@ -82,8 +81,11 @@ export function Header() {
     return setSelectedAlbums((prevState) => prevState.filter((p) => p !== album))
   }
 
-  const saveAlbums = () => {
+  const onCloseModal = () => {
+    console.log('set albums: ', selectedAlbums)
     setSelectedPhotoAlbums(selectedAlbums)
+    setSettingsModalOpen(false)
+    //fetchPhotoAlbums()
   }
 
   return (
@@ -130,7 +132,7 @@ export function Header() {
       <MediaControls />
       {settingsModalOpen && (
         <CustomModal
-          onClose={() => setSettingsModalOpen(false)}
+          onClose={onCloseModal}
           title="Settings"
           content={
             <>
@@ -160,8 +162,6 @@ export function Header() {
                         </div>
                       )
                     })}
-                    <br />
-                    <button onClick={saveAlbums}>Save albums</button>
                 </div>
               </div>
             </>
