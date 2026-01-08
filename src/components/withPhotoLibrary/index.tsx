@@ -22,51 +22,26 @@ export function WithPhotoLibrary({children}: {children: React.ReactNode}) {
     delayFn: () => setPhotoLibIsActive(true)
   })
 
-  React.useEffect(
-    () => {
-      const fetchPhotos = async () => {
-        try {
-          console.log('fetch photos: ', selectedPhotoAlbums.length)
-          // const albums = await immichApi.getAlbums()
-          if (!selectedPhotoAlbums.length) {
-            return
-          }
-
-          // const selectedAlbum = albums.find((a) =>
-          //   albumsToShow.includes(a.albumName)
-          // )
-
-          const promises = selectedPhotoAlbums.map((p) =>
-            immichApi.getAlbumInfo(p.id)
-          )
-          console.log('fetch promises: ', promises)
-          const results = await Promise.all(promises)
-          console.log('all results: ', results)
-          //console.log('selectedAlbum: ', selectedAlbum)
-          // if (selectedAlbum) {
-          // const albumWithAssets = await immichApi.getAlbumInfo(selectedAlbum.id)
-          // console.log('album assets: ', albumWithAssets)
-          // if (albumWithAssets) {
-          //   setPhotoLib(albumWithAssets.assets)
-          // }
-          // }
-        } catch (error) {
-          console.error('Error fetching photos:', error)
+  React.useEffect(() => {
+    const fetchPhotos = async () => {
+      try {
+        if (!selectedPhotoAlbums.length) {
+          return;
         }
+
+        const promises = selectedPhotoAlbums.map((p) =>
+          immichApi.getAlbumInfo(p.id)
+        );
+        const results = await Promise.all(promises);
+        const photos = results.flatMap((result) => result.assets);
+        setPhotoLib(photos);
+      } catch (error) {
+        console.error('Error fetching photos:', error);
       }
+    };
 
-      setInterval(() => {
-        // Persist fetch at set interval only IF there is no photos
-        if (!photoLib.length) {
-          // set delay to wait on backend service
-          setTimeout(() => {
-            fetchPhotos()
-          }, 2000)
-        }
-      }, FIVE_MINTUES)
-    },
-    [selectedPhotoAlbums]
-  )
+    fetchPhotos();
+  }, [selectedPhotoAlbums]);
 
   // loop through photos
   React.useEffect(
