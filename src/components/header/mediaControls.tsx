@@ -23,7 +23,7 @@ export function MediaControls() {
   } = useAudio()
   const {pathname} = useLocation()
 
-  function onVolumeChange(e: React.ChangeEvent<HTMLInputElement>) {
+  const onVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {value} = e.target
 
     setVolume(+value / 10)

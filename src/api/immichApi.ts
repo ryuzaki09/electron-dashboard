@@ -9,7 +9,7 @@ const client = axios.create({
 export const immichApi = {
   getAlbums: async () => {
     const {data} = await client.get('/albums')
-    console.log('photo data: ', data)
+    // console.log('photo data: ', data)
     return data || []
     // const {data} = await client.get<IImmichAlbum[]>('/albums')
   },

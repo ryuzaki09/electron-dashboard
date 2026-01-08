@@ -7,14 +7,14 @@ import {useTime} from '../hooks/useTime'
 import {mainStore} from '../store/mainStore'
 
 import styles from './main.module.css'
-import { WithPhotoLibrary } from '../components/withPhotoLibrary'
+import {WithPhotoLibrary} from '../components/withPhotoLibrary'
 
 export function Main() {
   const fetchPhotoAlbums = mainStore((store) => store.fetchPhotoAlbums)
 
   React.useEffect(() => {
     fetchPhotoAlbums()
-  }, [fetchPhotoAlbums])
+  }, [])
 
   return (
     <WithPhotoLibrary>
@@ -68,7 +68,7 @@ function WeatherInformation() {
             &deg;C
           </div>
         </div>
-        <div className={styles.dailyWeather}>
+        <div className={styles.dailyWeather} data-testid="daily-weather">
           {daily.length > 0 &&
             daily.map((d, index: number) => {
               const Icon = d.weather.icon

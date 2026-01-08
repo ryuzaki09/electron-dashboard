@@ -28,15 +28,13 @@ export function Header() {
     delayFn: () => setNavIsOpen(false)
   })
   const [showSettings, setShowSettings] = React.useState(false)
-  const {photoAlbums, selectedPhotoAlbums, setSelectedPhotoAlbums, fetchPhotoAlbums} = mainStore(
+  const {photoAlbums, selectedPhotoAlbums, setSelectedPhotoAlbums, fetchPhotoAlbums, setTheme} = mainStore(
     (state) => state
   )
-  //console.log('photoAlbums: ', photoAlbums)
-  //console.log('selected albums: ', selectedPhotoAlbums)
   console.log('isListening: ', isListening)
 
   const onChangeTheme = (theme: {text: string; value: string}) => {
-    mainStore.getState().setTheme(theme.value)
+    setTheme(theme.value)
   }
 
   React.useEffect(
@@ -82,7 +80,7 @@ export function Header() {
   }
 
   const onCloseModal = () => {
-    console.log('set albums: ', selectedAlbums)
+    // console.log('set albums: ', selectedAlbums)
     setSelectedPhotoAlbums(selectedAlbums)
     setSettingsModalOpen(false)
     fetchPhotoAlbums()

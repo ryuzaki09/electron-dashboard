@@ -13,7 +13,7 @@ export function useVoiceAssistant() {
   const {
     voiceAssistantIsListening: isListening,
     setVoiceAssistantIsListening: setIsListening
-  } = mainStore()
+  } = mainStore((state) => state)
 
   React.useEffect(
     () => {
