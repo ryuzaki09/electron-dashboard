@@ -205,3 +205,11 @@ export interface IImmichAlbum {
   assets: IImmichAsset[]
   hasSharedLink: boolean
 }
+
+export type TImmichAlbumViewDto = Omit<IImmichAlbum, 'assets'> & {
+  assets: {
+    type: 'IMAGE' | 'VIDEO'
+    url: string
+    thumbnailUrl: string
+  }[]
+}

@@ -2,7 +2,7 @@ import {create} from 'zustand'
 import {immichApi} from '../api/immichApi'
 import {config} from '../config'
 
-import type {IImmichAlbum} from '../api/types'
+import type {TImmichAlbumViewDto} from '../api/types'
 
 interface IMainStore {
   theme: string
@@ -11,9 +11,9 @@ interface IMainStore {
   setWeather: (data: any) => void
   voiceAssistantIsListening: boolean
   setVoiceAssistantIsListening: (isListening: boolean) => void
-  photoAlbums: Array<IImmichAlbum>
-  selectedPhotoAlbums: Array<IImmichAlbum>
-  setSelectedPhotoAlbums: (photoAlbums: Array<IImmichAlbum>) => void
+  photoAlbums: Array<TImmichAlbumViewDto>
+  selectedPhotoAlbums: Array<TImmichAlbumViewDto>
+  setSelectedPhotoAlbums: (photoAlbums: Array<TImmichAlbumViewDto>) => void
   isLoadingPhotoAlbums: boolean
   fetchPhotoAlbums: () => Promise<void>
 }
@@ -48,7 +48,7 @@ export const mainStore = create<IMainStore>((set, get) => ({
     }
   },
   selectedPhotoAlbums: [],
-  setSelectedPhotoAlbums: (photoAlbums: IImmichAlbum[]) => {
+  setSelectedPhotoAlbums: (photoAlbums: TImmichAlbumViewDto[]) => {
     set({selectedPhotoAlbums: photoAlbums})
   }
 }))

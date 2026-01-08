@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {config} from '../config'
-import {IImmichAlbum} from './types'
+import {TImmichAlbumViewDto} from './types'
 
 const client = axios.create({
   baseURL: `${config.localApiUrl}/photos`
@@ -15,7 +15,9 @@ export const immichApi = {
   },
 
   getAlbumInfo: async (albumId: string) => {
-    const {data} = await client.get<IImmichAlbum>(`/album-info/${albumId}`)
+    const {data} = await client.get<TImmichAlbumViewDto>(
+      `/album-info/${albumId}`
+    )
 
     return data || null
   }

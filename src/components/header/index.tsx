@@ -14,7 +14,7 @@ import {CustomModal} from '../modal/modal'
 import {MediaControls} from './mediaControls'
 import {mainStore} from '../../store/mainStore'
 import {useActivityDetection} from '../../hooks/useActivityDetection'
-import type {IImmichAlbum} from '../../api/types'
+import type {TImmichAlbumViewDto} from '../../api/types'
 
 import styles from './index.module.css'
 
@@ -22,7 +22,7 @@ export function Header() {
   const [settingsModalOpen, setSettingsModalOpen] = React.useState(false)
   const {isListening, setIsListening} = useVoiceAssistant()
   const [navIsOpen, setNavIsOpen] = React.useState(false)
-  const [selectedAlbums, setSelectedAlbums] = React.useState<IImmichAlbum[]>([])
+  const [selectedAlbums, setSelectedAlbums] = React.useState<TImmichAlbumViewDto[]>([])
   const {activateDetection} = useActivityDetection({
     timeout: 5000,
     delayFn: () => setNavIsOpen(false)
@@ -73,7 +73,7 @@ export function Header() {
     setNavIsOpen((prevState) => !prevState)
   }
 
-  const handleOnSelectAlbum = (album: IImmichAlbum, isChecked: boolean) => {
+  const handleOnSelectAlbum = (album: TImmichAlbumViewDto, isChecked: boolean) => {
     if (isChecked) {
       return setSelectedAlbums((prevState) => prevState.concat(album))
     }
@@ -85,7 +85,7 @@ export function Header() {
     console.log('set albums: ', selectedAlbums)
     setSelectedPhotoAlbums(selectedAlbums)
     setSettingsModalOpen(false)
-    //fetchPhotoAlbums()
+    fetchPhotoAlbums()
   }
 
   return (
