@@ -24,9 +24,35 @@ router.get('/album-info/:id', async (req: express.Request, res) => {
   return data ? res.send(transformAlbum(data)) : res.send(null)
 })
 
+router.get('/photo/:id', async (req: express.Request, res) => {
+  const assetId = req.params.id
+  const {type} = req.query
+  const url =
+    type === 'thumbnail'
+      ? `/assets/${assetId}/thumbnail`
+      : `/assets/${assetId}/original`
+  try {
+    const response = await client.get(url, {
+      responseType: 'stream'
+    })
+
+    res.setHeader(
+      'Content-Type',
+      response.headers['content-type'] || 'image/jpeg'
+    )
+    if (response.headers['content-length']) {
+      res.setHeader('Content-Length', response.headers['content-length'])
+    }
+
+    response.data.pipe(res)
+  } catch (err) {
+    res.status(404).send('Image not found')
+  }
+})
+
 const excludeAlbums = ['camera', 'untitled']
 
-function transformAlbums(data: any[]) {
+function transformAlbums(data: IImmichAlbum[]) {
   return data
     .filter((d) => !excludeAlbums.includes(d.albumName.toLowerCase()))
     .map((album) => ({
@@ -46,12 +72,10 @@ const transformAlbum = (data: IImmichAlbum) => {
     ...imagesOnly,
     assets: imagesOnly.assets.map((asset: IImmichAsset) => ({
       ...asset,
-      thumbnailUrl: `${config.immichUrl}/api/assets/${
+      thumbnailUrl: `${config.localApiUrl}/photos/photo/${
         asset.id
-      }/thumbnail?apiKey=${config.immichKey}`,
-      url: `${config.immichUrl}/api/assets/${asset.id}/original?apiKey=${
-        config.immichKey
-      }`
+      }?type=thumbnail`,
+      url: `${config.localApiUrl}/photos/photo/${asset.id}?type=original`
     }))
   }
 }
