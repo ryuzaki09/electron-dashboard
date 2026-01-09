@@ -1,9 +1,10 @@
 import path from 'path'
 import {app} from 'electron'
-import installer, {REACT_DEVELOPER_TOOLS} from 'electron-devtools-installer'
+//import installer, {REACT_DEVELOPER_TOOLS} from 'electron-devtools-installer'
+import {installExtension, REACT_DEVELOPER_TOOLS} from 'electron-devtools-installer'
 import menu from 'electron-context-menu'
 import dotenv from 'dotenv'
-import {config} from './src/config'
+import {config} from './src/config/index.ts'
 import {spawn} from 'child_process'
 import shell from 'shelljs'
 
@@ -55,7 +56,7 @@ function createWindow() {
   if (config.isDevelopment) {
     mainWindow.loadURL(`http://localhost:${PORT}`)
 
-    installer(REACT_DEVELOPER_TOOLS)
+    installExtension(REACT_DEVELOPER_TOOLS)
       .then((name) => console.log(`Added Extension: ${name}`))
       .catch((err) => console.log('An error occurred: ', err))
   } else {

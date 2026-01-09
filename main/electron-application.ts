@@ -1,6 +1,6 @@
 import {BrowserWindow} from 'electron'
-import {config} from '../src/config'
-import path from 'path'
+//const {config} = require('../src/config')
+import {config} from '../src/config/index.ts'
 
 const fiveInchDisplay = {
   width: 1024,
