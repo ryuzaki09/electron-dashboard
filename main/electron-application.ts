@@ -1,5 +1,5 @@
 import {BrowserWindow} from 'electron'
-import {config} from '../src/config/index.ts'
+import {config} from '../src/config'
 
 const fiveInchDisplay = {
   width: 1024,

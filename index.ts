@@ -3,11 +3,11 @@ import {app} from 'electron'
 import {installExtension, REACT_DEVELOPER_TOOLS} from 'electron-devtools-installer'
 import menu from 'electron-context-menu'
 import dotenv from 'dotenv'
-import {config} from './src/config/index.ts'
+import {config} from './src/config/index'
 import {spawn} from 'child_process'
 import shell from 'shelljs'
 
-import {createAppWindow} from './main/electron-application.ts'
+import {createAppWindow} from './main/electron-application'
 
 const PORT = process.env.PORT || 3000
 loadEnvFile()
