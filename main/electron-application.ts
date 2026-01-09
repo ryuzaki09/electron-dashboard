@@ -1,5 +1,4 @@
 import {BrowserWindow} from 'electron'
-//const {config} = require('../src/config')
 import {config} from '../src/config/index.ts'
 
 const fiveInchDisplay = {

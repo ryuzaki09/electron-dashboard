@@ -1,6 +1,5 @@
 import path from 'path'
 import {app} from 'electron'
-//import installer, {REACT_DEVELOPER_TOOLS} from 'electron-devtools-installer'
 import {installExtension, REACT_DEVELOPER_TOOLS} from 'electron-devtools-installer'
 import menu from 'electron-context-menu'
 import dotenv from 'dotenv'
