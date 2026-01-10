@@ -214,6 +214,10 @@
 }
 
 .modalContentPhotoAlbums {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
   span {
     display: flex;
   }
@@ -243,6 +247,47 @@
   & .volumeControl span svg {
     width: 20px;
     height: 20px;
+  }
+}
+
+.albumRow {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+
+  outline: 1px solid var(--color-primary);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-primary);
+    color: var(--color-plex-black);
+
+    > div:nth-of-type(2) > div {
+      background-color: var(--color-plex-black);
+      color: var(--color-primary);
+    }
+    > div:nth-of-type(2) > div::after {
+      background-color: var(--color-plex-black);
+      color: var(--color-primary);
+    }
+  }
+}
+
+.check {
+  position: relative;
+  width: 2px;
+  height: 20px;
+  background-color: var(--color-primary);
+  rotate: 45deg;
+
+  &::after {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    content: '';
+    width: 10px;
+    height: 2px;
+    background-color: var(--color-primary);
   }
 }
 
