@@ -152,7 +152,7 @@ export function Header() {
                         <div key={a.albumName}>
                           <Checkbox
                             label={a.albumName}
-                            isChecked={!!found}
+                            checked={!!found}
                             onChangeHandler={(isChecked) =>
                               handleOnSelectAlbum(a, isChecked)
                             }

@@ -9,11 +9,12 @@ import {Assistant} from './pages/assistant'
 import {MusicProvider} from './context/audio'
 import {WithWeatherForecast} from './components/withWeatherForecast'
 import {WithReturnHome} from './components/withReturnHome'
-import {WithTimer} from './components/withTimer'
+//import {WithTimer} from './components/withTimer'
 import {WithVoiceAssistantUI} from './components/withVoiceAssistantUI'
 import {mainStore} from './store/mainStore'
-import {useTimerStore} from './store/timerStore'
+//import {useTimerStore} from './store/timerStore'
 
+import '@ryusenpai/shared-components/style.css'
 import styles from './app.module.css'
 
 const themesMap = {
@@ -26,7 +27,7 @@ const themesMap = {
 
 export default function App() {
   const theme = mainStore((state) => state.theme)
-  const {timers} = useTimerStore((state) => state)
+  //const {timers} = useTimerStore((state) => state)
 
   const themeColor = themesMap[theme]
 
