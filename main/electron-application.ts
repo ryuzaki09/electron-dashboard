@@ -1,6 +1,5 @@
 import {BrowserWindow} from 'electron'
 import {config} from '../src/config'
-import path from 'path'
 
 const fiveInchDisplay = {
   width: 1024,

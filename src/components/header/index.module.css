@@ -3,12 +3,14 @@
 }
 
 .navWrapper {
+  --min-width: 70px;
+
   position: absolute;
   right: 0;
   top: 0;
   transition: all 0.5s ease-in-out;
   width: 0;
-  min-width: 70px;
+  min-width: var(--min-width);
   overflow: hidden;
 
   justify-content: space-between;
@@ -64,6 +66,7 @@
   padding: var(--space-sm);
   background-color: var(--color-primary);
   z-index: 1;
+  height: 100%;
 
   & span svg {
     width: 40px;
