@@ -1,6 +1,6 @@
 {
   "name": "dashyb",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Home Dashboard built via Electron to play media, control home devices, get weather data.",
   "main": "build/index.js",
   "scripts": {
