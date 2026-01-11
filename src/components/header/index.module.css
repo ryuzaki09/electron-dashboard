@@ -196,15 +196,25 @@
     width: var(--dropdown-width);
   }
 
-  & li {
+  & div ul li {
     border: none;
+    background-color: var(--color-plex-black);
+    color: var(--color-primary);
+    padding: 0.3rem;
+    border-radius: 5px;
 
     &:last-child {
       border-bottom: none;
     }
   }
 
+  & div ul li:hover {
+    background-color: var(--color-primary);
+    color: var(--color-plex-black);
+  }
+
   & li[aria-selected='true'] {
+    background-color: var(--color-black);
     color: #fff;
   }
 

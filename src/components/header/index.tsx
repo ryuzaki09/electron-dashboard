@@ -142,30 +142,29 @@ export function Header() {
         </nav>
       </header>
       <MediaControls />
-      {settingsModalOpen && (
-        <CustomModal
-          onClose={onCloseModal}
-          title="Settings"
-          content={
-            <>
-              <div className={styles.modalContent}>
-                <p>Theme</p>
-                <ModernDropdown
-                  options={themeOptions}
-                  onChangeFn={onChangeTheme as any}
-                />
-              </div>
-              <div className={styles.modalContent}>
-                <PhotoAlbums
-                  albums={photoAlbums}
-                  selectedAlbums={selectedAlbums}
-                  onSelectFn={handleOnSelectAlbum}
-                />
-              </div>
-            </>
-          }
-        />
-      )}
+      <CustomModal
+        onClose={onCloseModal}
+        isOpen={settingsModalOpen}
+        title="Settings"
+        content={
+          <>
+            <div className={styles.modalContent}>
+              <p>Theme</p>
+              <ModernDropdown
+                options={themeOptions}
+                onChangeFn={onChangeTheme as any}
+              />
+            </div>
+            <div className={styles.modalContent}>
+              <PhotoAlbums
+                albums={photoAlbums}
+                selectedAlbums={selectedAlbums}
+                onSelectFn={handleOnSelectAlbum}
+              />
+            </div>
+          </>
+        }
+      />
     </>
   )
 }

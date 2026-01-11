@@ -5,6 +5,7 @@ import styles from './modal.module.css'
 
 interface ICustomModalProps {
   title?: string
+  isOpen: boolean
   content: React.ReactNode
   onClose: () => void
 }
