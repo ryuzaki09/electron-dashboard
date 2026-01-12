@@ -1,16 +1,11 @@
 import React from 'react'
-//import {format} from 'date-fns'
 import {MemoryRouter, Routes, Route} from 'react-router'
-import {
-  render,
-  screen,
-  waitFor,
-  within
-} from '@testing-library/react'
+import {render, screen, waitFor, within} from '@testing-library/react'
 import {Main} from '../../../src/pages/main'
 import {MusicProvider} from '../../../src/context/audio'
 import {getTimeString} from '../../../src/hooks/useTime'
 import SnowIcon from '../../../src/components/icons/weather/snow'
+import * as header from '../../../src/components/header'
 
 const mockState = {
   weather: {
@@ -37,7 +32,9 @@ const mockState = {
     ]
   },
   temp: 20,
-  fetchPhotoAlbums: jest.fn(),
+  fetchPhotoAlbums: jest.fn().mockResolvedValue(null),
+  photoAlbums: [],
+  isLoadingPhotoAlbums: false,
   selectedPhotoAlbums: [],
   voiceAssistantIsListening: false,
   setVoiceAssistantIsListening: jest.fn()
@@ -50,6 +47,10 @@ jest.mock('../../../src/store/mainStore', () => ({
 }))
 
 describe('Main Component', () => {
+  beforeEach(() => {
+    jest.spyOn(header, 'Header').mockImplementation(() => <div />)
+  })
+
   function renderComponent() {
     render(
       <MusicProvider>
