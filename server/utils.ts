@@ -95,27 +95,29 @@ export function getFilesRecursively(originalPath: string) {
 const intentFile = path.join(__dirname, '../src/config/intents.yml')
 
 // console.log('FILE: ', intentFile)
-const doc = yaml.load(fs.readFileSync(intentFile, 'utf8'))
+const doc = intentFile ? yaml.load(fs.readFileSync(intentFile, 'utf8')) : null
 
 export function checkIntent(speechText: string) {
   let sentenceWords: string[] = []
   console.log('Finding intent for: ', speechText)
-  const intent = doc.intents.find((intent) => {
-    const sentence = intent.sentences.find((sentence) => {
-      sentenceWords = sentence.replace('{slot}', '').split(' ')
-      console.log('Sentence words: ', sentenceWords)
+  const intent =
+    doc &&
+    doc.intents.find((intent) => {
+      const sentence = intent.sentences.find((sentence) => {
+        sentenceWords = sentence.replace('{slot}', '').split(' ')
+        console.log('Sentence words: ', sentenceWords)
 
-      const match = sentenceWords.every((word) => speechText.includes(word))
-      return match
+        const match = sentenceWords.every((word) => speechText.includes(word))
+        return match
+      })
+      console.log('Sentence: ', sentence)
+
+      if (sentence) {
+        return intent
+      }
+
+      return false
     })
-    console.log('Sentence: ', sentence)
-
-    if (sentence) {
-      return intent
-    }
-
-    return false
-  })
 
   if (!intent) {
     console.log('No intent found')
