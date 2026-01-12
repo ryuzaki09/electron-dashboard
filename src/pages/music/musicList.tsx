@@ -51,30 +51,28 @@ export function MusicList({musicPromise}: IMusicListProps) {
           )}
         {playingTrack && <div>{playingTrack.name}</div>}
       </div>
-      {songListModalIsOpen && (
-        <div className={styles.songsModalWrapper}>
-          <CustomModal
-            onClose={() => setSongListModalIsOpen(false)}
-            content={
-              <SongsList
-                musicList={musicList}
-                onTrackClickCb={() => setSongListModalIsOpen(false)}
-              />
-            }
-          />
-        </div>
-      )}
-      {playlistModalIsOpen && (
-        <div className={styles.modalWrapper}>
-          <Modal
-            onClose={() => setPlaylistModalIsOpen(false)}
-            title="Playlists"
-            content={
-              <Playlists closeFn={() => setPlaylistModalIsOpen(false)} />
-            }
-          />
-        </div>
-      )}
+
+      <div className={styles.songsModalWrapper}>
+        <CustomModal
+          onClose={() => setSongListModalIsOpen(false)}
+          isOpen={songListModalIsOpen}
+          content={
+            <SongsList
+              musicList={musicList}
+              onTrackClickCb={() => setSongListModalIsOpen(false)}
+            />
+          }
+        />
+      </div>
+
+      <div className={styles.playlistModalWrapper}>
+        <Modal
+          isOpen={playlistModalIsOpen}
+          onClose={() => setPlaylistModalIsOpen(false)}
+          title="Playlists"
+          content={<Playlists closeFn={() => setPlaylistModalIsOpen(false)} />}
+        />
+      </div>
     </div>
   )
 }
@@ -128,7 +126,6 @@ function SongsList({musicList, onTrackClickCb}) {
     if (levelIndex === 1) {
       setLevelIndex(0)
       setSecondLevelFolder('')
-      return
     }
   }
 
@@ -189,6 +186,7 @@ function SongsList({musicList, onTrackClickCb}) {
                   <li
                     key={`${index}_${name}`}
                     onClick={() => onClickFirstLevel(name)}
+                    className={styles.directory}
                   >
                     <FolderIcon /> {name}
                   </li>
