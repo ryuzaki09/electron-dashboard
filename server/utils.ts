@@ -94,8 +94,7 @@ export function getFilesRecursively(originalPath: string) {
 
 const intentFile = path.join(__dirname, '../src/config/intents.yml')
 
-// console.log('FILE: ', intentFile)
-const doc = intentFile ? yaml.load(fs.readFileSync(intentFile, 'utf8')) : null
+const doc = fs.existsSync(intentFile) ? yaml.load(fs.readFileSync(intentFile, 'utf8')) : null
 
 export function checkIntent(speechText: string) {
   let sentenceWords: string[] = []
