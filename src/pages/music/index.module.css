@@ -39,6 +39,7 @@
   );
   overflow-y: scroll;
 
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -60,6 +61,10 @@
     & span {
       display: inline-block;
       width: 100%;
+    }
+
+    &.directory {
+      justify-content: flex-start;
     }
   }
 
@@ -86,27 +91,28 @@
   padding: 0.5rem 0;
 }
 
-.modalWrapper {
+.playlistModalWrapper {
   font-size: 18px;
 
-  & > div > div {
-    width: 70vw;
-    height: 70vh;
-
-    border-radius: 0px;
+  dialog {
     background-color: var(--color-plex-black);
+    color: var(--color-primary);
+    width: 70vw;
+    height: 80dvh;
     border: 2px solid var(--color-primary);
-
     padding: var(--space-x-large);
-    overflow-y: scroll;
 
-    &::-webkit-scrollbar {
-      display: none;
+    &:open::backdrop {
+      backdrop-filter: blur(5px);
     }
 
     svg,
     path {
       stroke: var(--color-primary);
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
     }
   }
 
@@ -145,10 +151,12 @@
 }
 
 .songsModalWrapper {
-  & > div > div > div {
-    width: 80vw;
-    height: 80vh;
-    overflow: hidden;
+  dialog {
+    height: 80dvh;
+  }
+
+  ul {
+    padding: 0;
   }
 
   & li {
