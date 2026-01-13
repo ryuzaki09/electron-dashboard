@@ -26,7 +26,16 @@ export const musicRootFoldersToScan = [
   'korean'
 ]
 
-console.log('NODE ENV: ', process.env.NODE_ENV)
-export const homeConfigPromise = !config.isDevelopment
-  ? import('./sample.homeConfig.json').then((m) => m.default)
-  : import('./homeConfig.json').then((m) => m.default)
+async function safeImport<T = any>(path: string): Promise<T | undefined> {
+  try {
+    // @ts-ignore
+    const mod = await import(path)
+    return mod.default
+  } catch {
+    return undefined
+  }
+}
+
+export const homeConfigPromise = config.isDevelopment
+  ? safeImport('./homeConfig.json')
+  : safeImport('./sample.homeConfig.json')
