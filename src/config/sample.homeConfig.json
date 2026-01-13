@@ -1,0 +1,15 @@
+{
+  "coords": {
+    "country": "GB",
+    "lat": 0,
+    "lon": 0,
+    "name": "London",
+    "zip": "Postcode"
+  },
+  "conversation": {
+    "kitchen": {
+      "on": "Turn on kitchen lights",
+      "off": "Turn off kitchen lights"
+    }
+  }
+}
