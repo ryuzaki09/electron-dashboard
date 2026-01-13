@@ -26,6 +26,7 @@ export const musicRootFoldersToScan = [
   'korean'
 ]
 
+console.log('NODE ENV: ', process.env.NODE_ENV)
 export const homeConfigPromise = config.isDevelopment
   ? import('./homeConfig.json').then((m) => m.default)
   : import('./sample.homeConfig.json').then((m) => m.default)
