@@ -23,8 +23,6 @@ jobs:
           name: Install dependencies
           command: npm ci
       - run:
-          environment:
-            NODE_ENV: test
           name: Run unit tests
           command: npm test
 
