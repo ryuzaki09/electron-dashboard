@@ -1,9 +1,6 @@
 import axios from 'axios'
-import yaml from 'js-yaml'
-import path from 'path'
-import fs from 'fs'
 // import 'dotenv/config'
-import {config} from '../../src/config'
+import {config, homeConfigPromise} from '../../src/config'
 //import {coords} from '../../src/config/config'
 import {
   timestampToDayOfWeek,
@@ -20,20 +17,17 @@ interface IGetWeatherProps {
   location?: string
 }
 
-
-const homeConfig = path.join(__dirname, '../src/config/config.yml')
-const configContent = fs.existsSync(homeConfig) ? yaml.load(fs.readFileSync(homeConfig, 'utf8')) : null
-
 const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
 export async function getWeatherForecast({date}: {date: string}) {
-  if (!configContent) {
+  const homeConfig = await homeConfigPromise
+  if (!homeConfig) {
     return
   }
 
   const weather = await axios.get(
-      `https://api.openweathermap.org/data/3.0/onecall?lat=${configContent.coords.lat}&lon=${
-        configContent.coords.lon
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${homeConfig.coords.lat}&lon=${
+        homeConfig.coords.lon
       }&exclude=hourly,minutely&units=metric&appid=${config.openweatherKey}`
     )
 

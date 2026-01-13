@@ -3,7 +3,7 @@ import {Switch} from '@ryusenpai/shared-components'
 
 import {Container} from '../../components/container'
 import {homeAssistantApi, IDeviceState} from '../../api/homeAssistantApi'
-import {conversation} from '../../config/constants'
+import {homeConfig} from '../../config'
 
 import styles from './index.module.css'
 
@@ -92,7 +92,11 @@ function Device({device}) {
 
 function transformHomeDevices(data: IDeviceState[]) {
   // console.log('transforming original data: ', data)
-  const filtered = Object.entries(conversation).reduce<any[]>((acc, device) => {
+  if (!homeConfig.conversation.length) {
+    return []
+  }
+
+  const filtered = Object.entries(homeConfig.conversation).reduce<any[]>((acc, device) => {
     const [deviceName, deviceProps] = device
     const foundDevice = data.find((d) => d.entity_id.includes(deviceName))
     if (foundDevice) {

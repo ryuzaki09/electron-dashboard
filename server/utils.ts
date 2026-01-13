@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import yaml from 'js-yaml'
-import {userMusicPath, userMusicFirstFolder, baseMediaPath} from './constants'
+import {userMusicPath, userMusicFirstFolder} from './constants'
 import {musicRootFoldersToScan} from '../src/config'
 
 export interface IFile {
