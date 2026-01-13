@@ -1,11 +1,12 @@
 import axios from 'axios'
-import {config, homeConfig} from '../config'
+import {config, homeConfigPromise} from '../config'
 import { transformWeatherData } from '../helpers/utils'
 
 import type {IWeatherForecastDto} from './types'
 
 export const weatherApi = {
   getForecast: async () => {
+    const homeConfig = await homeConfigPromise
     if (!homeConfig) {
       return
     }

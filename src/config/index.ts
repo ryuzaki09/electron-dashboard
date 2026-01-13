@@ -1,6 +1,3 @@
-import homeConfigJson from './homeConfig.json'
-import sampleConfigJson from './sample.homeConfig.json'
-
 export const config = {
   useLocalAi: false,
   useWakeWord: false,
@@ -29,6 +26,6 @@ export const musicRootFoldersToScan = [
   'korean'
 ]
 
-export const homeConfig = config.isDevelopment
-  ? homeConfigJson
-  : sampleConfigJson
+export const homeConfigPromise = config.isDevelopment
+  ? import('./homeConfig.json').then((m) => m.default)
+  : import('./sample.homeConfig.json').then((m) => m.default)

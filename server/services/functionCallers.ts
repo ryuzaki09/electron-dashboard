@@ -1,6 +1,6 @@
 import axios from 'axios'
 // import 'dotenv/config'
-import {config, homeConfig} from '../../src/config'
+import {config, homeConfigPromise} from '../../src/config'
 //import {coords} from '../../src/config/config'
 import {
   timestampToDayOfWeek,
@@ -20,6 +20,7 @@ interface IGetWeatherProps {
 const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
 export async function getWeatherForecast({date}: {date: string}) {
+  const homeConfig = await homeConfigPromise
   if (!homeConfig) {
     return
   }
