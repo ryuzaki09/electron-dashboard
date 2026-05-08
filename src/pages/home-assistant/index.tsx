@@ -3,12 +3,18 @@ import {Switch} from '@ryusenpai/shared-components'
 
 import {Container} from '../../components/container'
 import {homeAssistantApi, IDeviceState} from '../../api/homeAssistantApi'
-import {homeConfig} from '../../config'
+import {homeConfigPromise} from '../../config'
 
 import styles from './index.module.css'
 
+interface IHADevice {
+  deviceName: string
+  state: 'on' | 'off'
+  entity_id: string
+}
+
 export function HomeAssistant() {
-  const [devices, setDevices] = React.useState<any[]>([])
+  const [devices, setDevices] = React.useState<IHADevice[]>([])
 
   React.useEffect(() => {
     const controller = new AbortController()
@@ -18,7 +24,7 @@ export function HomeAssistant() {
       try {
         homeAssistantApi.setSignal(signal)
         const result = await homeAssistantApi.getLights()
-        const transformedData = transformHomeDevices(result)
+        const transformedData = await transformHomeDevices(result)
         setDevices(transformedData)
       } catch (e) {
         console.log('unable to set devices')
@@ -90,15 +96,16 @@ function Device({device}) {
   )
 }
 
-function transformHomeDevices(data: IDeviceState[]) {
+async function transformHomeDevices(data: IDeviceState[]) {
   // console.log('transforming original data: ', data)
-  if (!homeConfig.conversation.length) {
+  const homeConfig = await homeConfigPromise
+  if (!homeConfig || !homeConfig.conversation) {
     return []
   }
 
   const filtered = Object.entries(homeConfig.conversation).reduce<any[]>((acc, device) => {
     const [deviceName, deviceProps] = device
-    const foundDevice = data.find((d) => d.entity_id.includes(deviceName))
+    const foundDevice = data.find((d) => d.entity_id.includes(deviceName.toLowerCase()))
     if (foundDevice) {
       acc.push({
         deviceName,
