@@ -109,6 +109,7 @@ export function useVoiceAssistant() {
     console.log('TRANSCRIPTION: ', transcription)
     // const aiResponse = await ai.chat(transcription)
     const foundIntent = findIntent(transcription)
+    // Process home assistant trigger
     if (foundIntent) {
       console.log('foundIntent: ', foundIntent)
 
@@ -124,9 +125,14 @@ export function useVoiceAssistant() {
       )
 
       // play audio
-      const audio = new Audio(speechAudio.data.audioUrl)
+      const audioUrl = URL.createObjectURL(speechAudio)
+      const audio = new Audio(audioUrl)
+      //const audio = new Audio(speechAudio.data.audioUrl)
       audio.muted = false
       await audio.play()
+      audio.onended = () => {
+        URL.revokeObjectURL(audioUrl)
+      }
       return
     }
     const aiResponse = await ai.chat(transcription)

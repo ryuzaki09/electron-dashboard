@@ -138,8 +138,11 @@ module.exports = {
       'process.env.OPEN_WAKEWORD_IP_PORT': JSON.stringify(
         process.env.OPEN_WAKEWORD_IP_PORT || ''
       ),
-      'process.env.WHISPER_HOST': JSON.stringify(
-        process.env.WHISPER_HOST || ''
+      'process.env.STT_HOST': JSON.stringify(
+        process.env.STT_HOST || ''
+      ),
+      'process.env.TTS_HOST': JSON.stringify(
+        process.env.TTS_HOST || ''
       ),
       'process.env.OPENAI_KEY': JSON.stringify(process.env.OPENAI_KEY || ''),
       'process.env.OPENROUTE_KEY': JSON.stringify(

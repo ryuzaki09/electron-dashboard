@@ -48,32 +48,56 @@ interface IChatResponse {
 
 export const localAi = {
   speechToText: async (audio: Blob) => {
-    const formData = new FormData()
-    formData.append('audio', audio, 'recording.wav')
+    //console.log('AUDIO: ', audio)
+    const audioBase64 = await new Promise((resolve) => {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        // Remove the data URL prefix (e.g., "data:audio/wav;base64,")
+        const base64 =
+          reader && typeof reader.result === 'string'
+            ? reader.result.split(',')[1]
+            : null
+        resolve(base64)
+      }
+      reader.readAsDataURL(audio)
+    })
+    //console.log('base64: ', audioBase64)
+    //const formData = new FormData()
+    //formData.append('audio', audio, 'recording.wav')
 
     const {data} = await axios.post(
-      // `http://${config.whisperHost}/ai/stt`,
-      `http://localhost:3003/transcribe`,
-      formData,
+      `http://${config.sttHost}/transcribe`,
+      //`http://localhost:3003/transcribe`,
+      {audio: audioBase64},
       {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          //'Content-Type': 'multipart/form-data'
+          'Content-Type': 'application/json'
         }
       }
     )
     console.log('transcribed result: ', data)
 
-    return data ? data.data : ''
+    return data ? data.text : ''
     // return result.data.transcription || ''
   },
 
   textToSpeech: async (text: string) => {
-    const result = await axios.post(`http://${config.whisperHost}/ai/tts`, {
-      text
-    })
+    //const result = await axios.post(`http://${config.whisperHost}/ai/tts`, {
+    const result = await axios.post(
+      `http://${config.ttsHost}/speak`,
+      {text},
+      {
+        responseType: 'blob',
+        headers: {
+          //'Content-Type': 'multipart/form-data'
+          'Content-Type': 'application/json'
+        }
+      }
+    )
 
     console.log('TTS result: ', result)
-    return result
+    return result.data
   },
 
   chat: async (transcription: string) => {
