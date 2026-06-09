@@ -29,6 +29,7 @@ const daysOfWeek = [
 export const intents: IIntent = {
   getWeather: {
     sentences: [
+      'what is the weather {slot}',
       'what is the weather on {slot}',
       'how is the weather on {slot}',
       'how is the weather {slot}',

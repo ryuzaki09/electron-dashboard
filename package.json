@@ -10,7 +10,7 @@
     "build:pi": "npm test && npm run build && npm run bundle-backend && electron-builder --linux --armv7l",
     "build:pi64": "npm test && npm run build && npm run bundle-backend && electron-builder --linux --arm64",
     "start": "npm run build && electron .",
-    "test": "jest --config ./jest.config.js",
+    "test": "NODE_ENV=test jest --config ./jest.config.js",
     "test:acceptance": "mocha -r @babel/register test/acceptance/ --timeout 15000",
     "lint": "eslint . --ext .js,.ts,.tsx",
     "start-electron": "NODE_ENV=development NODE_OPTIONS=\"--import tsx\" electron -r ./babel-register.cjs ./index.js",
