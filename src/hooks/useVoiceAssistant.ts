@@ -135,6 +135,8 @@ export function useVoiceAssistant() {
       }
       return
     }
+    console.log('chat to Local AI')
+    console.log('transcription to Local AI: ', transcription)
     const aiResponse = await ai.chat(transcription)
     const speechAudio = await ai.textToSpeech(aiResponse)
 

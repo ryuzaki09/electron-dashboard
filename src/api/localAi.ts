@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 import {config} from '../config'
-import {getToday, getCurrentTime} from '../helpers/time'
 import {getFunctionCall} from '../helpers/localAiHandler'
+import {systemPrompt} from './systemPrompt'
 
 const aiClient = axios.create({
   baseURL: `http://${config.localAiHost}/api`,
@@ -11,34 +11,6 @@ const aiClient = axios.create({
   }
 })
 
-const systemPrompt = {
-  role: 'assistant',
-  content: `
-You MUST respond in structured JSON format when an action is required.
-- If an action needs to be taken or when weather information is asked, respond with JSON:
-  {
-    "action": "<action_name>",
-    "parameters": { "key": "value" }
-  }
-- If user asks about the weather for a location then return then you MUST respond with this:
-  {
-    "action": "get_weather",
-    "paramaters": {
-      "location": <coordinates>
-    }
-  }
-- If user asks about the weather for a particular date, i.e. "today", "tomorrow", "Monday", "Tuesday", etc. then respond with this:
-  {
-    "action": "get_weather_forecast",
-    "parameters": {
-      "date": <date>
-    }
-  }
-- If no action is required, respond normally.
-Today's date is ${getToday()}.
-The current time is ${getCurrentTime()}. 
-`
-}
 
 interface IChatResponse {
   choices: Array<{index: number; message: {content: string; role: string}}>

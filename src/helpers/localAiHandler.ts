@@ -2,6 +2,7 @@ import {
   getWeatherForecast,
   getWeatherForecastForLocation
 } from '../../server/services/functionCallers'
+import {searchMusic} from '../tools/music'
 
 interface IFunctionMap {
   [key: string]: {
@@ -17,6 +18,10 @@ const functionCallMap: IFunctionMap = {
   get_weather: {
     functionCall: getWeatherForecastForLocation,
     responseHandler: handleWeatherForLocationResponse
+  },
+  play_music: {
+    functionCall: searchMusic,
+    responseHandler: handlePlaybackResponse
   }
 }
 
@@ -40,4 +45,9 @@ function handleWeatherForLocationResponse(props: any) {
   return `The weather in ${props.parameters.location} is ${
     props.temperature
   } degrees celcius.`
+}
+
+function handlePlaybackResponse(props: any) {
+  console.log('playback response props: ', props)
+  return ''
 }

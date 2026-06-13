@@ -1,5 +1,5 @@
 export const config = {
-  useLocalAi: false,
+  useLocalAi: true,
   useWakeWord: false,
   useExternalBackendApi: process.env.USE_EXTERNAL_BACKEND === 'true',
   isDevelopment: process.env.NODE_ENV === 'development',
