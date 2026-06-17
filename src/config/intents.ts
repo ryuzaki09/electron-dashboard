@@ -112,6 +112,18 @@ export const intents: IIntent = {
     },
     responseFromTrigger: false,
     tts: 'Completed'
+  },
+  onNext: {
+    sentences: ['next song', 'play next song', 'skip song'],
+    triggerFn: () => {},
+    responseFromTrigger: false,
+    tts: ''
+  },
+  onPrevious: {
+    sentences: ['previous song', 'play previous song', 'go back'],
+    triggerFn: () => {},
+    responseFromTrigger: false,
+    tts: ''
   }
 }
 

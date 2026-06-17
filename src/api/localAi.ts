@@ -93,7 +93,7 @@ export const localAi = {
     const parsed = JSON.parse(content)
 
     if (parsed.action && parsed.parameters) {
-      await handleCustomFunction(parsed)
+      return handleCustomFunction(parsed)
     }
     console.log('result: ', result)
     return result.data.choices[0].message.content
@@ -134,6 +134,7 @@ async function handleCustomFunction(parsed: IParsedData) {
       ...result
     })
 
-    console.log('transcription response: ', transcriptionResponse)
+    // console.log('transcription response: ', transcriptionResponse)
+    return transcriptionResponse
   }
 }

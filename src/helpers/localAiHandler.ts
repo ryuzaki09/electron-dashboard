@@ -48,32 +48,28 @@ function handleWeatherForLocationResponse(props: any) {
 }
 
 interface IHandlePlaybackResponse {
-  0: {
-    parentKey: number
-    parentTitle: string
-    data: Array<{
-      itemId: string
-      key: string
-      media: Array<{
-        Part: Array<{
-          file: string
-          duration: number
-          key: string
-          size: number
-        }>
+  data: Array<{
+    itemId: string
+    key: string
+    media: Array<{
+      Part: Array<{
+        file: string
+        duration: number
+        key: string
+        size: number
       }>
-      summary: string
-      title: string
     }>
-  }
+    summary: string
+    title: string
+  }>
 }
 function handlePlaybackResponse(props: any) {
   console.log('playback response props: ', props)
   const typeProps = props as IHandlePlaybackResponse
-  return typeProps && typeProps[0]
+  return typeProps && typeProps
     ? {
         type: 'track',
-        media: typeProps[0]
+        media: typeProps.data
       }
     : ''
 }

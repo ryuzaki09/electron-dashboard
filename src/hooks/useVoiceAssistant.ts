@@ -6,6 +6,7 @@ import {ai} from '../lib/ai'
 import {findIntent} from '../config/intents'
 import {openWakeWordSocket} from '../services/websocket'
 import {mainStore} from '../store/mainStore'
+import {useAudio} from '../context/audio'
 
 export function useVoiceAssistant() {
   const [recorder] = React.useState(new MediaRecorderAPI())
@@ -14,6 +15,7 @@ export function useVoiceAssistant() {
     voiceAssistantIsListening: isListening,
     setVoiceAssistantIsListening: setIsListening
   } = mainStore((state) => state)
+  const {setShuffleList} = useAudio()
 
   React.useEffect(
     () => {
@@ -102,6 +104,14 @@ export function useVoiceAssistant() {
     stopAll()
   }
 
+  function handleLlmResponse(
+    aiResponse: undefined | {type: string; media: any}
+  ) {
+    if (aiResponse && aiResponse.type && aiResponse.type === 'track') {
+      setShuffleList(aiResponse.media)
+    }
+  }
+
   async function handleSpeechReponse(audioBlob: Blob) {
     setIsListening(false)
     // send audio to AI to transcribe and get answer back from AI
@@ -138,12 +148,16 @@ export function useVoiceAssistant() {
     console.log('chat to Local AI')
     console.log('transcription to Local AI: ', transcription)
     const aiResponse = await ai.chat(transcription)
-    const speechAudio = await ai.textToSpeech(aiResponse)
+    handleLlmResponse(aiResponse)
 
-    // play audio
-    const audio = new Audio(speechAudio.data.audioUrl)
-    audio.muted = false
-    await audio.play()
+    if (typeof aiResponse === 'string') {
+      const speechAudio = await ai.textToSpeech(aiResponse)
+
+      // play audio
+      const audio = new Audio(speechAudio.data.audioUrl)
+      audio.muted = false
+      await audio.play()
+    }
   }
 
   return {

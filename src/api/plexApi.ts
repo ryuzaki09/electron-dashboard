@@ -36,6 +36,19 @@ export interface IMediaItem {
   type: 'track'
 }
 
+interface ISearchMediaDto {
+  data: Array<{
+    key: string
+    media: IMediaItem['Media']
+    art: string
+    url: string
+    title: string
+    type: string
+  }>
+  parentKey: number
+  parentTitle: string
+}
+
 const client = axios.create({
   baseURL: config.externalApiUrl
 })
@@ -54,9 +67,24 @@ export const plexApi = {
   },
 
   searchMusic: async (query: string) => {
-    const {data} = await client.get(`/plex/music/search?keyword=${query}`)
+    const {data} = await client.get<ISearchMediaDto[]>(
+      `/plex/music/search?keyword=${query}`
+    )
 
-    return data
+    // console.log('searched music data: ', data)
+
+    if (!data || !data.length) return []
+
+    const allDataArrays = data.reduce((acc: any[], value) => {
+      const transformedData = value.data.map((d) => ({
+        ...d,
+        name: d.title,
+        domain: config.plexUrl || ''
+      }))
+      return acc.concat(transformedData)
+    }, [])
+
+    return {data: allDataArrays}
   }
 }
 
