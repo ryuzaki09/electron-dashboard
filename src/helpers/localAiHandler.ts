@@ -7,7 +7,7 @@ import {searchMusic} from '../tools/music'
 interface IFunctionMap {
   [key: string]: {
     functionCall: (args: any) => Promise<any>
-    responseHandler: (args: any) => string
+    responseHandler: (args: any) => string | {type: string; media?: any}
   }
 }
 const functionCallMap: IFunctionMap = {
@@ -47,7 +47,33 @@ function handleWeatherForLocationResponse(props: any) {
   } degrees celcius.`
 }
 
+interface IHandlePlaybackResponse {
+  0: {
+    parentKey: number
+    parentTitle: string
+    data: Array<{
+      itemId: string
+      key: string
+      media: Array<{
+        Part: Array<{
+          file: string
+          duration: number
+          key: string
+          size: number
+        }>
+      }>
+      summary: string
+      title: string
+    }>
+  }
+}
 function handlePlaybackResponse(props: any) {
   console.log('playback response props: ', props)
-  return ''
+  const typeProps = props as IHandlePlaybackResponse
+  return typeProps && typeProps[0]
+    ? {
+        type: 'track',
+        media: typeProps[0]
+      }
+    : ''
 }

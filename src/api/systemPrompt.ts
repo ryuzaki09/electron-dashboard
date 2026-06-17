@@ -36,6 +36,24 @@ Response:
   }
 }
 
+User: Play songs by Taylor Swift
+Response:
+{
+  "action": "play_music",
+  "parameters": {
+    "query": "Taylor Swift"
+  }
+}
+
+User: Play 'Smooth Criminal' by Michael Jackson
+Response:
+{
+  "action": "play_music",
+  "parameters": {
+    "query": "Smooth Criminal by Michael Jackson"
+  }
+}
+
 If no action is required, respond normally.
 
 Today's date is ${getToday()}.

@@ -51,6 +51,12 @@ export const plexApi = {
     const {data} = await client.get(`/plex/playlist/${ratingKey}`)
 
     return data ? transformPlaylistTracks(data) : []
+  },
+
+  searchMusic: async (query: string) => {
+    const {data} = await client.get(`/plex/music/search?keyword=${query}`)
+
+    return data
   }
 }
 

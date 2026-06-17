@@ -5,12 +5,12 @@ import {getFunctionCall} from '../helpers/localAiHandler'
 import {systemPrompt} from './systemPrompt'
 
 const aiClient = axios.create({
-  baseURL: `http://${config.localAiHost}/api`,
+  // baseURL: `http://${config.localAiHost}/api`,
+  baseURL: `http://${config.localAiHost}/v1`,
   headers: {
     Authorization: `Bearer ${config.localAiKey}`
   }
 })
-
 
 interface IChatResponse {
   choices: Array<{index: number; message: {content: string; role: string}}>
@@ -93,19 +93,7 @@ export const localAi = {
     const parsed = JSON.parse(content)
 
     if (parsed.action && parsed.parameters) {
-      const customFunction = getFunctionCall(parsed.action)
-
-      if (customFunction) {
-        console.log('parsed: ', parsed)
-        const result = await customFunction.functionCall(parsed.parameters)
-        console.log('Custom Function result: ', result)
-        const transcriptionResponse = customFunction.responseHandler({
-          ...parsed,
-          ...result
-        })
-
-        console.log('transcription response: ', transcriptionResponse)
-      }
+      await handleCustomFunction(parsed)
     }
     console.log('result: ', result)
     return result.data.choices[0].message.content
@@ -127,5 +115,25 @@ export const localAi = {
 
     console.log('result: ', result)
     return result.data.choices[0].message.content
+  }
+}
+
+interface IParsedData {
+  action: string
+  parameters: any
+}
+async function handleCustomFunction(parsed: IParsedData) {
+  const customFunction = getFunctionCall(parsed.action)
+
+  if (customFunction) {
+    console.log('parsed: ', parsed)
+    const result = await customFunction.functionCall(parsed.parameters)
+    console.log('Custom Function result: ', result)
+    const transcriptionResponse = customFunction.responseHandler({
+      ...parsed,
+      ...result
+    })
+
+    console.log('transcription response: ', transcriptionResponse)
   }
 }
