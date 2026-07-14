@@ -134,6 +134,7 @@ export function Header() {
             {config.isDevelopment && (
               <button
                 onClick={isListening ? () => {} : () => setIsListening(true)}
+                className={styles.assistantBtn}
               >
                 {isListening ? 'Listening..' : 'Press to talk'}
               </button>

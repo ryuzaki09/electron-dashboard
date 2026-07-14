@@ -6,6 +6,11 @@ const fiveInchDisplay = {
   height: 600
 }
 
+const piDisplay1 = {
+  width: 800,
+  height: 480
+}
+
 const hd720Display = {
   width: 1280,
   height: 720
@@ -18,7 +23,7 @@ const hd1080Display = {
 
 export function createAppWindow(urlPath, windowOpts = {}) {
   const defaultOpts = {
-    ...fiveInchDisplay,
+    ...piDisplay1,
     webPreferences: {
       nodeIntegration: true
       //preload: path.join(__dirname, '../preload.js')

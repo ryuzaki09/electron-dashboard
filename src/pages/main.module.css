@@ -92,3 +92,20 @@
 .modalActive {
   scale: 1;
 }
+
+@media (max-width: 800px) {
+  .time {
+    font-size: clamp(2rem, 120px, 13vw);
+  }
+
+  .weather svg {
+    max-width: 80px;
+  }
+
+  .dailyWeather {
+    p {
+      font-size: 16px;
+      margin-block: 0.3rem;
+    }
+  }
+}

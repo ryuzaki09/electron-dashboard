@@ -309,3 +309,34 @@
     transform: translate(-100%, 0);
   }
 }
+
+@media (max-width: 800px) {
+  .navWrapper {
+    --min-width: 50px;
+    height: 50px;
+
+    & > div svg {
+      width: 35px;
+      height: 35px;
+    }
+  }
+  .settingsWrapper {
+    padding: var(--space-xxs);
+    width: var(--min-width);
+
+    & span svg {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  button.assistantBtn {
+    padding: var(--space-xs);
+    height: auto;
+  }
+
+  .mediaControls {
+    padding: var(--space-sm);
+    font-size: 16px;
+  }
+}

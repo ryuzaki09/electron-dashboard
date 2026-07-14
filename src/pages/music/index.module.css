@@ -39,7 +39,6 @@
   );
   overflow-y: scroll;
 
-
   &::-webkit-scrollbar {
     display: none;
   }
@@ -183,5 +182,17 @@
   }
   100% {
     transform: translate(-100%, 0);
+  }
+}
+
+@media (max-width: 800px) {
+  .musicContent {
+    img {
+      max-width: 200px;
+    }
+    & > div {
+      margin: 1rem;
+      font-size: var(--font-sm);
+    }
   }
 }

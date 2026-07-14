@@ -16,3 +16,9 @@
   align-items: center;
   text-transform: capitalize;
 }
+
+@media (max-width: 800px) {
+  .deviceCard {
+    padding: var(--space-xs);
+  }
+}
