@@ -108,4 +108,19 @@
       margin-block: 0.3rem;
     }
   }
+
+  .forecastModal {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 65vw;
+
+    svg {
+      max-width: 90px;
+    }
+
+    & > div:nth-of-type(2) {
+      gap: var(--space-sm);
+    }
+  }
 }

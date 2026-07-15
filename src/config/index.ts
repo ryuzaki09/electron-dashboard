@@ -31,7 +31,7 @@ export const musicRootFoldersToScan = [
 export const homeConfigPromise = (async () => {
   try {
     const filename =
-      process.env.NODE_ENV === 'thisisatest'
+      process.env.NODE_ENV === 'development'
         ? 'homeConfig'
         : 'sample.homeConfig'
 

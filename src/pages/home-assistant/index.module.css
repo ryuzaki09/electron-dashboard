@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 32%));
   gap: 1rem;
+  justify-content: center;
 
   margin-top: var(--space-sm);
 }
@@ -18,6 +19,10 @@
 }
 
 @media (max-width: 800px) {
+  .smartDevicesContainer {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 31.5%));
+  }
+
   .deviceCard {
     padding: var(--space-xs);
   }
