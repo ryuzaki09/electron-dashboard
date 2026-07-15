@@ -30,14 +30,14 @@ export const musicRootFoldersToScan = [
 
 export const homeConfigPromise = (async () => {
   try {
-    //   if (config.isDevelopment) {
-    //     console.log('CONFIG DEV: ', config.isDevelopment)
-    //     const mod = await import('./homeConfig.json')
-    //     return mod.default || mod
-    //   } else {
-    const mod = await import('./sample.homeConfig.json')
-    return mod.default || mod
-    //}
+    if (process.env.NODE_ENV === 'development') {
+      console.log('CONFIG DEV: ', config.isDevelopment)
+      const mod = await import('./homeConfig.json')
+      return mod.default || mod
+    } else {
+      const mod = await import('./sample.homeConfig.json')
+      return mod.default || mod
+    }
   } catch (e) {
     console.log('Error importing homeConfig:', e)
     return undefined
