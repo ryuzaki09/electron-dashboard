@@ -39,7 +39,9 @@ export const coords = {
 
 you can get the coordinates on this [page](https://openweathermap.org/api/geocoding-api) and make the API `http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}`
 
-3. Home Assistant - A long live token is required. Enter the `HA_HOST=<HOST_IP>` and `HA_LONG_LIVE_TOKEN=<TOKEN>` in the `src/config/.env` file.
+1. Home Assistant - A long live token is required. Enter the `HA_HOST=<HOST_IP>` and `HA_LONG_LIVE_TOKEN=<TOKEN>` in the `src/config/.env` file.
+
+NOTE: on MacOS, make sure to have `dpkg` installed by using `brew install dpkg`
 
 ### Still in development
 
@@ -56,9 +58,10 @@ It currently has the ability to connect to openai and use it get weather informa
 
 #### On Raspberry Pi
 
-The app plays music in the `music` folder and videos in the `video` folder at the home directory under media folder e.g `$HOME/media/music` and `$HOME/media/video`. 
+The app plays music in the `music` folder and videos in the `video` folder at the home directory under media folder e.g `$HOME/media/music` and `$HOME/media/video`.
 
 If you have these media on a NAS for example, a good option is to mount these folders so they don't need to be moved or copied and then symlink them using:
+
 ```
 ln -s <source_folder> ~/media
 ```
@@ -71,7 +74,6 @@ To run the app on your local machine, enter:
 npm run dev
 ```
 
-
 ### Deploy to Raspberry Pi
 
 #### Installation
@@ -80,6 +82,7 @@ I have tested on Raspberry Pi 3B using the 32bit Bullseye OS.
 I have also tested on Raspberry Pi 4 using 64bit OS.
 
 On fresh setup, perform these actions:
+
 ```
 sudo apt update
 sudo apt upgrade
@@ -103,11 +106,14 @@ Run `which node` to get the file path, you will need this later.
 my example: `/run/user/1000/fnm_multishells/1066_1744449316744/bin/node`.
 Also run `echo $PATH`, you will need the output of this also.
 
-create a service file via 
+create a service file via
+
 ```
-sudo nano /etc/systemd/system/dashyb.service 
+sudo nano /etc/systemd/system/dashyb.service
 ```
+
 and add this in the file:
+
 ```
 [Unit]
 Description=DashyB Electron App
@@ -131,39 +137,48 @@ StandardError=journal
 [Install]
 WantedBy=graphical.target
 ```
+
 Notice the line `Environment=PATH...`, replace this line with the path of your `node` version stripping out the `/node` at the end and prefix to the output of your `$PATH` output.
 
 #### Deploy the app
 
 To deploy the app to a Raspberry Pi 32bit OS, run
+
 ```
 npm run build:pi
 ```
 
 For 64bit Raspberry Pi, run:
+
 ```
 npm run build:pi64
 ```
 
 this will compile and bundle the app and finally package it into a `.deb` file.
 
-The next step, there is a `deploy.sh.sample` file, simply do 
+The next step, there is a `deploy.sh.sample` file, simply do
+
 ```
 cp deploy.sh.sample deploy.sh
 ```
+
 edit this file with
+
 ```
 sudo nano deploy.sh
 ```
+
 In the file simply replace the `REMOTE_USER`, `REMOTE_HOST` and `DEB_FILE` with the username to ssh to the pi, the IP address of the pi and the name of the packaged `.deb` file respectively.
 
 Finally run the file the following to deploy.
+
 ```
 bash deploy.sh
 ```
+
 This will copy the deb file and unpackage and finally reboot the pi. You may need to enter your ssh password if you have not added your ssh key.
 
-
 ### Troublshooting
+
 - If you see the app not running on your Pi or not displaying the UI, ssh to your Pi and try manually run `sudo dpkg -i *.deb` and see if it shows any errors. Usually it's missing packages that might have been missed.
 - Home Assistant screen not loading - this is most likely the backend not running on `http://localhost:8081`, you can check by using `curl`. If this is the case then make sure the node path is correct. Enter `which node` and make sure the path matches in the `dashyb.service` file without the `node` suffix.
