@@ -29,6 +29,7 @@ export const musicRootFoldersToScan = [
 ]
 
 export const homeConfigPromise = (async () => {
+  console.log('config DEV: ', config.isDevelopment)
   try {
     if (config.isDevelopment) {
       const mod = await import('./homeConfig.json')
