@@ -1,5 +1,4 @@
 import axios from 'axios'
-import {config} from '../config'
 
 export interface IDeviceState {
   entity_id: string
@@ -22,8 +21,6 @@ export const homeAssistantApi = {
       {text}
     )
     console.log('result: ', result)
-    console.log('CONFIG DEV: ', config.isDevelopment)
-    console.log('process dev: ', process.env.NODE_ENV)
   },
 
   getStates: async () => {
