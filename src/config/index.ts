@@ -30,7 +30,7 @@ export const musicRootFoldersToScan = [
 
 export const homeConfigPromise = (async () => {
   try {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'thisisatest') {
       console.log('CONFIG DEV: ', config.isDevelopment)
       const mod = await import('./homeConfig.json')
       return mod.default || mod
