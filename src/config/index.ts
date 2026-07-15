@@ -1,3 +1,6 @@
+import fs from 'fs'
+import path from 'path'
+
 export const config = {
   useLocalAi: false,
   useWakeWord: false,
@@ -29,17 +32,25 @@ export const musicRootFoldersToScan = [
 ]
 
 export const homeConfigPromise = (async () => {
-  try {
-    if (process.env.NODE_ENV === 'thisisatest') {
-      console.log('CONFIG DEV: ', config.isDevelopment)
-      const mod = await import('./homeConfig.json')
-      return mod.default || mod
-    } else {
-      const mod = await import('./sample.homeConfig.json')
-      return mod.default || mod
-    }
-  } catch (e) {
-    console.log('Error importing homeConfig:', e)
-    return undefined
-  }
+  const homeConfigPath = path.join(__dirname, 'homeConfig.json')
+
+  const file = fs.existsSync(homeConfigPath)
+    ? './homeConfig.json'
+    : './sample.homeConfig.json'
+
+  const mod = await import(file)
+  return mod.default ?? mod
+  // try {
+  //   if (process.env.NODE_ENV === 'thisisatest') {
+  //     console.log('CONFIG DEV: ', config.isDevelopment)
+  //     const mod = await import('./homeConfig.json')
+  //     return mod.default || mod
+  //   } else {
+  //     const mod = await import('./sample.homeConfig.json')
+  //     return mod.default || mod
+  //   }
+  // } catch (e) {
+  //   console.log('Error importing homeConfig:', e)
+  //   return undefined
+  // }
 })()
