@@ -1,6 +1,3 @@
-import fs from 'fs'
-import path from 'path'
-
 export const config = {
   useLocalAi: false,
   useWakeWord: false,
@@ -32,14 +29,23 @@ export const musicRootFoldersToScan = [
 ]
 
 export const homeConfigPromise = (async () => {
-  const homeConfigPath = path.join(__dirname, 'homeConfig.json')
+  try {
+    const filename =
+      process.env.NODE_ENV === 'thisisatest'
+        ? 'homeConfig'
+        : 'sample.homeConfig'
 
-  const file = fs.existsSync(homeConfigPath)
-    ? './homeConfig.json'
-    : './sample.homeConfig.json'
+    const mod = await import(
+      /* webpackMode: "lazy" */
+      `./${filename}.json`
+    )
 
-  const mod = await import(file)
-  return mod.default ?? mod
+    return mod.default ?? mod
+  } catch (e) {
+    console.log('Error importing homeConfig:', e)
+    return undefined
+  }
+  
   // try {
   //   if (process.env.NODE_ENV === 'thisisatest') {
   //     console.log('CONFIG DEV: ', config.isDevelopment)
