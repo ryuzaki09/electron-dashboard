@@ -10,6 +10,16 @@ DashyB: Electron home dashboard (React 19 + TS renderer, Express backend, Electr
 - Full dev run: `npm run dev` — starts frontend-server:3000, which auto-spawns electron, which spawns backend:8081. Three processes total.
 - Renderer talks to the backend at `http://localhost:8081`; set `USE_EXTERNAL_BACKEND=true` + `BACKEND_API_URL` to point elsewhere.
 
+## Architecture
+
+- src/components - UI components/features
+- src/pages - UI pages
+- src/api - API clients
+- src/hooks - custom React hooks
+- src/config - core configurations
+- src/store - state management
+- test/ - test files
+
 ## Commands
 
 - `npm test` — Jest unit tests in `test/unit` (jsdom, ts-jest). This is the only thing CI (CircleCI) runs.
