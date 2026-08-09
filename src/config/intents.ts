@@ -7,6 +7,7 @@ import {
   formatCorrectDate
 } from '../helpers/time'
 import {homeAssistantApi} from '../api/homeAssistantApi'
+import {getMusicControls, PlayStates} from '../context/audio'
 
 interface IIntent {
   [key: string]: {
@@ -112,6 +113,28 @@ export const intents: IIntent = {
     },
     responseFromTrigger: false,
     tts: 'Completed'
+  },
+  resumeMusic: {
+    sentences: ['resume', 'resume music'],
+    triggerFn: () => {
+      const {resume, playState} = getMusicControls()
+      if (playState() === PlayStates.paused) {
+        resume()
+      }
+    },
+    responseFromTrigger: false,
+    tts: 'Resuming music'
+  },
+  pauseMusic: {
+    sentences: ['stop', 'pause', 'stop music'],
+    triggerFn: () => {
+      const {pause, playState} = getMusicControls()
+      if (playState() === PlayStates.playing) {
+        pause()
+      }
+    },
+    responseFromTrigger: false,
+    tts: 'Pausing music'
   }
 }
 
