@@ -18,6 +18,26 @@ const MusicContext = React.createContext<any>(null)
 
 export const useAudio = () => React.useContext(MusicContext)
 
+interface IMusicControls {
+  pause: () => void
+  resume: () => void
+  playState: () => PlayStates
+}
+
+let registeredMusicControls: IMusicControls = {
+  pause: () => {},
+  resume: () => {},
+  playState: () => PlayStates.stopped
+}
+
+export function registerMusicControls(controls: IMusicControls) {
+  registeredMusicControls = controls
+}
+
+export function getMusicControls() {
+  return registeredMusicControls
+}
+
 export function MusicProvider({children}: {children: React.ReactNode}) {
   const player = React.useRef(new Audio())
   const [playState, setPlayState] = React.useState<PlayStates>(
@@ -27,6 +47,20 @@ export function MusicProvider({children}: {children: React.ReactNode}) {
   const [shufflePlayList, setShufflePlayList] = React.useState<IAudioFile[]>([])
   const [shufflePlayIndex, setShufflePlayIndex] = React.useState(0)
   const [playerVolume, setPlayerVolume] = React.useState(0.5)
+  const playStateRef = React.useRef(playState)
+  playStateRef.current = playState
+
+  React.useEffect(
+    () => {
+      registerMusicControls({
+        pause,
+        resume,
+        playState: () => playStateRef.current
+      })
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
 
   React.useEffect(
     () => {

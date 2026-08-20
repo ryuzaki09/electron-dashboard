@@ -6,9 +6,15 @@ import {ai} from '../lib/ai'
 import {findIntent} from '../config/intents'
 import {openWakeWordSocket} from '../services/websocket'
 import {mainStore} from '../store/mainStore'
+import {useAudio} from '../context/audio'
 
 export function useVoiceAssistant() {
   const [recorder] = React.useState(new MediaRecorderAPI())
+  const {playerVolume, setVolume} = useAudio()
+  const currentVolumeRef = React.useRef(playerVolume)
+  const savedVolumeRef = React.useRef(0)
+  currentVolumeRef.current = playerVolume
+
   // const [isListening, setIsListening] = React.useState(false)
   const {
     voiceAssistantIsListening: isListening,
@@ -19,11 +25,15 @@ export function useVoiceAssistant() {
     () => {
       if (config.openWakeWordServer) {
         openWakeWordSocket.start({
-          wakeWordDetectedFn: () => setIsListening(true)
+          wakeWordDetectedFn: () => {
+            savedVolumeRef.current = currentVolumeRef.current
+            setVolume(0.2)
+            setIsListening(true)
+          }
         })
       }
     },
-    [setIsListening]
+    [setIsListening, setVolume]
   )
 
   React.useEffect(
@@ -132,6 +142,7 @@ export function useVoiceAssistant() {
       await audio.play()
       audio.onended = () => {
         URL.revokeObjectURL(audioUrl)
+        setVolume(savedVolumeRef.current)
       }
       return
     }
@@ -142,6 +153,9 @@ export function useVoiceAssistant() {
     const audio = new Audio(speechAudio.data.audioUrl)
     audio.muted = false
     await audio.play()
+    audio.onended = () => {
+      setVolume(savedVolumeRef.current)
+    }
   }
 
   return {
