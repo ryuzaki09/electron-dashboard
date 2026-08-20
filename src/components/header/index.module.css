@@ -248,6 +248,20 @@
   }
 }
 
+.restartBtn {
+  background-color: var(--color-primary);
+  color: #fff;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
 .smallControls {
   & .controls span svg {
     width: 40px;

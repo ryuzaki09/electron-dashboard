@@ -39,6 +39,7 @@ export function createAppWindow(urlPath, windowOpts = {}) {
 
   let win: BrowserWindow | null = new BrowserWindow({
     ...defaultOpts,
+    ...prodOptions,
     ...windowOpts
   })
 

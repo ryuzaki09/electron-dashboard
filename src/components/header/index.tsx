@@ -163,6 +163,18 @@ export function Header() {
                 onSelectFn={handleOnSelectAlbum}
               />
             </div>
+            <div className={styles.modalContent}>
+              <p>App</p>
+              <button
+                className={styles.restartBtn}
+                onClick={() => {
+                  const {ipcRenderer} = require('electron')
+                  ipcRenderer.send('app:restart')
+                }}
+              >
+                Restart App
+              </button>
+            </div>
           </>
         }
       />

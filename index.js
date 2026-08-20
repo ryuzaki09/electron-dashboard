@@ -1,5 +1,5 @@
 import path from 'path'
-import {app} from 'electron'
+import {app, ipcMain} from 'electron'
 import {installExtension, REACT_DEVELOPER_TOOLS} from 'electron-devtools-installer'
 import menu from 'electron-context-menu'
 import dotenv from 'dotenv'
@@ -88,6 +88,11 @@ app.on('activate', () => {
     // spawn('npm', ['run', 'backend'], {shell: true, stdio: 'inherit'})
     createWindow()
   }
+})
+
+ipcMain.on('app:restart', () => {
+  app.relaunch()
+  app.exit(0)
 })
 
 function loadEnvFile() {
