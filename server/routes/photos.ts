@@ -1,6 +1,10 @@
 import express from 'express'
 import axios from 'axios'
-import {IImmichAlbum, IImmichAsset} from '../../src/api/types'
+import {
+  IAssetResponseDto,
+  ISearchMetadataResponseDto,
+  IImmichAlbum
+} from '../../src/api/types'
 import {config} from '../../src/config'
 
 const router = express.Router()
@@ -19,7 +23,13 @@ router.get('/albums', async (_req: express.Request, res) => {
 
 router.get('/album-info/:id', async (req: express.Request, res) => {
   const albumId = req.params.id
-  const {data} = await client.get<IImmichAlbum>(`/albums/${albumId}`)
+  //const {data} = await client.get<IImmichAlbum>(`/albums/${albumId}`)
+  const {data} = await client.post<ISearchMetadataResponseDto>(
+    `/search/metadata`,
+    {
+      albumIds: [albumId]
+    }
+  )
   //console.log('info data: ', data)
   return data ? res.send(transformAlbum(data)) : res.send(null)
 })
@@ -27,10 +37,11 @@ router.get('/album-info/:id', async (req: express.Request, res) => {
 router.get('/photo/:id', async (req: express.Request, res) => {
   const assetId = req.params.id
   const {type} = req.query
-  const url =
-    type === 'thumbnail'
-      ? `/assets/${assetId}/thumbnail`
-      : `/assets/${assetId}/original`
+  const url = `/assets/${assetId}/thumbnail?size=preview`
+  // const url =
+  //   type === 'thumbnail'
+  //     ? `/assets/${assetId}/thumbnail`
+  //     : `/assets/${assetId}/original`
   try {
     const response = await client.get(url, {
       responseType: 'stream'
@@ -46,6 +57,7 @@ router.get('/photo/:id', async (req: express.Request, res) => {
 
     response.data.pipe(res)
   } catch (err) {
+    console.log('get image error: ', err)
     res.status(404).send('Image not found')
   }
 })
@@ -63,19 +75,22 @@ function transformAlbums(data: IImmichAlbum[]) {
     }))
 }
 
-const transformAlbum = (data: IImmichAlbum) => {
+const transformAlbum = (data: ISearchMetadataResponseDto) => {
   const imagesOnly = {
     ...data,
-    assets: data.assets.filter((a) => a.type === 'IMAGE')
+    assets: data.assets.items.filter((a) => a.type === 'IMAGE')
   }
   return {
     ...imagesOnly,
-    assets: imagesOnly.assets.map((asset: IImmichAsset) => ({
+    assets: imagesOnly.assets.map((asset: IAssetResponseDto) => ({
       ...asset,
       thumbnailUrl: `${config.localApiUrl}/photos/photo/${
         asset.id
       }?type=thumbnail`,
       url: `${config.localApiUrl}/photos/photo/${asset.id}?type=original`
+      // url: `${config.immichUrl}/api/assets/${
+      //   asset.id
+      // }/thumbnail?size=preview&apiKey=${config.immichKey}`
     }))
   }
 }

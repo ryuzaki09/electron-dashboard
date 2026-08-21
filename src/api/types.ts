@@ -188,6 +188,30 @@ export interface IImmichAsset {
   encodedVideoPath: string
 }
 
+export interface IAssetResponseDto {
+  id: number
+  height: number | null
+  originalFileName: string
+  originalPath: string
+  type: string
+}
+
+export interface ISearchMetadataResponseDto {
+  albums: {
+    count: number
+    facets: any[]
+    items: any[]
+    total: number
+  }
+  assets: {
+    count: number
+    facets: any[]
+    items: IAssetResponseDto[]
+    nextPage: string | null
+    total: number
+  }
+}
+
 export interface IImmichAlbum {
   albumName: string
   description: string
