@@ -250,7 +250,10 @@
 
 .restartBtn {
   background-color: var(--color-primary);
-  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-plex-black);
   padding: var(--space-xs) var(--space-sm);
   border-radius: 10px;
   border: none;
