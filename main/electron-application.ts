@@ -25,7 +25,8 @@ export function createAppWindow(urlPath, windowOpts = {}) {
   const defaultOpts = {
     ...piDisplay1,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      contextIsolation: false
       //preload: path.join(__dirname, '../preload.js')
     }
   }
