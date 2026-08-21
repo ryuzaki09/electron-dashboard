@@ -27,7 +27,7 @@ export function useVoiceAssistant() {
         openWakeWordSocket.start({
           wakeWordDetectedFn: () => {
             savedVolumeRef.current = currentVolumeRef.current
-            setVolume(0.2)
+            setVolume(0.1)
             setIsListening(true)
           }
         })
@@ -119,7 +119,8 @@ export function useVoiceAssistant() {
     console.log('TRANSCRIPTION: ', transcription)
     // const aiResponse = await ai.chat(transcription)
     const foundIntent = findIntent(transcription)
-    // Process home assistant trigger
+
+    // Process custom intent trigger
     if (foundIntent) {
       console.log('foundIntent: ', foundIntent)
 
@@ -128,24 +129,34 @@ export function useVoiceAssistant() {
         foundIntent.sentence
       )
 
-      const speechAudio = await ai.textToSpeech(
-        foundIntent.intent.responseFromTrigger
-          ? (triggerResult as string)
-          : foundIntent.intent.tts
-      )
+      let speechAudio = null
 
-      // play audio
-      const audioUrl = URL.createObjectURL(speechAudio)
-      const audio = new Audio(audioUrl)
-      //const audio = new Audio(speechAudio.data.audioUrl)
-      audio.muted = false
-      await audio.play()
-      audio.onended = () => {
-        URL.revokeObjectURL(audioUrl)
-        setVolume(savedVolumeRef.current)
+      if (foundIntent.intent.responseFromTrigger) {
+        speechAudio = await ai.textToSpeech(triggerResult as string)
       }
+
+      if (foundIntent.intent.tts) {
+        speechAudio = await ai.textToSpeech(triggerResult as string)
+      }
+
+      if (speechAudio) {
+        // play audio
+        const audioUrl = URL.createObjectURL(speechAudio)
+        const audio = new Audio(audioUrl)
+        //const audio = new Audio(speechAudio.data.audioUrl)
+        audio.muted = false
+        await audio.play()
+        audio.onended = () => {
+          URL.revokeObjectURL(audioUrl)
+        }
+      }
+      console.log('currentVolume: ', currentVolumeRef.current)
+      console.log('saved volume: ', savedVolumeRef.current)
+      setVolume(savedVolumeRef.current)
       return
     }
+
+    // Send to LLM
     const aiResponse = await ai.chat(transcription)
     const speechAudio = await ai.textToSpeech(aiResponse)
 

@@ -123,7 +123,7 @@ export const intents: IIntent = {
       }
     },
     responseFromTrigger: false,
-    tts: 'Resuming music'
+    tts: ''
   },
   pauseMusic: {
     sentences: ['stop', 'pause', 'stop music'],
@@ -134,7 +134,7 @@ export const intents: IIntent = {
       }
     },
     responseFromTrigger: false,
-    tts: 'Pausing music'
+    tts: ''
   }
 }
 
