@@ -182,3 +182,12 @@ This will copy the deb file and unpackage and finally reboot the pi. You may nee
 
 - If you see the app not running on your Pi or not displaying the UI, ssh to your Pi and try manually run `sudo dpkg -i *.deb` and see if it shows any errors. Usually it's missing packages that might have been missed.
 - Home Assistant screen not loading - this is most likely the backend not running on `http://localhost:8081`, you can check by using `curl`. If this is the case then make sure the node path is correct. Enter `which node` and make sure the path matches in the `dashyb.service` file without the `node` suffix.
+- Issues with deploying the app on Raspberry Pi relating to broken packages, you may need to fix it with `apt --fix-broken install`
+- a Debian login page shows when starting the app - if you have installed and using lightdm then check in the location `/etc/lightdm/lightdm.conf` and ensure these two lines exist:
+
+```
+autologin-user=pi
+autologin-user-timeout=0
+```
+
+then reboot and start the app again.
