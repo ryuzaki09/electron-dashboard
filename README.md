@@ -191,3 +191,7 @@ autologin-user-timeout=0
 ```
 
 then reboot and start the app again.
+
+- App wont start on boot:
+  1. Check `systemctl get-default` shows `graphical.target`. If not then run `sudo systemctl set-default graphical.target`
+  2. Ensure the service is enabled with `sudo systemctl enable dashyb.service`
