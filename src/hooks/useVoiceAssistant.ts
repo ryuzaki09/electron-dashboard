@@ -150,7 +150,6 @@ export function useVoiceAssistant() {
           URL.revokeObjectURL(audioUrl)
         }
       }
-      console.log('currentVolume: ', currentVolumeRef.current)
       console.log('saved volume: ', savedVolumeRef.current)
       setVolume(savedVolumeRef.current)
       return

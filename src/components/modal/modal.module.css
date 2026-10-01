@@ -4,7 +4,8 @@
 
   & > dialog {
     width: 70vw;
-    height: 70vh;
+    max-height: fit-content;
+    //height: 70vh;
 
     border-radius: 0px;
     background-color: var(--color-plex-black);
@@ -12,7 +13,7 @@
     border: 2px solid var(--color-primary);
 
     padding: var(--space-x-large);
-    overflow-y: scroll;
+    overflow-y: hidden;
 
     &::-webkit-scrollbar {
       display: none;
@@ -60,5 +61,13 @@
       font-weight: 500;
       border-radius: 10px;
     }
+  }
+}
+
+.fullHeightModalWrapper {
+  & > dialog {
+    height: 100dvh;
+    max-height: none;
+    overflow-y: scroll;
   }
 }

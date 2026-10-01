@@ -10,7 +10,7 @@ import HomeAssistantIcon from '../icons/homeAssistant'
 import {useVoiceAssistant} from '../../hooks/useVoiceAssistant'
 import {config} from '../../config'
 import {themeOptions} from '../../config/constants'
-import {CustomModal} from '../modal/modal'
+import {FullHeightModal} from '../modal/modal'
 import {MediaControls} from './mediaControls'
 import {mainStore} from '../../store/mainStore'
 import {useActivityDetection} from '../../hooks/useActivityDetection'
@@ -143,7 +143,7 @@ export function Header() {
         </nav>
       </header>
       <MediaControls />
-      <CustomModal
+      <FullHeightModal
         onClose={onCloseModal}
         isOpen={settingsModalOpen}
         title="Settings"
