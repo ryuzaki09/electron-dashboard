@@ -131,7 +131,7 @@ export function Header() {
             <Link to="/home-assistant">
               <HomeAssistantIcon />
             </Link>
-            {config.isDevelopment && (
+            {(config.isDevelopment || config.useWakeWord) && (
               <button
                 onClick={isListening ? () => {} : () => setIsListening(true)}
                 className={styles.assistantBtn}

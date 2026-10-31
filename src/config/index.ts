@@ -1,6 +1,6 @@
 export const config = {
   useLocalAi: false,
-  useWakeWord: false,
+  useWakeWord: process.env.USE_WAKE_WORD === 'true',
   useExternalBackendApi: process.env.USE_EXTERNAL_BACKEND === 'true',
   isDevelopment: process.env.NODE_ENV === 'development',
   homeAssistantIP: process.env.HA_HOST,
