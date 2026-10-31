@@ -21,6 +21,30 @@ menu({
   ]
 })
 
+function isTrustedAppOrigin(url) {
+  if (url.startsWith('file://')) return true
+
+  if (config.isDevelopment) {
+    try {
+      const {protocol, hostname, port} = new URL(url)
+      return protocol === 'http:' && hostname === 'localhost' && port === String(PORT)
+    } catch (_error) {
+      return false
+    }
+  }
+
+  return false
+}
+
+app.on('permission-check-handler', (_webContents, permission, requestingOrigin) => {
+  return permission === 'media' && isTrustedAppOrigin(requestingOrigin)
+})
+
+app.on('permission-request-handler', (webContents, permission, callback, details) => {
+  const requestingUrl = details.requestingUrl || webContents.getURL()
+  callback(permission === 'media' && isTrustedAppOrigin(requestingUrl))
+})
+
 let mainWindow
 
 function createWindow() {
